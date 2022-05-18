@@ -4,7 +4,12 @@ const app = express();
 
 const GateRoutes = require('./routes/Gate');
 
-app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+    })
+);
+
+app.use(express.json());
 
 app.use('/gates', GateRoutes);
 
