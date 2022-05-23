@@ -1,0 +1,19 @@
+org: thimovanvelzen
+app: f12-api-service
+service: f12-api-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: eu-west-1
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /example
+          method: get
