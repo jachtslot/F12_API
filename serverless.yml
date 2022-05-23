@@ -11,9 +11,9 @@ provider:
   region: eu-west-1
 
 functions:
-  hello:
-    handler: handler.hello
+  createAccount:
+    handler: account/AccountHandler.createAccount
     events:
       - http:
-          path: /example
-          method: get
+          path: /account
+          method: post
