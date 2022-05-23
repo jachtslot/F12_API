@@ -1,3 +1,4 @@
+const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = class UserDAO {
@@ -14,6 +15,6 @@ module.exports = class UserDAO {
             'hashed_password_example'
         ];
 
-        return {query, values}
+        return PostgreSQLAdapter.executeQuery({query, values});
     }
 }
