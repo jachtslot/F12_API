@@ -1,21 +1,17 @@
-const axios = require('axios');
 const AccountController = require('./AccountController');
 
 module.exports.createAccount = async event => {
+    let responseBody = JSON.parse(event.body);
 
-    AccountController.createAccount().then(response => {
+    return await AccountController.createAccount(responseBody).then(() => {
         return {
             statusCode: 200,
-            body: JSON.stringify(
-                response
-            )
-        }
+            body: 'A new Account is created'
+        };
     }).catch(error => {
         return {
             statusCode: 500,
-            body: JSON.stringify({
-                message: `${error.data}`
-            })
+            body: error.message
         }
     });
 }
