@@ -13,7 +13,7 @@ module.exports = class TwilioHelper {
         this.client = require('twilio')(this.accountSid, this.authToken);
     }
 
-    makeCall() {
+    makeCall(event) {
         this.client.calls.create({
             twiml: '<Response><Pause length="1"/><Say>The gate will now open, please wait.</Say><Pause length="1"/></Response>',
             to: this.numberTo,
@@ -22,6 +22,7 @@ module.exports = class TwilioHelper {
             timeLimit: 5
         })
             .then(() => {
+                logger.info(`Request with path: ${event.path} successful.`);
                 return {
                     statusCode: 200,
                     body: JSON.stringify({

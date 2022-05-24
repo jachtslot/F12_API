@@ -31,8 +31,7 @@ const openInnerGate = event => {
 
 
 const openOuterGate = event => {
-    twilioHelper.makeCall();
-    logger.info(`Request with path: ${event.path} successful.`);
+    return twilioHelper.makeCall(event);
 }
 
 module.exports = {
