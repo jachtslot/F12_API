@@ -17,4 +17,16 @@ module.exports = class AccountDAO {
 
         return PostgreSQLAdapter.executeQuery({query, values});
     }
+
+    static deleteAccount(emailAddress) {
+        const query = `
+            DELETE FROM account
+            WHERE email_address = ($1)
+        `;
+        const values = [
+            emailAddress
+        ];
+
+        return PostgreSQLAdapter.executeQuery({query, values});
+    }
 }
