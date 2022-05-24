@@ -10,3 +10,4 @@ jspm_packages
 /.idea
 /logs/
 
+/.env
