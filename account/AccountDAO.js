@@ -1,7 +1,7 @@
 const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 const { v4: uuidv4 } = require('uuid');
 
-module.exports = class UserDAO {
+module.exports = class AccountDAO {
 
     static createAccount(account) {
         const query = `
