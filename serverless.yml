@@ -17,3 +17,9 @@ functions:
       - http:
           path: /account
           method: post
+  deleteAccount:
+    handler: account/AccountHandler.deleteAccount
+    events:
+      - http:
+          path: /account
+          method: delete
