@@ -6,8 +6,8 @@ module.exports = class AccountController {
     static async createAccount(responseBody) {
         const account = new Account(
             responseBody.username,
-            responseBody.emailAddress,
-            responseBody.hashedPassword
+            responseBody.email_address,
+            responseBody.hashed_password
         );
 
         return AccountDAO.createAccount(account);
