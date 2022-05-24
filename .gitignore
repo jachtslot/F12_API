@@ -6,3 +6,8 @@ jspm_packages
 .serverless
 
 .env
+
+/node_modules/
+/package-lock.json
+/.idea
+/logs/
