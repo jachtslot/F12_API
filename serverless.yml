@@ -61,14 +61,14 @@ provider:
 
 functions:
   openInnerGate:
-    handler: Gate/GateHandler.openInnerGate
+    handler: gate/GateHandler.openInnerGate
     events:
         - http:
              path: /gates/1
              method: get
 
   openOuterGate:
-    handler: Gate/GateHandler.openOuterGate
+    handler: gate/GateHandler.openOuterGate
     events:
       - http:
           path: /gates/2
