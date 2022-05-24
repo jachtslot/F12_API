@@ -5,8 +5,9 @@ jspm_packages
 # Serverless directories
 .serverless
 
+.env
+
 /node_modules/
 /package-lock.json
 /.idea
 /logs/
-
