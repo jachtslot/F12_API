@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb79bc45-8c36-4da9-84ce-930f183f760c" name="Changes" comment="Mismatch in .gitignore file, added .idea folder">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/GateController.js" beforeDir="false" afterPath="$PROJECT_DIR$/gate/GateController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/TwilioHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/TwilioHelper.js" afterDir="false" />
-    </list>
+    <list default="true" id="cb79bc45-8c36-4da9-84ce-930f183f760c" name="Changes" comment="Mismatch in .gitignore file, added .idea folder" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,27 +24,23 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="299XeVhQaxxKPssKnhSwzZE7PFs" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="17.9.0" />
-    <property name="javascript.nodejs.core.library.typings.version" value="17.0.33" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources" />
-    <property name="nodejs_interpreter_path" value="node" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "D:/home/hsl/ipsen5/F12_API"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\home\hsl\ipsen5\F12_API" />
       <recent name="$PROJECT_DIR$/resources" />
     </key>
   </component>
