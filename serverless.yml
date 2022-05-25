@@ -1,4 +1,4 @@
-org: ramonk01
+org: thimovanvelzen
 app: f12-api-service
 service: f12-api-service
 
@@ -17,6 +17,13 @@ functions:
       - http:
           path: /account
           method: post
+
+  deleteAccount:
+    handler: account/AccountHandler.deleteAccount
+    events:
+      - http:
+          path: /account
+          method: delete
 
   openInnerGate:
     handler: gate/GateHandler.openInnerGate

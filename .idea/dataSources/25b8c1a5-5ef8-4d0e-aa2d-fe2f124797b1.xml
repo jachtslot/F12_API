@@ -18,7 +18,7 @@
 14306||10|C|G
 14306||-9223372036854775808|U|G
 14306||10|U|G</Grants>
-      <IntrospectionStateNumber>2315</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2861</IntrospectionStateNumber>
       <ObjectId>14672</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -3506,7 +3506,7 @@ default_transaction_read_only=off</Config>
     <schema id="270" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>2315</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2861</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>796</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -3517,32 +3517,84 @@ default_transaction_read_only=off</Config>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <column id="272" parent="271" name="id">
+    <table id="272" parent="270" name="role">
+      <ObjectId>16410</ObjectId>
+      <StateNumber>2598</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <column id="273" parent="271" name="id">
       <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>820</StateNumber>
+      <StateNumber>2610</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="273" parent="271" name="username">
+    <column id="274" parent="271" name="username">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>820</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="274" parent="271" name="email_address">
+    <column id="275" parent="271" name="email_address">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>820</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="275" parent="271" name="hashed_password">
+    <column id="276" parent="271" name="hashed_password">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>820</StateNumber>
       <TypeId>1043</TypeId>
     </column>
+    <index id="277" parent="271" name="pk_account">
+      <ColNames>id</ColNames>
+      <ObjectId>16424</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2610</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="278" parent="271" name="pk_account">
+      <ColNames>id</ColNames>
+      <ObjectId>16425</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2610</StateNumber>
+      <UnderlyingIndexId>16424</UnderlyingIndexId>
+    </key>
+    <column id="279" parent="272" name="id">
+      <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>2598</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <column id="280" parent="272" name="name">
+      <DataType>text|0s</DataType>
+      <Position>2</Position>
+      <StateNumber>2598</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <index id="281" parent="272" name="role_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16415</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2598</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="282" parent="272" name="role_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16416</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>2598</StateNumber>
+      <UnderlyingIndexId>16415</UnderlyingIndexId>
+    </key>
   </database-model>
 </dataSource>
