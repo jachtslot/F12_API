@@ -1,4 +1,4 @@
-org: thimovanvelzen
+org: ramonk01
 app: f12-api-service
 service: f12-api-service
 
@@ -17,3 +17,17 @@ functions:
       - http:
           path: /account
           method: post
+
+  openInnerGate:
+    handler: gate/GateHandler.openInnerGate
+    events:
+      - http:
+          path: /gates/1
+          method: get
+
+  openOuterGate:
+    handler: gate/GateHandler.openOuterGate
+    events:
+      - http:
+          path: /gates/2
+          method: get
