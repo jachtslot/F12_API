@@ -17,9 +17,24 @@ functions:
       - http:
           path: /account
           method: post
+
   deleteAccount:
     handler: account/AccountHandler.deleteAccount
     events:
       - http:
           path: /account
           method: delete
+
+  openInnerGate:
+    handler: gate/GateHandler.openInnerGate
+    events:
+      - http:
+          path: /gates/1
+          method: get
+
+  openOuterGate:
+    handler: gate/GateHandler.openOuterGate
+    events:
+      - http:
+          path: /gates/2
+          method: get
