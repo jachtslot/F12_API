@@ -2,16 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb79bc45-8c36-4da9-84ce-930f183f760c" name="Changes" comment="Mismatch in .gitignore file, added .idea folder">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/GateController.js" beforeDir="false" afterPath="$PROJECT_DIR$/gate/GateController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/role/RoleController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/role/RoleDAO.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/role/RoleHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/25b8c1a5-5ef8-4d0e-aa2d-fe2f124797b1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/25b8c1a5-5ef8-4d0e-aa2d-fe2f124797b1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/25b8c1a5-5ef8-4d0e-aa2d-fe2f124797b1/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/25b8c1a5-5ef8-4d0e-aa2d-fe2f124797b1/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/TwilioHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/TwilioHelper.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <branch-grouping />
@@ -191,7 +199,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
