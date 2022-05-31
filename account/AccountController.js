@@ -5,7 +5,8 @@ const sendRegistrationMail = require('../util/EmailHelper');
 
 module.exports = class AccountController {
 
-    static async createAccount(responseBody) {
+    static async createAccount(event) {
+        let responseBody = JSON.parse(event.body);
 
         const account = new Account(
             responseBody.username,
@@ -13,10 +14,18 @@ module.exports = class AccountController {
             responseBody.hashed_password
         );
 
-        return await AccountDAO.createAccount(account).then( () => {
-             return sendRegistrationMail(account.emailAddress, account.hashedPassword).then().catch(err => {
-                 return new Error('An occurred trying to send the email');
-            })
+        return await AccountDAO.createAccount(account).then(
+            () => sendRegistrationMail(account.emailAddress, account.hashedPassword)).then(
+                () => {
+                return {
+                   statusCode: 200,
+                   body: 'A new account is created'
+                }
+        }).catch(error => {
+            return {
+                statusCode: 500,
+                body: error.message
+            }
         });
     }
 
