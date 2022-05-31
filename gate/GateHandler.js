@@ -1,4 +1,4 @@
-const GateController = require('./GateController')
+const GateController = require('./GateController');
 
 const openInnerGate = event => {
     return GateController.openInnerGate(event);
