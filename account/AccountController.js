@@ -13,14 +13,10 @@ module.exports = class AccountController {
             responseBody.hashed_password
         );
 
-        return AccountDAO.createAccount(account).then( () => {
-            sendRegistrationMail(account.emailAddress, account.hashedPassword).then( res => {
-                console.log(res);
-            }).catch(err => {
-                console.log(err)
+        return await AccountDAO.createAccount(account).then( () => {
+             return sendRegistrationMail(account.emailAddress, account.hashedPassword).then().catch(err => {
+                 return new Error('An occurred trying to send the email');
             })
-        }).catch(error => {
-            console.log(error);
         });
     }
 
