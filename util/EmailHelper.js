@@ -9,7 +9,7 @@ const SES_CONFIG = {                    //TODO: Verplaats naar env
 
 const AWS_SES = new AWS.SES(SES_CONFIG);
 
-const sendRegistrationEmail = (email, password) => {
+const sendRegistrationEmail = async (email, password) => {
     let params = {
         Source: process.env.EMAIL_SENDER,
         Destination: {
@@ -33,7 +33,7 @@ const sendRegistrationEmail = (email, password) => {
             }
         },
     };
-    return AWS_SES.sendEmail(params).promise();
+    return await AWS_SES.sendEmail(params).promise();
 }
 
 module.exports = sendRegistrationEmail;
