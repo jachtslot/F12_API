@@ -1,10 +1,10 @@
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
-const SES_CONFIG = {                    //TODO: Verplaats naar env
-    accessKeyId: 'AKIAYEG4ZWW646UIPVX4',
-    secretAccessKey: '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',
-    region: 'eu-west-1',
+const SES_CONFIG = {
+    accessKeyId: process.env.SES_ACCESS_KEY,
+    secretAccessKey: process.env.SES_SECRET,
+    region: process.env.CLOUDWATCH_REGION,
 };
 
 const AWS_SES = new AWS.SES(SES_CONFIG);
