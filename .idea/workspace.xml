@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb79bc45-8c36-4da9-84ce-930f183f760c" name="Changes" comment="Fixed an issue where no response was returned in openOuterGate method.&#10;&#10;Note: &#10;Make sure to change org in serverless.yml after pulling">
-      <change afterPath="$PROJECT_DIR$/util/EmailHelper.js" afterDir="false" />
+    <list default="true" id="cb79bc45-8c36-4da9-84ce-930f183f760c" name="Changes" comment="Mismatch in .gitignore file, added .idea folder">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/AccountController.js" beforeDir="false" afterPath="$PROJECT_DIR$/account/AccountController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/AccountHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/account/AccountHandler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/GateHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/gate/GateHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/GateController.js" beforeDir="false" afterPath="$PROJECT_DIR$/gate/GateController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/serverless.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/TwilioHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/TwilioHelper.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +17,7 @@
     <branch-grouping />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/openGates" />
+        <entry key="$PROJECT_DIR$" value="feature/createRole" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,15 +75,7 @@
       <workItem from="1653300346518" duration="27000" />
       <workItem from="1653300389221" duration="4941000" />
       <workItem from="1653306304789" duration="10874000" />
-      <workItem from="1653378164318" duration="14690000" />
-      <workItem from="1653579399665" duration="8000" />
-      <workItem from="1653654649803" duration="3569000" />
-      <workItem from="1653732496993" duration="2577000" />
-      <workItem from="1653811015398" duration="625000" />
-      <workItem from="1653895206928" duration="2144000" />
-      <workItem from="1653910320617" duration="1000" />
-      <workItem from="1653933548626" duration="5193000" />
-      <workItem from="1653980648481" duration="685000" />
+      <workItem from="1653378164318" duration="13356000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1652527289848</created>
@@ -183,14 +175,7 @@
       <option name="project" value="LOCAL" />
       <updated>1653399039147</updated>
     </task>
-    <task id="LOCAL-00015" summary="Fixed an issue where no response was returned in openOuterGate method.&#10;&#10;Note: &#10;Make sure to change org in serverless.yml after pulling">
-      <created>1653408516588</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1653408516588</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,7 +208,6 @@
     <MESSAGE value="Created methods that open both gates at the estate." />
     <MESSAGE value="Removed dead code" />
     <MESSAGE value="Mismatch in .gitignore file, added .idea folder" />
-    <MESSAGE value="Fixed an issue where no response was returned in openOuterGate method.&#10;&#10;Note: &#10;Make sure to change org in serverless.yml after pulling" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed an issue where no response was returned in openOuterGate method.&#10;&#10;Note: &#10;Make sure to change org in serverless.yml after pulling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mismatch in .gitignore file, added .idea folder" />
   </component>
 </project>

@@ -23,4 +23,8 @@ module.exports = class AccountController {
             console.log(error);
         });
     }
+
+    static async deleteAccount(emailAddress) {
+        return AccountDAO.deleteAccount(emailAddress);
+    }
 }
