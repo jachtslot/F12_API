@@ -15,7 +15,7 @@ module.exports = class AccountDAO {
             account.hashedPassword
         ];
 
-        return PostgreSQLAdapter.executeQuery({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
     static deleteAccount(emailAddress) {
@@ -27,6 +27,15 @@ module.exports = class AccountDAO {
             emailAddress
         ];
 
-        return PostgreSQLAdapter.executeQuery({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+    }
+
+    static getAllAccounts() {
+        const query = `
+            SELECT *
+            FROM account;
+        `
+
+        return PostgreSQLAdapter.executeQuery(query);
     }
 }
