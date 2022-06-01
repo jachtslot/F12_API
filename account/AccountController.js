@@ -16,4 +16,8 @@ module.exports = class AccountController {
     static async deleteAccount(emailAddress) {
         return AccountDAO.deleteAccount(emailAddress);
     }
+
+    static async getAllAccounts() {
+        return AccountDAO.getAllAccounts();
+    }
 }
