@@ -22,8 +22,10 @@ const sendRegistrationEmail = async (email, password) => {
             Body: {
                 Html: {
                     Charset: 'UTF-8',
-                    Data: 'Beste, ' +
-                        `emailadres: ${email}
+                    Data: 'Beste, <br>' +
+                        'Vanaf nu is het mogelijk om op ingestelde tijdstippen het landgoed Ter Horsten te betreden. <br>' +
+                        'Met de bijgevoegde inloggegevens kan via de app {{LINK}} toegang worden verkregen<br>' +
+                        `emailadres: ${email}<br>
                         wachtwoord: ${password}`,
                 },
             },
