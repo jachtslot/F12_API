@@ -34,15 +34,11 @@ module.exports.deleteAccount = async event => {
 }
 
 module.exports.getAllAccounts = async event => {
-    return await AccountController.getAllAccounts().then(accounts => {
+    return await AccountController.getAllAccounts().then(acc => {
+
         return {
             statusCode: 200,
-            body: JSON.stringify(accounts.rows)
+            body: JSON.stringify(acc.rows)
         };
-    }).catch(error => {
-        return {
-            statusCode: 500,
-            body: error.message
-        }
     });
 }

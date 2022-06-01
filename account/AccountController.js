@@ -18,6 +18,12 @@ module.exports = class AccountController {
     }
 
     static async getAllAccounts() {
-        return AccountDAO.getAllAccounts();
+        return AccountDAO.getAllAccounts().then(accounts => {
+            accounts.rows.forEach(account => {
+                delete account.hashed_password
+            });
+
+            return accounts;
+        });
     }
 }

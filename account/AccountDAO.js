@@ -30,7 +30,7 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static getAllAccounts() {
+    static async getAllAccounts() {
         const query = `
             SELECT *
             FROM account;
