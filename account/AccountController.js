@@ -14,19 +14,24 @@ module.exports = class AccountController {
             responseBody.hashed_password
         );
 
-        return await AccountDAO.createAccount(account).then(
-            () => sendRegistrationMail(account.emailAddress, account.hashedPassword)).then(
-                () => {
+        return await AccountDAO.createAccount(account)
+            .then(() => sendRegistrationMail(account.emailAddress, account.hashedPassword))
+            .then(() => {
+                    return {
+                        statusCode: 201,
+                        headers: {
+                            "Access-Control-Allow-Headers": "Content-Type",
+                            "Access-Control-Allow-Origin": "http://localhost:4200",
+                            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                        },
+                        body: JSON.stringify(data)
+                    }
+                }).catch(error => {
                 return {
-                   statusCode: 200,
-                   body: 'A new account is created'
+                    statusCode: 500,
+                    body: error.message
                 }
-        }).catch(error => {
-            return {
-                statusCode: 500,
-                body: error.message
-            }
-        });
+            });
     }
 
     static async deleteAccount(emailAddress) {
