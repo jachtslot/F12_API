@@ -11,6 +11,13 @@ provider:
   region: eu-west-1
 
 functions:
+  getAllAccounts:
+    handler: account/AccountHandler.getAllAccounts
+    events:
+      - http:
+          path: /account
+          method: get
+
   createAccount:
     handler: account/AccountHandler.createAccount
     events:
