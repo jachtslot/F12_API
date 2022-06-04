@@ -8,17 +8,13 @@ module.exports = class AccountController {
 
     static async createAccount(event) {
         let responseBody = JSON.parse(event.body);
-        // const responseBody = {username : 'test', email_address : 's1127893@student.hsleiden.nl', hashed_password: 'aisdhgwquydgiuqwdhk'}
         const username = responseBody.username;
         const email = responseBody.email_address;
         const password = responseBody.hashed_password;
 
         const hashedAccount = await bcrypt.hash(password, 12).then(hashedPw => {
-            console.log('1')
-            return new Account(username, email, hashedPw);
+            return new Account(null, username, email, hashedPw);
         });
-        console.log('2')
-
         return await AccountDAO.createAccount(hashedAccount)
             .then(() => sendRegistrationMail(email, password))
             .then(() => {
