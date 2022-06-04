@@ -1,26 +1,31 @@
 const AccountDAO = require('./AccountDAO');
 const Account = require('./Account');
 const sendRegistrationMail = require('../util/EmailHelper');
+const bcrypt = require('bcryptjs');
 
 
 module.exports = class AccountController {
 
     static async createAccount(event) {
         let responseBody = JSON.parse(event.body);
+        // const responseBody = {username : 'test', email_address : 's1127893@student.hsleiden.nl', hashed_password: 'aisdhgwquydgiuqwdhk'}
+        const username = responseBody.username;
+        const email = responseBody.email_address;
+        const password = responseBody.hashed_password;
 
-        const account = new Account(
-            responseBody.username,
-            responseBody.email_address,
-            responseBody.hashed_password
-        );
+        const hashedAccount = await bcrypt.hash(password, 12).then(hashedPw => {
+            console.log('1')
+            return new Account(username, email, hashedPw);
+        });
+        console.log('2')
 
-        return await AccountDAO.createAccount(account)
-            .then(() => sendRegistrationMail(account.emailAddress, account.hashedPassword))
+        return await AccountDAO.createAccount(hashedAccount)
+            .then(() => sendRegistrationMail(email, password))
             .then(() => {
                 const response =  {
-                    'id': account.id,
-                    'username': account.username,
-                    'email_address': account.emailAddress
+                    'id': hashedAccount.id,
+                    'username': hashedAccount.username,
+                    'email_address': hashedAccount.emailAddress
                 };
 
                 return {
@@ -35,7 +40,7 @@ module.exports = class AccountController {
             }).catch(error => {
                 return {
                     statusCode: 500,
-                    body: error.message
+                    body: error
                 }
             });
     }
