@@ -9,7 +9,7 @@ module.exports = class AccountDAO {
             VALUES ($1, $2, $3, $4);
         `;
         const values = [
-            uuidv4(),
+            account.id,
             account.username,
             account.emailAddress,
             account.hashedPassword
