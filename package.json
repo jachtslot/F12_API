@@ -21,6 +21,9 @@
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
     "winston-aws-cloudwatch": "^3.0.0",
-    "winston-cloudwatch": "^6.0.0"
+    "winston-cloudwatch": "^6.0.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
   }
 }
