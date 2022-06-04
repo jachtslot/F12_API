@@ -17,6 +17,12 @@ functions:
       - http:
           path: /account
           method: post
+  login:
+    handler: authentication/AuthenticationHandler.login
+    events:
+      - http:
+          path: /auth/login
+          method: post
 
   deleteAccount:
     handler: account/AccountHandler.deleteAccount
