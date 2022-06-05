@@ -18,6 +18,13 @@ functions:
           path: /account
           method: get
 
+  getAccount:
+    handler: account/AccountHandler.getAccount
+    events:
+      - http:
+          path: /account/{id}
+          method: get
+
   createAccount:
     handler: account/AccountHandler.createAccount
     events:

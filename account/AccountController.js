@@ -1,5 +1,6 @@
 const AccountDAO = require('./AccountDAO');
 const Account = require('./Account');
+const {getAllAccounts} = require("./AccountHandler");
 
 module.exports = class AccountController {
 
@@ -25,5 +26,15 @@ module.exports = class AccountController {
 
             return accounts;
         });
+    }
+
+    static async getAccount(id) {
+        return getAllAccounts().then(accounts => {
+            accounts.rows.filter(account => {
+                account.id = id
+            });
+
+            return accounts;
+        })
     }
 }
