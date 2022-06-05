@@ -1,6 +1,5 @@
 const AccountDAO = require('./AccountDAO');
 const Account = require('./Account');
-const {getAllAccounts} = require("./AccountHandler");
 
 module.exports = class AccountController {
 
