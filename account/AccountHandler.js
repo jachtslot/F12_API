@@ -47,9 +47,16 @@ module.exports.getAccount = async event => {
     let id = event.pathParameters.id;
     return await AccountController.getAccount(id).then(account => {
 
+        if (account.length <= 0) {
+            return {
+                statusCode: 404,
+                body: "The Account with id: '" + id + "' was not found."
+            }
+        }
+
         return {
             statusCode: 200,
-            body: JSON.stringify(account)
+            body: JSON.stringify(account[0])
         }
     });
 }
