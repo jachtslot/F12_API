@@ -27,6 +27,8 @@ module.exports = class RoleDAO {
             roleName
         ];
 
-        return PostgreSQLAdapter.executeQuery({query, values});
+        return PostgreSQLAdapter.executeQuery({query, values}).then(queryResponse => {
+            return queryResponse.rows
+        });
     }
 }

@@ -6,8 +6,8 @@ module.exports.createRole = async event => {
 
     return await RoleController.createRole(roleName).then(() => {
        return {
-           statusCode: 200,
-           body: 'A new Role is created!'
+           statusCode: 201,
+           body: `The role ${roleName} is created!`
        }
     }).catch(error => {
         return {
