@@ -29,7 +29,7 @@ module.exports = class AccountController {
     }
 
     static async getAccount(id) {
-        return getAllAccounts().then(accounts => {
+        return this.getAllAccounts().then(accounts => {
             accounts.rows.filter(account => {
                 account.id = id
             });
