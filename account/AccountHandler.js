@@ -44,7 +44,8 @@ module.exports.getAllAccounts = async event => {
 }
 
 module.exports.getAccount = async event => {
-    return await AccountController.getAccount().then(account => {
+    let id = event.pathParameters.id;
+    return await AccountController.getAccount(id).then(account => {
 
         return {
             statusCode: 200,
