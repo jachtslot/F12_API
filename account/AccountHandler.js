@@ -49,7 +49,7 @@ module.exports.getAccount = async event => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify(account)
+            body: JSON.stringify(account.rows[0])
         }
     });
 }
