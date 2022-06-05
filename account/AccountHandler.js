@@ -42,3 +42,13 @@ module.exports.getAllAccounts = async event => {
         };
     });
 }
+
+module.exports.getAccount = async event => {
+    return await AccountController.getAccount().then(account => {
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(account)
+        }
+    });
+}
