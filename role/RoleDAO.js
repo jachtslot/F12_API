@@ -1,16 +1,30 @@
 const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 const { v4: uuidv4 } = require('uuid');
 
-module.exports = class RoleDAO {
+module.exports = class AccountDAO {
 
-    static createRole(roleName) {
+    static createAccount(account) {
         const query = `
-            INSERT INTO role (id, name)
-            VALUES ($1, $2)
+            INSERT INTO account (id, username, email_address, hashed_password)
+            VALUES ($1, $2, $3, $4);
         `;
         const values = [
             uuidv4(),
-            roleName
+            account.username,
+            account.emailAddress,
+            account.hashedPassword
+        ];
+
+        return PostgreSQLAdapter.executeQuery({query, values});
+    }
+
+    static deleteAccount(emailAddress) {
+        const query = `
+            DELETE FROM account
+            WHERE email_address = ($1);
+        `;
+        const values = [
+            emailAddress
         ];
 
         return PostgreSQLAdapter.executeQuery({query, values});
