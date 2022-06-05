@@ -6,6 +6,7 @@ You can use this file to discover the endpoints available for the `F12_API` API.
 ___
 
 [Get Account](#get-account)  
+[Get All Accounts](#get-all-accounts)  
 [Create Account](#create-account)
 
 ___
