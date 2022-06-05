@@ -1,0 +1,13 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+/node_modules/
+/package-lock.json
+/.idea
+/logs/
+/.idea/workspace.xml
+/.env
