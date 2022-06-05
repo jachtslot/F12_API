@@ -33,6 +33,7 @@ ___
 ##### 200 OK
 ```json
 {
+  "id": "d3ae3a16-09bb-4cac-9c83-487bc8846b4c",
   "username": "example_user_name",
   "email_address": "example.email@gmail.com"
 }
