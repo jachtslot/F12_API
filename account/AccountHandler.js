@@ -50,7 +50,7 @@ module.exports.getAccount = async event => {
         if (account.length <= 0) {
             return {
                 statusCode: 404,
-                body: "The Account with id: '" + id + "' was not found."
+                body: `The Account with id: '${id}' was not found.`
             }
         }
 
