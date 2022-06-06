@@ -103,7 +103,7 @@ ___
 ___
 Responses
 
-##### 201 Created
+##### 200 OK
 
 ```json
 [
@@ -223,7 +223,6 @@ ___
 #### Example Request
 ___
 
-
 ```bash
 curl --request GET \
   --url https://api/role \
@@ -231,3 +230,39 @@ curl --request GET \
   --header 'Content-Type: application/json'
 ```
 ___
+
+### Create Role
+
+Make a new `Role` resource.
+
+___
+#### Request
+> POST /role
+___
+
+___
+#### Responses
+___
+##### 201 Created
+
+```json
+The Role {name} is created
+```
+
+- **name**  
+  The name of the role given
+___
+#### Example Request
+___
+
+```bash
+curl --request POST \
+  --url https://api/role \
+  --header 'Authorization: ' \
+  --header 'Content-Type: application/json'
+  --data '
+    {
+      "name": "examplename"
+    }
+  '
+```
