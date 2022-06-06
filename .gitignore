@@ -9,5 +9,5 @@ jspm_packages
 /package-lock.json
 /.idea/
 /logs/
-
+/.idea/workspace.xml
 /.env

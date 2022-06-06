@@ -1,7 +1,36 @@
 const AccountController = require('./AccountController');
+const Account = require('./Account');
 
 module.exports.createAccount = async event => {
-    return await AccountController.createAccount(event)
+    const responseBody = JSON.parse(event.body);
+    let account = new Account(
+        responseBody.email_address,
+        responseBody.hashed_password,
+        responseBody.username
+    );
+
+    return await AccountController.createAccount(account).then((account) => {
+        const response =  {
+            'id': account.id,
+            'username': account.username,
+            'email_address': account.emailAddress
+        };
+
+        return {
+            statusCode: 201,
+            headers: {
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Origin": "http://localhost:4200",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
+            body: JSON.stringify(response)
+        }
+    }).catch(error => {
+        return {
+            statusCode: 500,
+            body: error.message
+        }
+    });
 }
 
 module.exports.deleteAccount = async event => {
