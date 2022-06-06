@@ -1,6 +1,6 @@
 # Endpoints of the API
 ___
-You can use this file to discover the endpoints available for the `F12_API` API.
+This file documents all the endpoints available for the `F12_API` API.
 
 #### Quick Navigation:
 ___
