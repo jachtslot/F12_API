@@ -27,9 +27,4 @@ module.exports = class PostgreSQLAdapter {
 
         return this.executeQuery(query);
     }
-
-    static async executeQuery(query) {
-        const pool = new Pool(databaseCredentials);
-        return await pool.query(query);
-    }
 }
