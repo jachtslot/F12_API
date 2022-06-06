@@ -6,29 +6,36 @@ module.exports = class RoleDAO {
     static createRole(roleName) {
         const query = `
             INSERT INTO role (id, name)
-            VALUES ($1, $2)
+            VALUES ($1, $2);
         `;
         const values = [
             uuidv4(),
             roleName
         ];
 
-        return PostgreSQLAdapter.executeQuery({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
     static getRole(roleName) {
         const query = `
             SELECT *
             FROM role
-            WHERE name = $1
+            WHERE name = $1;
         `;
 
         const values = [
             roleName
         ];
 
-        return PostgreSQLAdapter.executeQuery({query, values}).then(queryResponse => {
-            return queryResponse.rows
-        });
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+    }
+
+    static getRoles() {
+        const query = `
+            SELECT *
+            FROM role;
+        `
+
+        return PostgreSQLAdapter.executeQuery(query);
     }
 }
