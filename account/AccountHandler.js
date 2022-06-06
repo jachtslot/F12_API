@@ -1,7 +1,15 @@
 const AccountController = require('./AccountController');
+const Account = require('./Account');
 
 module.exports.createAccount = async event => {
-    return await AccountController.createAccount(event).then((account) => {
+    const responseBody = JSON.parse(event.body);
+    let account = new Account(
+        responseBody.email_address,
+        responseBody.hashed_password,
+        responseBody.username
+    );
+
+    return await AccountController.createAccount(account).then((account) => {
         const response =  {
             'id': account.id,
             'username': account.username,
