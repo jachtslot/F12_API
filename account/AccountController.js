@@ -7,7 +7,6 @@ module.exports = class AccountController {
 
     static async createAccount(event) {
         let responseBody = JSON.parse(event.body);
-
         const account = new Account(
             responseBody.username,
             responseBody.email_address,
@@ -16,7 +15,9 @@ module.exports = class AccountController {
 
         return await AccountDAO.createAccount(account)
             .then(() => {
-                sendRegistrationMail(account.emailAddress, account.hashedPassword)
+                sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
+                    throw new Error(error.message);
+                })
                 return account;
             })
 
