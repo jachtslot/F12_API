@@ -286,8 +286,9 @@ Make a new `Role` resource.
 
 ___
 #### Request
-> POST /role
 ___
+> POST /role
+
 
 ___
 #### Responses
