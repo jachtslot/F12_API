@@ -7,7 +7,7 @@ jspm_packages
 
 /node_modules/
 /package-lock.json
-/.idea
+/.idea/
 /logs/
 
 /.env
