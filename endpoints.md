@@ -1,17 +1,18 @@
 # Endpoints of the API
 ___
-You can use this file to discover the endpoints available for the `F12_API` API.
+This file documents all the endpoints available for the `F12_API` API.
 
 #### Quick Navigation:
 ___
 
-
 ##### Account
-- [Get Account](#get-account)  
+- [Get Account](#get-account)
+- [Get All Accounts](#get-all-accounts)
 - [Create Account](#create-account)
 
 ##### Role
 - [Get All Roles](#get-all-roles)
+- [Create Role](#create-role)
 
 ___
 
@@ -38,11 +39,13 @@ ___
 ##### 201 Created
 ```json
 {
+  "id": "d3ae3a16-09bb-4cac-9c83-487bc8846b4c",
   "username": "example_user_name",
   "email_address": "example.email@gmail.com"
 }
 ```
-
+- **id** uuid  
+The unique id of the account.
 - **username** string  
 The username of the user.
 - **email_address** string  
@@ -69,6 +72,52 @@ ___
 ```bash
 curl --request GET \
   --url https://api/accounts/60ef2e74-1edc-42f4-9a96-83a72d9aa225 \
+  --header 'Authorization: ' \
+  --header 'Content-Type: application/json'
+```
+
+### Get All Accounts
+Get all the accounts stored by the back-end.
+___
+#### Request
+___
+
+> GET /account
+
+___
+#### Responses
+___
+
+##### 200 OK
+```json
+[
+  {
+    "id": "d3ae3a16-09bb-4cac-9c83-487bc8846b4c",
+    "username": "example_username",
+    "email_address": "example.email@gmail.com"
+  },
+  {
+    "id": "ecd2d4aa-d100-4c94-9eb1-b35121006476",
+    "username": "example_username",
+    "email_address": "example.email@gmail.com"
+  }
+]
+```
+- **id** uuid  
+  The unique id of the account.
+- **username** string  
+  The username of the user.
+- **email_address** string  
+  The e-mail address used to send first-time information to.
+
+---
+
+#### Example request
+___
+
+```bash
+curl --request GET \
+  --url https://api/account \
   --header 'Authorization: ' \
   --header 'Content-Type: application/json'
 ```
@@ -237,15 +286,16 @@ Make a new `Role` resource.
 
 ___
 #### Request
-> POST /role
 ___
+> POST /role
+
 
 ___
 #### Responses
 ___
 ##### 201 Created
 
-```json
+```text
 The Role {name} is created
 ```
 
