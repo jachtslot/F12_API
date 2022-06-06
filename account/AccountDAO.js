@@ -29,4 +29,13 @@ module.exports = class AccountDAO {
 
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
+
+    static async getAllAccounts() {
+        const query = `
+            SELECT *
+            FROM account;
+        `
+
+        return PostgreSQLAdapter.executeQuery(query);
+    }
 }
