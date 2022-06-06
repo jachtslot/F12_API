@@ -7,7 +7,7 @@ const setUp = async () => {
     await PostgreSQLAdapter.clearAllTables();
 };
 
-describe('basic test', () => {
+describe('testing the createRole method of the RoleController()', () => {
 
     it('overwrites the databaseCredentials host', async () => {
         await setUp();
@@ -27,6 +27,22 @@ describe('basic test', () => {
 
         await expectAsync(
             RoleController.createRole('tuinman')
+        ).toBeRejected();
+    });
+
+    it('Denies if name length is smaller than 1', async () => {
+       await setUp();
+
+        await expectAsync(
+            RoleController.createRole('')
+        ).toBeRejected();
+    });
+
+    it('Denies if name is null', async () => {
+        await setUp();
+
+        await expectAsync(
+            RoleController.createRole(null)
         ).toBeRejected();
     });
 });
