@@ -4,7 +4,6 @@ module.exports = class AuthenticationHelper {
 
     static parseBody(event) {
         let body = JSON.parse(event.body);
-
         const email = body.email_address;
         const password = body.hashed_password;
         return {email, password};
@@ -12,10 +11,10 @@ module.exports = class AuthenticationHelper {
 
 
     static createUserFromData(data) {
-        if (!data.rows[0]) {
+        if (!data.length > 0) {
             throw new Error("No account connected to that emailaddress", 401)
         } else {
-            data = data.rows[0];
+            data = data[0];
             return new Account(
                 data.id,
                 data.username,
