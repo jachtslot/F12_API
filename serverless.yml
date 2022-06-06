@@ -52,3 +52,10 @@ functions:
       - http:
           path: /gates/2
           method: get
+
+  createRole:
+    handler: role/RoleHandler.createRole
+    events:
+      - http:
+          path: /role
+          method: post
