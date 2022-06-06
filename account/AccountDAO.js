@@ -13,7 +13,6 @@ module.exports = class AccountDAO {
             account.emailAddress,
             account.hashedPassword
         ];
-
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
