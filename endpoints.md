@@ -5,8 +5,13 @@ You can use this file to discover the endpoints available for the `F12_API` API.
 #### Quick Navigation:
 ___
 
-[Get Account](#get-account)  
-[Create Account](#create-account)
+
+##### Account
+- [Get Account](#get-account)  
+- [Create Account](#create-account)
+
+##### Role
+- [Get All Roles](#get-all-roles)
 
 ___
 
@@ -30,7 +35,7 @@ ___
 #### Responses
 ___
 
-##### 200 OK
+##### 201 Created
 ```json
 {
   "username": "example_user_name",
@@ -73,13 +78,156 @@ curl --request GET \
 Make a new `Account` resource.
 
 ___
+#### Request
+___
+
+___
+#### Responses
+___
+
+___
+#### Example Request
+___
+
+## Role
+
+### Get All Roles
+
+Get all the `Role`s existing from the API.
+
+___
 Request
+> GET /role
 ___
 
 ___
 Responses
-___
+
+##### 201 Created
+
+```json
+[
+  {
+    "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+    "name": "Tuinman",
+    "accounts": [
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "tomas",
+        "email_address": "email"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "finn",
+        "email_address": "email"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "bali",
+        "email_address": "email"
+      }
+    ],
+    "permissions": [
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "gates": [
+          0,
+          1
+        ],
+        "day": 3,
+        "begin_time": "14:30",
+        "end_time": "16:30"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "gates": [
+          0
+        ],
+        "day": 3,
+        "begin_time": "18:30",
+        "end_time": "23:30"
+      }
+    ]
+  },
+  {
+    "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+    "name": "Schoonmaker",
+    "accounts": [
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "naam",
+        "email_address": "email"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "naam",
+        "email_address": "email"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "username": "naam",
+        "email_address": "email"
+      }
+    ],
+    "permissions": [
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "gates": [
+          0,
+          1
+        ],
+        "day": 3,
+        "begin_time": "14:30",
+        "end_time": "16:30"
+      },
+      {
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",
+        "gates": [
+          0
+        ],
+        "day": 3,
+        "begin_time": "18:30",
+        "end_time": "23:30"
+      }
+    ]
+  }
+]
+```
+
+- **id** uuid  
+  The id of a specific `Role`
+- **name** string  
+  The name of the `Role`  
+- **accounts** list  
+  The list with all the `Account`s that belong to that specific `Role`
+  - **id** uuid  
+    The id of the `Account`
+  - **username** string  
+    The username of the `Account`  
+  - **email_address** string  
+    The e-mail address used to send first-time information to.
+- **permissions** list  
+  All the `Permission`s that a `Role` has
+  - **id** uuid  
+    The unique id of the permission
+  - **gates** list
+    A list of gates that can be opened with this specific `Permission`
+  - **day** number  
+    Index of the current day (0=monday, 1=tuesday ... 5=saturday, 6=sunday)
+  - **begin_time** string  
+    The time on the `day` defining how late the permission *starts* in format 'HH:MM' (H=hours, M=minutes)
+  - **end_time** string  
+    The time on the `day` defining how late the permission *ends* in format 'HH:MM' (H=hours, M=minutes)
 
 ___
-Example Request
+#### Example Request
+___
+
+
+```bash
+curl --request GET \
+  --url https://api/role \
+  --header 'Authorization: ' \
+  --header 'Content-Type: application/json'
+```
 ___
