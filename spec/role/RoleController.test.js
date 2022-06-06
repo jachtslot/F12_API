@@ -1,6 +1,6 @@
-const databaseCredentials = require('../../../util/DatabaseCredentials').CREDENTIALS;
-const RoleController = require('../../../role/RoleController');
-const PostgreSQLAdapter = require('../../../util/PostgreSQLAdapter');
+const databaseCredentials = require('../../util/DatabaseCredentials').CREDENTIALS;
+const RoleController = require('../../role/RoleController');
+const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
 
 const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
