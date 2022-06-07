@@ -49,6 +49,11 @@ describe('testing the createRole method of the RoleController()', () => {
 
 describe('testing the deleteRole method of the RoleController()', () => {
 
+    it('overwrites the databaseCredentials host', async () => {
+        await setUp();
+        expect(databaseCredentials.host).toBe(process.env.POSTGRES_HOST_TEST_ADDRESS);
+    });
+
     it('Deletes a record in the Role table', async () => {
         await setUp();
         await RoleController.createRole('tuinman');
