@@ -18,7 +18,7 @@ const getTestAccount = () => {
     )
 }
 
-describe('testing the createAccount methods of the AccountController', () => {
+describe('testing the createAccount() method of the AccountController', () => {
 
     it('overwrites the databaseCredentials host', async () => {
         await setUp();
@@ -40,6 +40,4 @@ describe('testing the createAccount methods of the AccountController', () => {
         await AccountController.createAccount(testAccount);
         await expectAsync(AccountController.createAccount(testAccount)).toBeRejected();
     })
-
-
 })
