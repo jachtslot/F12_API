@@ -2,6 +2,7 @@ const AccountDAO = require('./AccountDAO');
 const sendRegistrationMail = require('../util/EmailHelper');
 
 
+
 module.exports = class AccountController {
 
     static async createAccount(account) {
@@ -21,10 +22,9 @@ module.exports = class AccountController {
 
     static async getAllAccounts() {
         return AccountDAO.getAllAccounts().then(accounts => {
-            accounts.rows.forEach(account => {
+            accounts.forEach(account => {
                 delete account.hashed_password
             });
-
             return accounts;
         });
     }

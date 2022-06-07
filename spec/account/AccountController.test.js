@@ -3,19 +3,22 @@ const AccountController = require('../../account/AccountController');
 const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
 const Account = require('../../account/Account')
 
+
 const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
     await PostgreSQLAdapter.clearAllTables();
 };
+
 const getTestAccount = () => {
     return new Account(
-        'testUsername',
+        null,
+        'dave',
         's1127893@student.hsleiden.nl',
-        'testPassword'
+        'Password'
     )
 }
 
-describe('testing the createAccount() method from the AccountController', () => {
+describe('testing the createAccount() method of the AccountController', () => {
 
     it('overwrites the databaseCredentials host', async () => {
         await setUp();
