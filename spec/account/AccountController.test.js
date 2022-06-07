@@ -6,6 +6,7 @@ const Account = require('../../account/Account')
 
 const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
+    process.env.EMAIL_SENDER = '';
     await PostgreSQLAdapter.clearAllTables();
 };
 
