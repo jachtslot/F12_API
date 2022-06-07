@@ -38,4 +38,18 @@ module.exports = class RoleDAO {
 
         return PostgreSQLAdapter.executeQuery(query);
     }
+
+    static deleteRole(roleId) {
+        const query = `
+            DELETE 
+            FROM role
+            WHERE id = $1;
+        `;
+
+        const values = [
+            roleId
+        ];
+
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+    }
 }
