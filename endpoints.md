@@ -9,11 +9,13 @@ This file documents all the endpoints available for the `F12_API` API.
 ___
 
 ##### Account
+
 - [Get Account](#get-account)
 - [Get All Accounts](#get-all-accounts)
 - [Create Account](#create-account)
 
 ##### Role
+
 - [Get All Roles](#get-all-roles)
 - [Create Role](#create-role)
 
