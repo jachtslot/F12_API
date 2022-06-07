@@ -8,16 +8,15 @@ const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
     await PostgreSQLAdapter.clearAllTables();
 };
-
 const getTestAccount = () => {
     return new Account(
-        'test',
+        'testUsername',
         's1127893@student.hsleiden.nl',
-        'kajsduowahdoi'
+        'testPassword'
     )
 }
 
-describe('testing the createAccount methods of the AccountController', () => {
+describe('testing the createAccount() method from the AccountController', () => {
 
     it('overwrites the databaseCredentials host', async () => {
         await setUp();

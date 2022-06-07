@@ -1,0 +1,45 @@
+name: Unit Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+      - dev
+      
+env:
+  POSTGRES_HOST_ADDRESS: ${{secrets.POSTGRES_HOST_ADDRESS}}
+  POSTGRES_HOST_TEST_ADDRESS: ${{secrets.POSTGRES_HOST_TEST_ADDRESS}}
+  POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+  POSTGRES_DATABASE: ${{secrets.POSTGRES_DATABASE}}
+  POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+  POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
+  
+  CLOUDWATCH_GROUP_NAME: ${{secrets.CLOUDWATCH_GROUP_NAME}}
+  CLOUDWATCH_STREAM_NAME: ${{secrets.CLOUDWATCH_STREAM_NAME}}
+  CLOUDWATCH_ACCESS_KEY: ${{secrets.CLOUDWATCH_ACCESS_KEY}}
+  CLOUDWATCH_SECRET_ACCESS_KEY: ${{secrets.CLOUDWATCH_SECRET_ACCESS_KEY}}
+  CLOUDWATCH_REGION: ${{secrets.CLOUDWATCH_REGION}}
+  
+  INNER_GATE_URL_SANDBOX: ${{secrets.INNER_GATE_URL_SANDBOX}}
+  
+  TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
+  TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+  TWILIO_NUMBER_TO: ${{secrets.TWILIO_NUMBER_TO}}
+  TWILIO_NUMBER_FROM: ${{secrets.TWILIO_NUMBER_FROM}}
+  
+  EMAIL_SENDER: ${{secrets.EMAIL_SENDER}}
+  SES_ACCESS_KEY: ${{secrets.SES_ACCESS_KEY}}
+  SES_SECRET: ${{secrets.SES_SECRET}}
+  JWT_SECRET: ${{secrets.JWT_SECRET}}
+
+jobs:
+  test_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm test
