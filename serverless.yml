@@ -1,4 +1,4 @@
-org: ramonk01
+org: thimovanvelzen
 app: f12-api-service
 service: f12-api-service
 
@@ -65,3 +65,10 @@ functions:
       - http:
           path: /role
           method: post
+
+  deleteRole:
+    handler: role/RoleHandler.deleteRole
+    events:
+      - http:
+          path: /role/{id}
+          method: delete

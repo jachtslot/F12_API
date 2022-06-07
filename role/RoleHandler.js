@@ -16,3 +16,19 @@ module.exports.createRole = async event => {
         }
     });
 }
+
+module.exports.deleteRole = async event => {
+    let id = event.pathParameters.id;
+
+    return await RoleController.deleteRole(id).then(() => {
+        return {
+            statusCode: 200,
+            body: `The role is deleted!`
+        }
+    }).catch(error => {
+        return {
+            statusCode: 500,
+            body: error.message
+        }
+    });
+}
