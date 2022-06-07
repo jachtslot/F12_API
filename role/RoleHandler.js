@@ -7,6 +7,11 @@ module.exports.createRole = async event => {
     return await RoleController.createRole(roleName).then(() => {
        return {
            statusCode: 201,
+           headers: {
+               "Access-Control-Allow-Headers": "Content-Type",
+               "Access-Control-Allow-Origin": "http://localhost:4200",
+               "Access-Control-Allow-Methods": "OPTIONS,POST"
+           },
            body: `The role ${roleName} is created!`
        }
     }).catch(error => {
@@ -23,6 +28,11 @@ module.exports.deleteRole = async event => {
     return await RoleController.deleteRole(id).then(() => {
         return {
             statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Origin": "http://localhost:4200",
+                "Access-Control-Allow-Methods": "OPTIONS,DELETE"
+            },
             body: `The role is deleted!`
         }
     }).catch(error => {
