@@ -1,5 +1,4 @@
 const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
-const { v4: uuidv4 } = require('uuid');
 
 module.exports = class AccountDAO {
 
@@ -9,12 +8,11 @@ module.exports = class AccountDAO {
             VALUES ($1, $2, $3, $4);
         `;
         const values = [
-            uuidv4(),
+            account.id,
             account.username,
             account.emailAddress,
             account.hashedPassword
         ];
-
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 

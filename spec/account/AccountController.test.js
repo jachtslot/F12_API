@@ -1,12 +1,19 @@
 const databaseCredentials = require('../../util/DatabaseCredentials').CREDENTIALS;
 const AccountController = require('../../account/AccountController');
 const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
-const RoleController = require('../../role/RoleController');
+const Account = require('../../account/Account')
 
 const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
     await PostgreSQLAdapter.clearAllTables();
 };
+const getTestAccount = () => {
+    return new Account(
+        'testUsername',
+        's1127893@student.hsleiden.nl',
+        'testPassword'
+    )
+}
 
 describe('testing the createAccount() method from the AccountController', () => {
 
@@ -15,10 +22,19 @@ describe('testing the createAccount() method from the AccountController', () => 
         expect(databaseCredentials.host).toBe(process.env.POSTGRES_HOST_TEST_ADDRESS);
     });
 
-    it('Inserts a record in the Role table', async () => {
+    it('should create an account successfully', async () => {
         await setUp();
-        await RoleController.createRole('tuinman');
-        let roleRecords = await RoleController.getAllRoles();
-        expect(roleRecords.length).toBe(1);
-    });
-});
+        const account = getTestAccount();
+
+        let accountRecords = await AccountController.createAccount(account);
+        expect(accountRecords.id.length > 0).toBeTrue();
+
+    })
+
+    it('should throw an error when email already exists', async () => {
+        await setUp();
+        let testAccount = getTestAccount();
+        await AccountController.createAccount(testAccount);
+        await expectAsync(AccountController.createAccount(testAccount)).toBeRejected();
+    })
+})
