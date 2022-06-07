@@ -1,11 +1,15 @@
 const AccountDAO = require('./AccountDAO');
 const sendRegistrationMail = require('../util/EmailHelper');
-
+const bcrypt = require('bcryptjs');
 
 
 module.exports = class AccountController {
 
     static async createAccount(account) {
+        await bcrypt.hash(account.hashedPassword, 12).then(hashedPw => {
+            account.hashedPassword = hashedPw;
+            return account;
+        });
         return await AccountDAO.createAccount(account)
             .then(() => {
                 sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
@@ -13,7 +17,6 @@ module.exports = class AccountController {
                 })
                 return account;
             })
-
     }
 
     static async deleteAccount(emailAddress) {
