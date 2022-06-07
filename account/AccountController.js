@@ -12,6 +12,9 @@ module.exports = class AccountController {
         });
         return await AccountDAO.createAccount(account)
             .then(() => {
+                if (process.env.EMAIL_SENDER === '') {
+                    return account;
+                }
                 sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
                     throw new Error(error.message);
                 })
