@@ -19,7 +19,6 @@ const getTestAccount = () => {
     )
 }
 
-
 describe('testing the login() method of the AuthenticationController', () => {
 
     it('should return an object with user and access_token on successful login', async () => {
@@ -43,20 +42,15 @@ describe('testing the login() method of the AuthenticationController', () => {
                 }
             )
         ).toBeRejected();
-
-
     });
 
     it('should throw error when given non-existing emailaddress', async () => {
         await setUp();
         await expectAsync(AuthenticationController.login(
-                {
-                    email: 'NonExistingEmail@hotmail.com',
-                    password: getTestAccount().hashedPassword
-                }
-            )
-        ).toBeRejected();
-
-
+            {
+                email: 'NonExistingEmail@hotmail.com',
+                password: getTestAccount().hashedPassword
+            }
+        )).toBeRejected();
     });
 });
