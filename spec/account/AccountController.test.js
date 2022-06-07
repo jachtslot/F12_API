@@ -37,5 +37,4 @@ describe('testing the createAccount() method from the AccountController', () => 
         await AccountController.createAccount(testAccount);
         await expectAsync(AccountController.createAccount(testAccount)).toBeRejected();
     })
-
 })
