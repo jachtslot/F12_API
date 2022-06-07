@@ -1,13 +1,10 @@
-const {CREDENTIALS: databaseCredentials} = require('../../util/DatabaseCredentials');
-const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
 const AccountController = require('../../account/AccountController');
 const AuthenticationController = require('../../authentication/AuthenticationController')
 const Account = require('../../account/Account');
+const BeforeEach = require('../support/BeforeEach');
 
-const setUp = async () => {
-    databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
-    process.env.EMAIL_SENDER = '';
-    await PostgreSQLAdapter.clearAllTables();
+const beforeEach = async () => {
+    await BeforeEach.run();
     await AccountController.createAccount(getTestAccount());
 }
 
@@ -23,7 +20,7 @@ const getTestAccount = () => {
 describe('testing the login() method of the AuthenticationController', () => {
 
     it('should return an object with user and access_token on successful login', async () => {
-        await setUp()
+        await beforeEach()
         const result = await AuthenticationController.login(
             {
                 email: getTestAccount().emailAddress,
@@ -35,7 +32,7 @@ describe('testing the login() method of the AuthenticationController', () => {
     });
 
     it('should throw error when given incorrect password', async () => {
-        await setUp();
+        await beforeEach();
         await expectAsync(AuthenticationController.login(
             {
                 email: getTestAccount().emailAddress,
@@ -45,7 +42,7 @@ describe('testing the login() method of the AuthenticationController', () => {
     });
 
     it('should throw error when given non-existing emailaddress', async () => {
-        await setUp();
+        await beforeEach();
         await expectAsync(AuthenticationController.login(
             {
                 email: 'NonExistingEmail@hotmail.com',
