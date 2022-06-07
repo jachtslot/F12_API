@@ -72,3 +72,10 @@ functions:
       - http:
           path: /role/{id}
           method: delete
+
+  addAccountToRole:
+    handler: role/RoleHandler.addAccountToRole
+    events:
+      - http:
+          path: /role/addAccount
+          method: post
