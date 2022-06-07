@@ -52,4 +52,18 @@ module.exports = class RoleDAO {
 
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
+
+    static addAccount(roleId, accountId) {
+        const query = `
+            INSERT INTO account_role (account_id, role_id)
+            VALUES ($1, $2);
+        `;
+
+        const values = [
+            accountId,
+            roleId
+        ];
+
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+    }
 }
