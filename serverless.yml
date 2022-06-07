@@ -1,0 +1,67 @@
+org: ramonk01
+app: f12-api-service
+service: f12-api-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: eu-west-1
+
+functions:
+  getAllAccounts:
+    handler: account/AccountHandler.getAllAccounts
+    events:
+      - http:
+          path: /account
+          method: get
+
+  getAccount:
+    handler: account/AccountHandler.getAccount
+    events:
+      - http:
+          path: /account/{id}
+          method: get
+
+  createAccount:
+    handler: account/AccountHandler.createAccount
+    events:
+      - http:
+          path: /account
+          method: post
+  login:
+    handler: authentication/AuthenticationHandler.login
+    events:
+      - http:
+          path: /auth/login
+          method: post
+
+  deleteAccount:
+    handler: account/AccountHandler.deleteAccount
+    events:
+      - http:
+          path: /account
+          method: delete
+
+  openInnerGate:
+    handler: gate/GateHandler.openInnerGate
+    events:
+      - http:
+          path: /gates/1
+          method: get
+
+  openOuterGate:
+    handler: gate/GateHandler.openOuterGate
+    events:
+      - http:
+          path: /gates/2
+          method: get
+
+  createRole:
+    handler: role/RoleHandler.createRole
+    events:
+      - http:
+          path: /role
+          method: post
