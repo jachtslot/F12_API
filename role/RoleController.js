@@ -9,12 +9,4 @@ module.exports = class RoleController {
     static getAllRoles() {
         return RoleDAO.getRoles();
     }
-
-    static deleteRole(roleId) {
-        return RoleDAO.deleteRole(roleId);
-    }
-
-    static getRole(roleName) {
-        return RoleDAO.getRole(roleName);
-    }
 }
