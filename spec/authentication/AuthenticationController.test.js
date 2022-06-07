@@ -36,12 +36,11 @@ describe('testing the login() method of the AuthenticationController', () => {
     it('should throw error when given incorrect password', async () => {
         await setUp();
         await expectAsync(AuthenticationController.login(
-                {
-                    email: getTestAccount().emailAddress,
-                    password: 'incorrectPassword'
-                }
-            )
-        ).toBeRejected();
+            {
+                email: getTestAccount().emailAddress,
+                password: 'incorrectPassword'
+            }
+        )).toBeRejected();
     });
 
     it('should throw error when given non-existing emailaddress', async () => {
