@@ -133,9 +133,9 @@ ___
 
 ``` json
 {
-	'email_address' : 'validEmail@hotmail.com',
-	'hashed_password' : 'SomePassword1234',
-	'username' : 'someUsername'
+	"email_address" : "validEmail@hotmail.com",
+	"hashed_password" : "SomePassword1234",
+	"username" : "someUsername"
 }
 ```
 - **email_address** string,
@@ -166,7 +166,7 @@ Succesfull call
 Email already in use
 ```json 
 {
-	' duplicate key value violates unique constraint "unique_email" '
+	"duplicate key value violates unique constraint "unique_email" "
 }
 ```
 ___
