@@ -3,7 +3,6 @@ const AccountController = require('../../account/AccountController');
 const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
 const Account = require('../../account/Account')
 
-
 const setUp = async () => {
     databaseCredentials.host = process.env.POSTGRES_HOST_TEST_ADDRESS;
     await PostgreSQLAdapter.clearAllTables();
@@ -38,6 +37,5 @@ describe('testing the createAccount() method from the AccountController', () => 
         await AccountController.createAccount(testAccount);
         await expectAsync(AccountController.createAccount(testAccount)).toBeRejected();
     })
-
 
 })
