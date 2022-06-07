@@ -1,18 +1,14 @@
 const AccountController = require('./AccountController');
 const Account = require('./Account');
-const bcrypt = require('bcryptjs');
 
 module.exports.createAccount = async event => {
     const responseBody = JSON.parse(event.body);
-
     const username = responseBody.username;
     const email = responseBody.email_address;
     const password = responseBody.hashed_password;
+    const unhashedAccount = new Account(null, username, email, password);
 
-    const hashedAccount = await bcrypt.hash(password, 12).then(hashedPw => {
-        return new Account(null, username, email, hashedPw);
-    });
-    return await AccountController.createAccount(hashedAccount).then((account) => {
+    return await AccountController.createAccount(unhashedAccount).then((account) => {
 
         return {
             statusCode: 201,
@@ -52,7 +48,7 @@ module.exports.deleteAccount = async event => {
     });
 }
 
-module.exports.getAllAccounts = async event => {
+module.exports.getAllAccounts = async () => {
     return await AccountController.getAllAccounts().then(account => {
         return {
             statusCode: 200,
