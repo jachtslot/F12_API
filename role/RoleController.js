@@ -17,4 +17,8 @@ module.exports = class RoleController {
     static getRole(roleName) {
         return RoleDAO.getRole(roleName);
     }
+
+    static addAccountToRole(roleId, accountId) {
+        return RoleDAO.addAccount(roleId, accountId);
+    }
 }
