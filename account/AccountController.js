@@ -12,7 +12,6 @@ module.exports = class AccountController {
         });
         return await AccountDAO.createAccount(account)
             .then(() => {
-                console.log(account)
                 sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
                     throw new Error(error.message);
                 })
