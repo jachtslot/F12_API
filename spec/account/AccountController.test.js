@@ -11,9 +11,10 @@ const setUp = async () => {
 
 const getTestAccount = () => {
     return new Account(
-        'test',
+        null,
+        'dave',
         's1127893@student.hsleiden.nl',
-        'kajsduowahdoi'
+        'Password'
     )
 }
 
