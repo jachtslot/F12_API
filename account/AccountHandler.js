@@ -1,20 +1,18 @@
 const AccountController = require('./AccountController');
 const Account = require('./Account');
+const bcrypt = require('bcryptjs');
 
 module.exports.createAccount = async event => {
     const responseBody = JSON.parse(event.body);
-    let account = new Account(
-        responseBody.email_address,
-        responseBody.hashed_password,
-        responseBody.username
-    );
 
-    return await AccountController.createAccount(account).then((account) => {
-        const response =  {
-            'id': account.id,
-            'username': account.username,
-            'email_address': account.emailAddress
-        };
+    const username = responseBody.username;
+    const email = responseBody.email_address;
+    const password = responseBody.hashed_password;
+
+    const hashedAccount = await bcrypt.hash(password, 12).then(hashedPw => {
+        return new Account(null, username, email, hashedPw);
+    });
+    return await AccountController.createAccount(hashedAccount).then((account) => {
 
         return {
             statusCode: 201,
@@ -23,7 +21,11 @@ module.exports.createAccount = async event => {
                 "Access-Control-Allow-Origin": "http://localhost:4200",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
-            body: JSON.stringify(response)
+            body: JSON.stringify({
+                'id': account.id,
+                'username': account.username,
+                'email_address': account.emailAddress
+            })
         }
     }).catch(error => {
         return {
@@ -38,10 +40,10 @@ module.exports.deleteAccount = async event => {
     let emailAddress = responseBody.email_address;
 
     return await AccountController.deleteAccount(emailAddress).then(() => {
-       return {
-           statusCode: 200,
-           body: `Account with email address ${emailAddress} is deleted!`
-       };
+        return {
+            statusCode: 200,
+            body: `Account with email address ${emailAddress} is deleted!`
+        };
     }).catch(error => {
         return {
             statusCode: 500,
@@ -52,10 +54,14 @@ module.exports.deleteAccount = async event => {
 
 module.exports.getAllAccounts = async event => {
     return await AccountController.getAllAccounts().then(account => {
-
         return {
             statusCode: 200,
-            body: JSON.stringify(account.rows)
+            headers: {
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Origin": "http://localhost:4200",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
+            body: JSON.stringify(account)
         };
     });
 }
