@@ -1,8 +1,11 @@
 # Endpoints of the API
+
 ___
+
 This file documents all the endpoints available for the `F12_API` API.
 
 #### Quick Navigation:
+
 ___
 
 ##### Account
@@ -17,26 +20,36 @@ ___
 ___
 
 ## Account
+
 An `Account` is a representation of a normal `User` of the Mobile Application. An `Account` can be
 part of 0 to many `Role`s.
 
 ### Get Account
+
 Get a `Account` of a specific user by id.
-___
-#### Request
+
 ___
 
-> GET /account/{id}
+#### Request
+
+___
+
+```txt
+GET /account/{id}
+```
 
 - **id** uuid  
 The `id` of the account.  
 Example value: "60ef2e74-1edc-42f4-9a96-83a72d9aa225"
 
 ___
+
 #### Responses
+
 ___
 
 ##### 201 Created
+
 ```json
 {
   "id": "d3ae3a16-09bb-4cac-9c83-487bc8846b4c",
@@ -44,6 +57,7 @@ ___
   "email_address": "example.email@gmail.com"
 }
 ```
+
 - **id** uuid  
 The unique id of the account.
 - **username** string  
@@ -52,6 +66,7 @@ The username of the user.
 The e-mail address used to send first-time information to.
 
 ---
+
 ##### 404 Resource Not Found
 
 Will return if the specified `id` was not found inside the database.
@@ -65,8 +80,8 @@ The `id` specified by the client.
 Example value: "60ef2e74-1edc-42f4-9a96-83a72d9aa225"
 ___
 
-
 #### Example request
+
 ___
 
 ```bash
@@ -77,18 +92,27 @@ curl --request GET \
 ```
 
 ### Get All Accounts
+
 Get all the accounts stored by the back-end.
+
 ___
+
 #### Request
-___
-
-> GET /account
 
 ___
+
+```text
+GET /account
+```
+
+___
+
 #### Responses
+
 ___
 
 ##### 200 OK
+
 ```json
 [
   {
@@ -113,6 +137,7 @@ ___
 ---
 
 #### Example request
+
 ___
 
 ```bash
@@ -127,15 +152,21 @@ curl --request GET \
 Make a new `Account` resource.
 
 ___
+
 #### Request
+
 ___
 
 ___
+
 #### Responses
+
 ___
 
 ___
+
 #### Example Request
+
 ___
 
 ## Role
@@ -145,8 +176,13 @@ ___
 Get all the `Role`s existing from the API.
 
 ___
-Request
-> GET /role
+
+#### Request
+
+```text
+GET /role
+```
+
 ___
 
 ___
@@ -269,7 +305,9 @@ Responses
     The time on the `day` defining how late the permission *ends* in format 'HH:MM' (H=hours, M=minutes)
 
 ___
+
 #### Example Request
+
 ___
 
 ```bash
@@ -285,14 +323,21 @@ ___
 Make a new `Role` resource.
 
 ___
+
 #### Request
-___
-> POST /role
-
 
 ___
+
+```text
+POST /role
+```
+
+___
+
 #### Responses
+
 ___
+
 ##### 201 Created
 
 ```text
@@ -302,7 +347,9 @@ The Role {name} is created
 - **name**  
   The name of the role given
 ___
+
 #### Example Request
+
 ___
 
 ```bash
