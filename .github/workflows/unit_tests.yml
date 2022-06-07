@@ -2,6 +2,10 @@ name: Unit Tests
 
 on:
   workflow_dispatch:
+
+  pull_request_target:
+    types: synchronize
+  
   pull_request:
     branches:
       - master
