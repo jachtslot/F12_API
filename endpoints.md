@@ -124,18 +124,51 @@ curl --request GET \
 
 ### Create Account
 
-Make a new `Account` resource.
+Make a new `Account` resource. After creating the account, the emailaddress will receive an email through AWS containing it's credentials
 
 ___
 #### Request
+>POST  /account
+#### body
+
+``` json
+{
+	'email_address' : 'validEmail@hotmail.com',
+	'hashed_password' : 'SomePassword1234',
+	'username' : 'someUsername'
+}
+```
+- **email_address** string,
+  `email_address`
+  - Used to send credential mail to user
+  - must be unique
+- **hashed_password** string,
+  - not actually hashed (might be changed in the future)
+- **username** string,
+  - displayed in web portal
 ___
 
 ___
-#### Responses
+Responses
 ___
+#### 201 Created
+Succesfull call
+```json 
+{
+	"id": "e1cd5aa8-1427-4514-94f3-1daeac640163",
 
-___
-#### Example Request
+	"username": "test123",
+
+	"email_address": "s112783887y933"
+}
+```
+#### 500 Internal Server Error
+Email already in use
+```json 
+{
+	' duplicate key value violates unique constraint "unique_email" '
+}
+```
 ___
 
 ## Role
