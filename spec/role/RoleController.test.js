@@ -122,6 +122,55 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         expect(roleWithAccount.accounts.length).toBe(2);
     });
 
+    it('handles complex situation successfully', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let roleId2 = await insertRole('tuinman2');
+        let roleId3 = await insertRole('tuinman3');
+        await insertRole('tuinman4');
+
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
+        let accountId3 = await insertAccount();
+        let accountId4 = await insertAccount();
+
+        await RoleController.addAccountToRole(roleId2, accountId4);
+        await RoleController.addAccountToRole(roleId2, accountId2);
+        await RoleController.addAccountToRole(roleId1, accountId2);
+        await RoleController.addAccountToRole(roleId1, accountId4);
+        await RoleController.addAccountToRole(roleId1, accountId1);
+        await RoleController.addAccountToRole(roleId3, accountId2);
+        await RoleController.addAccountToRole(roleId1, accountId3);
+        await RoleController.addAccountToRole(roleId3, accountId4);
+
+        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+        let roleWithAccount2 = await RoleController.getRole('tuinman2');
+        let roleWithAccount3 = await RoleController.getRole('tuinman3');
+        let roleWithAccount4 = await RoleController.getRole('tuinman4');
+        let allRoles = await RoleController.getAllRoles();
+
+        expect(roleWithAccount1.accounts.length).toBe(4);
+        expect(roleWithAccount2.accounts.length).toBe(2);
+        expect(roleWithAccount3.accounts.length).toBe(2);
+        expect(roleWithAccount4.accounts.length).toBe(0);
+        expect(allRoles.length).toBe(4);
+    });
+
+    it('does ony add one time when adding account that already assigned to role', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+
+        await RoleController.addAccountToRole(roleId1, accountId1);
+        await expectAsync(RoleController.addAccountToRole(roleId1, accountId1)).toBeRejected();
+
+        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+    })
+
     it('crashes when id of account not found in database', async () => {
         await BeforeEach.run();
         let roleId = insertRole('tuinman');
