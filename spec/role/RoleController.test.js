@@ -173,7 +173,7 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
 
     it('crashes when id of account not found in database', async () => {
         await BeforeEach.run();
-        let roleId = insertRole('tuinman');
+        let roleId = await insertRole('tuinman');
         let accountId1 = uuidv4();
 
         await expectAsync(
