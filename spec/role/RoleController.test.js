@@ -1,4 +1,7 @@
+const Account = require('../../account/Account');
+const AccountController = require('../../account/AccountController');
 const RoleController = require('../../role/RoleController');
+const { log } = require('../../util/Logger');
 const BeforeEach = require('../support/BeforeEach');
 
 describe('testing the createRole method of the RoleController()', () => {
@@ -70,5 +73,30 @@ describe('testing the deleteRole method of the RoleController()', () => {
         let roleRecords = await RoleController.getAllRoles();
 
         expect(roleRecords.length).toBe(2);
+    });
+});
+
+describe('testing the addAccountToRole method of the RoleController()', () => {
+
+    it('adds a account to the role if existing', async () => {
+        await BeforeEach.run();
+        await RoleController.createRole('tuinman');
+        let role = await RoleController.getRole('tuinman');
+        console.log(role);
+        let roleId = role.id;
+
+        let newAccount = new Account(
+            null,
+            'example_user_name',
+            'example@gmail.com',
+            'example_hashed_password'
+        );
+
+        let createdAccount = await AccountController.createAccount(newAccount);
+        let accountId = createdAccount.id;
+
+
+        await RoleController.addAccountToRole(roleId, accountId);
+
     });
 });
