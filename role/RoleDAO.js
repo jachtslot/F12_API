@@ -22,16 +22,7 @@ module.exports = class RoleDAO {
             FROM ROLE r
             LEFT JOIN account_role ar ON r.id = ar.role_id
             LEFT JOIN account a on ar.account_id = a.id
-        `;
-
-        return PostgreSQLAdapter.executeQuery(query);
-    }
-
-    static getRolesWithoutAccount() {
-        const query = `
-            SELECT * FROM role WHERE role_id NOT IN (
-                SELECT role_id FROM account_role
-            );
+            ORDER BY role_id;
         `;
 
         return PostgreSQLAdapter.executeQuery(query);
