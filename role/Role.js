@@ -2,7 +2,7 @@ module.exports = class Role {
 
     constructor(id, name) {
         this.id = id
-        this.username = name;
+        this.name = name;
         this.accounts = [];
     }
 

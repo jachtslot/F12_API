@@ -45,7 +45,7 @@ describe('testing the deleteRole method of the RoleController()', () => {
         await BeforeEach.run();
         await RoleController.createRole('tuinman');
         let roles = await RoleController.getRole('tuinman');
-        let roleId = roles[0].id;
+        let roleId = roles.id;
 
         await RoleController.deleteRole(roleId);
         let roleRecords = await RoleController.getAllRoles();
@@ -67,7 +67,7 @@ describe('testing the deleteRole method of the RoleController()', () => {
         await RoleController.createRole('different');
         await RoleController.createRole('another');
         let roles = await RoleController.getRole('tuinman');
-        let roleId = roles[0].id;
+        let roleId = roles.id;
 
         await RoleController.deleteRole(roleId);
         let roleRecords = await RoleController.getAllRoles();
@@ -82,7 +82,6 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         await BeforeEach.run();
         await RoleController.createRole('tuinman');
         let role = await RoleController.getRole('tuinman');
-        console.log(role);
         let roleId = role.id;
 
         let newAccount = new Account(
