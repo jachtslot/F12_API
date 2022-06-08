@@ -16,25 +16,23 @@ module.exports = class RoleDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static getRole(roleName) {
-        const query = `
-            SELECT *
-            FROM role
-            WHERE name = $1;
-        `;
-
-        const values = [
-            roleName
-        ];
-
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
-    }
-
     static getRoles() {
         const query = `
-            SELECT *
-            FROM role;
-        `
+            SELECT r.name AS role_name, r.id AS role_id, a.id AS account_id, a.username, a.email_address 
+            FROM ROLE r
+            LEFT JOIN account_role ar ON r.id = ar.role_id
+            LEFT JOIN account a on ar.account_id = a.id
+        `;
+
+        return PostgreSQLAdapter.executeQuery(query);
+    }
+
+    static getRolesWithoutAccount() {
+        const query = `
+            SELECT * FROM role WHERE role_id NOT IN (
+                SELECT role_id FROM account_role
+            );
+        `;
 
         return PostgreSQLAdapter.executeQuery(query);
     }
