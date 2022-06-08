@@ -96,6 +96,41 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
 
 
         await RoleController.addAccountToRole(roleId, accountId);
+        let roleWithAccount = await RoleController.getRole('tuinman');
+        expect(roleWithAccount.accounts.length).toBe(1);
+    });
 
+    it('adds two accounts to the role if existing', async () => {
+        await BeforeEach.run();
+        await RoleController.createRole('tuinman');
+        let role = await RoleController.getRole('tuinman');
+        let roleId = role.id;
+
+        let newAccount = new Account(
+            null,
+            'example_user_name',
+            'example1@gmail.com',
+            'example_hashed_password'
+        );
+
+        let newAccount2 = new Account(
+            null,
+            'example_user_name',
+            'example@gmail.com',
+            'example_hashed_password'
+        )
+
+        let createdAccount = await AccountController.createAccount(newAccount);
+        let accountId = createdAccount.id;
+
+        let createdAccount2 = await AccountController.createAccount(newAccount2);
+        let accountId2 = createdAccount2.id;
+
+
+        await RoleController.addAccountToRole(roleId, accountId);
+        await RoleController.addAccountToRole(roleId, accountId2);
+        let roleWithAccount = await RoleController.getRole('tuinman');
+
+        expect(roleWithAccount.accounts.length).toBe(2);
     });
 });
