@@ -14,33 +14,43 @@ module.exports = class RoleController {
 
         for (const roleAccount of allRoles) {
 
-            let newRole = new Role(roleAccount.role_id, roleAccount.role_name);
+            let role = this.makeRoleFromDatabase(roleAccount);
 
-            if (createdRoles.length === 0) {
-                console.log("ifnioewfioenfnewifewiofnewoinfoewnfwe")
-                if (roleAccount.account_id !== null) {
-                    let account = new Account(roleAccount.account_id, roleAccount.username, roleAccount.email_address);
-                    newRole.addAccount(account);
-                }
-                createdRoles.push(newRole);
+            if (this.isFirstEntry(createdRoles) || this.isNewRole(role, createdRoles)) {
+                createdRoles.push(role);
             } else {
-                if (newRole.id === createdRoles[-1].id) {
-                    if (roleAccount.account_id !== null) {
-                        let account = new Account(roleAccount.account_id, roleAccount.username, roleAccount.email_address);
-                        createdRoles[-1].addAccount(account);
-                    }
-                } else {
-                    if (roleAccount.account_id !== null) {
-                        let account = new Account(roleAccount.account_id, roleAccount.username, roleAccount.email_address);
-                        newRole.addAccount(account);
-                    }
-                    createdRoles.push(newRole);
-                }
+                createdRoles.at(-1).addAccount(role.accounts[0]);
             }
         }
 
-        console.log(createdRoles);
         return createdRoles;
+    }
+
+    static makeRoleFromDatabase(roleAccount) {
+        let newRole = new Role(roleAccount.role_id, roleAccount.role_name);
+        let account = this.makeAccountFromDatabase(roleAccount);
+
+        if (account !== null) {
+            newRole.addAccount(account);
+        }
+
+        return newRole;
+    }
+
+    static makeAccountFromDatabase(roleAccount) {
+        if (roleAccount.account_id !== null) {
+            return new Account(roleAccount.account_id, roleAccount.username, roleAccount.email_address);
+        }
+
+        return null;
+    }
+
+    static isFirstEntry(createdRoles) {
+        return createdRoles.length === 0;
+    }
+
+    static isNewRole(role, createdRoles) {
+        return role.id !== createdRoles.at(-1).id;
     }
 
     static deleteRole(roleId) {
