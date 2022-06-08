@@ -6,10 +6,8 @@ const AuthenticationHelper = require('../util/AuthenticationHelper');
 
 module.exports = class AuthenticationController {
 
-    static async login(event) {
+    static async login(credentials) {
         let loadedAccount;
-        const credentials = AuthenticationHelper.parseBody(event);
-
         return await AuthenticationDAO.loginAccount(credentials)
             .then(data => {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
