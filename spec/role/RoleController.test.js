@@ -1,8 +1,23 @@
 const Account = require('../../account/Account');
 const AccountController = require('../../account/AccountController');
 const RoleController = require('../../role/RoleController');
-const { log } = require('../../util/Logger');
 const BeforeEach = require('../support/BeforeEach');
+
+const genRandomNumber = () => {
+    return Math.floor(Math.random().toPrecision(9) * 1_000_000_000);
+}
+
+const insertAccount = async () => {
+    let newAccount = new Account(
+        null,
+        'Username',
+        `${genRandomNumber()}example@gmail.com`,
+        'example_hashed_password'
+    );
+
+    let createdAccount = await AccountController.createAccount(newAccount);
+    return createdAccount.id;
+}
 
 describe('testing the createRole method of the RoleController()', () => {
 
@@ -106,31 +121,14 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let role = await RoleController.getRole('tuinman');
         let roleId = role.id;
 
-        let newAccount = new Account(
-            null,
-            'example_user_name',
-            'example1@gmail.com',
-            'example_hashed_password'
-        );
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
 
-        let newAccount2 = new Account(
-            null,
-            'example_user_name',
-            'example@gmail.com',
-            'example_hashed_password'
-        )
-
-        let createdAccount = await AccountController.createAccount(newAccount);
-        let accountId = createdAccount.id;
-
-        let createdAccount2 = await AccountController.createAccount(newAccount2);
-        let accountId2 = createdAccount2.id;
-
-
-        await RoleController.addAccountToRole(roleId, accountId);
+        await RoleController.addAccountToRole(roleId, accountId1);
         await RoleController.addAccountToRole(roleId, accountId2);
         let roleWithAccount = await RoleController.getRole('tuinman');
 
+        console.log(roleWithAccount);
         expect(roleWithAccount.accounts.length).toBe(2);
     });
 });
