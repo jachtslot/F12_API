@@ -13,7 +13,7 @@ module.exports.login = async event => {
             headers: {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                "Access-Control-Allow-Methods": "OPTIONS,POST"
             },
             body: JSON.stringify(
                 {
