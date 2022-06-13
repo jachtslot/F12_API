@@ -12,7 +12,7 @@ module.exports = class PermissionDAO {
                     start_time,
                     end_time
                     )
-                   VALUES($1,$2,$3,$4,$5,$6)`;
+                   VALUES($1, $2, $3, $4, $5, $6)`;
         const values = [
             permission.id,
             permission.role_id,
