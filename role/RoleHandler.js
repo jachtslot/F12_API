@@ -4,7 +4,7 @@ const Role = require('./Role');
 
 module.exports.createRole = async event => {
     const responseBody = JSON.parse(event.body);
-    const role = new Role(null, responseBody);
+    const role = new Role(null, responseBody.name);
 
     return await RoleController.createRole(role).then(() => {
        return {
@@ -14,7 +14,7 @@ module.exports.createRole = async event => {
                "Access-Control-Allow-Origin": "http://localhost:4200",
                "Access-Control-Allow-Methods": "OPTIONS,POST"
            },
-           body: role
+           body: JSON.stringify(role)
        }
     }).catch(error => {
         return {
