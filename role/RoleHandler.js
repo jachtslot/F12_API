@@ -74,3 +74,21 @@ module.exports.addAccountToRole = async event => {
         }
     });
 }
+
+module.exports.removeAccountFromRole = async event => {
+    let responseBody = JSON.parse(event.body);
+    let roleId = responseBody.role_id;
+    let accountId = responseBody.account_id;
+
+    return await RoleController.removeAccountFromRole(roleId, accountId).then(() => {
+        return {
+            statusCode: 201,
+            headers: {
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Origin": "http://localhost:4200",
+                "Access-Control-Allow-Methods": "OPTIONS,DELETE"
+            },
+            body: `Removed account ${accountId} from role ${roleId}`
+        }
+    });
+}

@@ -65,4 +65,8 @@ module.exports = class RoleController {
     static addAccountToRole(roleId, accountId) {
         return RoleDAO.addAccount(roleId, accountId);
     }
+
+    static removeAccountFromRole(roleId, accountId) {
+        return RoleDAO.removeAccount(roleId, accountId);
+    }
 }
