@@ -86,3 +86,10 @@ functions:
       - http:
           path: /role/removeAccount
           method: delete
+
+  addPermission:
+    handler: permission/PermissionHandler.addPermission
+    events:
+      - http:
+          path: /permission
+          method: post
