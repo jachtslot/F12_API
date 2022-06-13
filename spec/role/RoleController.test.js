@@ -211,3 +211,76 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         ).toBeRejected();
     });
 });
+
+describe('testing the removeAccountFromRole method of the RoleController()', () => {
+
+    it('returns as normal when account and role not in account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId = uuidv4();
+        let accountId1 = uuidv4();
+
+        await expectAsync(
+            RoleController.removeAccountFromRole(roleId, accountId1)
+        ).toBeResolved();
+    });
+
+    it('has still one row when account and role not in account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        await RoleController.addAccountToRole(roleId1, accountId1);
+
+        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+
+        let roleIdRandom = uuidv4();
+        let accountIdRandom = uuidv4();
+
+        await RoleController.removeAccountFromRole(roleIdRandom, accountIdRandom);
+
+        roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+    });
+
+    it('removes row from account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        await RoleController.addAccountToRole(roleId1, accountId1);
+
+        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+
+        await RoleController.removeAccountFromRole(roleId1, accountId1);
+
+        roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(0);
+    });
+
+    it('only removes 1 row from account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
+        await RoleController.addAccountToRole(roleId1, accountId1);
+        await RoleController.addAccountToRole(roleId1, accountId2);
+
+        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(2);
+
+        await RoleController.removeAccountFromRole(roleId1, accountId1);
+
+        roleWithAccount1 = await RoleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+    });
+})
