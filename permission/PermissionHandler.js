@@ -15,7 +15,7 @@ module.exports.addPermission = async event => {
 
     return await PermissionController.addPermission(permission).then(res => {
         return {
-            statusCode: 200,
+            statusCode: 201,
             headers: {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Origin": "http://localhost:4200",
