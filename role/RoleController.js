@@ -4,8 +4,8 @@ const Account = require('./../account/Account');
 
 module.exports = class RoleController {
 
-    static async createRole(roleName) {
-        return RoleDAO.createRole(roleName);
+    static async createRole(role) {
+        return RoleDAO.createRole(role);
     }
 
     static async getAllRoles() {
