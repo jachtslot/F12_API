@@ -203,3 +203,17 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         ).toBeRejected();
     });
 });
+
+describe('testing the removeAccountFromRole method of the RoleController()', () => {
+
+    it('returns as normal when account not in account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId = uuidv4();
+        let accountId1 = uuidv4();
+
+        await expectAsync(
+            RoleController.removeAccountFromRole(roleId, accountId1)
+        ).toBeResolved();
+    });
+})
