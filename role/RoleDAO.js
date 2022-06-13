@@ -48,7 +48,7 @@ module.exports = class RoleDAO {
         const values = [
             roleId
         ];
-
+        console.log(query,values)
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 }
