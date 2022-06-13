@@ -1,11 +1,12 @@
 const RoleController = require('./RoleController');
 const AccountController = require('../account/AccountController');
+const Role = require('./Role');
 
 module.exports.createRole = async event => {
-    let responseBody = JSON.parse(event.body);
-    let roleName = responseBody.name;
+    const responseBody = JSON.parse(event.body);
+    const role = new Role(null, responseBody.name);
 
-    return await RoleController.createRole(roleName).then(() => {
+    return await RoleController.createRole(role).then(() => {
        return {
            statusCode: 201,
            headers: {
@@ -13,7 +14,7 @@ module.exports.createRole = async event => {
                "Access-Control-Allow-Origin": "http://localhost:4200",
                "Access-Control-Allow-Methods": "OPTIONS,POST"
            },
-           body: `The role ${roleName} is created!`
+           body: JSON.stringify(role)
        }
     }).catch(error => {
         return {
