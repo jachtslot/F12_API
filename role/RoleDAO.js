@@ -1,16 +1,15 @@
 const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
-const { v4: uuidv4 } = require('uuid');
 
 module.exports = class RoleDAO {
 
-    static createRole(roleName) {
+    static createRole(role) {
         const query = `
             INSERT INTO role (id, name)
             VALUES ($1, $2);
         `;
         const values = [
-            uuidv4(),
-            roleName
+            role.id,
+            role.name
         ];
 
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
