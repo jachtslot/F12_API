@@ -79,3 +79,10 @@ functions:
       - http:
           path: /role/addAccount
           method: post
+
+  addPermission:
+    handler: permission/PermissionHandler.addPermission
+    events:
+      - http:
+          path: /permission
+          method: post
