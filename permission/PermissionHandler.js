@@ -13,7 +13,7 @@ module.exports.addPermission = async event => {
         body.end_time
     )
 
-    return await PermissionController.addPermission(permission).then(res => {
+    return await PermissionController.addPermission(permission).then(() => {
         return {
             statusCode: 201,
             headers: {
@@ -25,6 +25,9 @@ module.exports.addPermission = async event => {
 
         }
     }).catch(error => {
-        console.log(error);
+        return {
+            statusCode: 500,
+            body: error.message
+        }
     });
 }
