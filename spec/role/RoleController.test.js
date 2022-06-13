@@ -2,14 +2,19 @@ const Account = require('../../account/Account');
 const AccountController = require('../../account/AccountController');
 const RoleController = require('../../role/RoleController');
 const BeforeEach = require('../support/BeforeEach');
+const Role = require('../../role/Role');
 const { v4: uuidv4 } = require('uuid');
+
+const testRole = () => {
+    return new Role(null, 'test');
+}
 
 const genRandomNumber = () => {
     return Math.floor(Math.random().toPrecision(9) * 1_000_000_000);
 }
 
 const insertRole = async (roleName) => {
-    await RoleController.createRole(roleName);
+    await RoleController.createRole(new Role(null, roleName));
     let role = await RoleController.getRole(roleName);
     return role.id;
 }
@@ -30,17 +35,17 @@ describe('testing the createRole method of the RoleController()', () => {
 
     it('Inserts a record in the Role table', async () => {
         await BeforeEach.run();
-        await RoleController.createRole('tuinman');
+        await RoleController.createRole(testRole());
         let roleRecords = await RoleController.getAllRoles();
         expect(roleRecords.length).toBe(1);
     });
 
     it('Denies insert if name already exists', async () => {
         await BeforeEach.run();
-        await RoleController.createRole('tuinman');
+        await RoleController.createRole(testRole());
 
         await expectAsync(
-            RoleController.createRole('tuinman')
+            RoleController.createRole(testRole())
         ).toBeRejected();
     });
 
@@ -48,7 +53,7 @@ describe('testing the createRole method of the RoleController()', () => {
         await BeforeEach.run();
 
         await expectAsync(
-            RoleController.createRole('')
+            RoleController.createRole(testRole().name = '')
         ).toBeRejected();
     });
 
@@ -64,10 +69,10 @@ describe('testing the createRole method of the RoleController()', () => {
 describe('testing the deleteRole method of the RoleController()', () => {
 
     it('Deletes a record in the Role table', async () => {
+        const role = testRole();
         await BeforeEach.run();
-        let roleId = await insertRole('tuinman');
-
-        await RoleController.deleteRole(roleId);
+        await RoleController.createRole(role);
+        await RoleController.deleteRole(role.id);
         let roleRecords = await RoleController.getAllRoles();
 
         expect(roleRecords.length).toBe(0);
@@ -82,12 +87,15 @@ describe('testing the deleteRole method of the RoleController()', () => {
     });
 
     it('Deletes only one record in the Role table', async () => {
+        const role1 = testRole();
+        const role2 = new Role(null, 'testRole2');
+        const role3 = new Role(null, 'testRole3');
         await BeforeEach.run();
-        await RoleController.createRole('different');
-        await RoleController.createRole('another');
-        let roleId = await insertRole('tuinman');
+        await RoleController.createRole(role1);
+        await RoleController.createRole(role2);
+        await RoleController.createRole(role3);
 
-        await RoleController.deleteRole(roleId);
+        await RoleController.deleteRole(role1.id);
         let roleRecords = await RoleController.getAllRoles();
 
         expect(roleRecords.length).toBe(2);

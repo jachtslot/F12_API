@@ -15,7 +15,7 @@ module.exports = class AuthenticationController {
             })
             .then(correctPassword => {
                 if (!correctPassword) {
-                    throw new Error("Wrong password", 401);
+                    throw new Error("Wrong password");
                 }
                 const token = AuthenticationHelper.generateToken(loadedAccount);
                 return {loadedAccount, token};
