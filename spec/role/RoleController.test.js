@@ -14,7 +14,7 @@ const genRandomNumber = () => {
 }
 
 const insertRole = async (roleName) => {
-    await RoleController.createRole(roleName);
+    await RoleController.createRole(new Role(null, roleName));
     let role = await RoleController.getRole(roleName);
     return role.id;
 }
