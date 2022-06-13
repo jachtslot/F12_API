@@ -85,7 +85,7 @@ module.exports.removeAccountFromRole = async event => {
             headers: {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
+                "Access-Control-Allow-Methods": "OPTIONS,DELETE"
             },
             body: `Added account ${accountId} to role ${roleId}`
         }
