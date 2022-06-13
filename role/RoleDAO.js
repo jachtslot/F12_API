@@ -55,4 +55,17 @@ module.exports = class RoleDAO {
 
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
+
+    static removeAccount(roleId, accountId) {
+        const query = `
+            DELETE FROM account_role
+            WHERE $1 = role_id AND $2 = account_id;
+        `;
+
+        const values = [
+            roleId, accountId
+        ];
+
+        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+    }
 }
