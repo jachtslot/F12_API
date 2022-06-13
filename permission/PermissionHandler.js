@@ -4,13 +4,7 @@ const PermissionController = require('./PermissionController');
 module.exports.addPermission = async event => {
 
     const body = event.body;
-    // const body = {
-    //     role_id: '96523dc6-4ff8-454d-bcfc-4ecc8351bae5',
-    //     privilege_id: 3,
-    //     day : 1,
-    //     begin_time: 1430,
-    //     end_time: 1800
-    // }
+
     const permission = new Permission(
         body.role_id,
         body.privilege_id,
