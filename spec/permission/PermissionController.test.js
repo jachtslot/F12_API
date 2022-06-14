@@ -1,5 +1,6 @@
 const BeforeEach = require('../support/BeforeEach');
 const RoleController = require('../../role/RoleController');
+const roleController = new RoleController();
 const PermissionController = require('../../permission/PermissionController');
 const Role = require('../../role/Role');
 const Permission = require('../../permission/Permission');
@@ -9,7 +10,7 @@ describe('Testing the functionality of the PermissionController',() => {
 
     const testPermission = async () => {
         const role = new Role(null, 'testRole');
-        await RoleController.createRole(role);
+        await roleController.createRole(role);
         return new Permission(role.id, 2, 0, 1330, 1700);
     }
 
@@ -42,7 +43,7 @@ describe('Testing the functionality of the PermissionController',() => {
     it('should create two permissions for a single role', async () => {
         await BeforeEach.run();
         const role = new Role(null, 'testRole');
-        await RoleController.createRole(role);
+        await roleController.createRole(role);
         const permission1 = new Permission(role.id, 3, 0, 1300, 1800);
         const permission2 = new Permission(role.id, 1, 5, 1400, 1600);
         await expectAsync(PermissionController.addPermission(permission1)).toBeResolved();
