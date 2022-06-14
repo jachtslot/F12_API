@@ -1,5 +1,6 @@
 const Account = require('../../account/Account');
 const AccountController = require('../../account/AccountController');
+const accountController = new AccountController();
 const RoleController = require('../../role/RoleController');
 const BeforeEach = require('../support/BeforeEach');
 const Role = require('../../role/Role');
@@ -27,7 +28,7 @@ const insertAccount = async () => {
         'example_hashed_password'
     );
 
-    let createdAccount = await AccountController.createAccount(newAccount);
+    let createdAccount = await accountController.createAccount(newAccount);
     return createdAccount.id;
 }
 
