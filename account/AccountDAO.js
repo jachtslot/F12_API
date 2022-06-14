@@ -37,3 +37,4 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQuery(query);
     }
 }
+

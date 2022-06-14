@@ -1,5 +1,7 @@
 const Account = require('../account/Account');
 const jwt = require('jsonwebtoken');
+const AuthenticationDAO = require('../authentication/AuthenticationDAO');
+const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
     static parseBody(event) {
@@ -24,19 +26,35 @@ module.exports = class AuthenticationHelper {
         }
     }
 
-    static generateToken(account) {
-        return jwt.sign(
-            {
-                id: account.id,
-                email: account.emailAddress
-            },
-            process.env.JWT_SECRET, {
-                expiresIn: '1h'
-            }
-        )
+    static async getUserRole(account) {
+        return await authenticationDAO.getAccountRole(account)
     }
 
-    verifyToken(event) {
+    static async generateToken(account) {
+
+        return await this.getUserRole(account).then(res => {
+            let role;
+            if (res[0]) {
+                role = 'admin';
+            } else {
+                role = 'user';
+            }
+            console.log(role);
+            return jwt.sign(
+                {
+                    id: account.id,
+                    email: account.emailAddress,
+                    role: role
+                },
+                process.env.JWT_SECRET, {
+                    expiresIn: '1h'
+                }
+            )
+
+        })
+    }
+
+    static verifyToken(event) {
         let token = event.headers['Authorization'].split(' ')[1];
         if (!token) {
             const error = new Error('Not authenticated');
@@ -55,6 +73,7 @@ module.exports = class AuthenticationHelper {
             error.statusCode = 401;
             throw error;
         }
+        return decodedToken;
 
     }
 }

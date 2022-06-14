@@ -4,7 +4,11 @@ const AuthenticationHelper = require('../util/AuthenticationHelper');
 
 
 module.exports.login = async event => {
-    const credentials = AuthenticationHelper.parseBody(event);
+    // const credentials = AuthenticationHelper.parseBody(event);
+    const credentials = {
+        "email": "originelemail@hotmail.com",
+        "password" : "Wachtwoord"
+    }
     return await authenticationController.login(credentials).then(data => {
         const loadedAccount = data.loadedAccount;
         const token = data.token;

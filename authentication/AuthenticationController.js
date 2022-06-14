@@ -9,6 +9,7 @@ module.exports = class AuthenticationController {
 
     async login(credentials) {
         let loadedAccount;
+
         return await authenticationDAO.loginAccount(credentials)
             .then(data => {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
