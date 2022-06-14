@@ -38,17 +38,12 @@ module.exports.deleteAccount = async event => {
     let responseBody = JSON.parse(event.body);
     let emailAddress = responseBody.email_address;
 
-    return await accountController.deleteAccount(emailAddress).then(() => {
-        return {
-            statusCode: 200,
-            body: `Account with email address ${emailAddress} is deleted!`
-        };
-    }).catch(error => {
-        return {
-            statusCode: 500,
-            body: error.message
-        }
-    });
+    let deletedEmailAddress = await accountController.deleteAccount(emailAddress);
+    return ResponseFactory.build(
+        200,
+        Methods.DELETE,
+        `Account with email address ${deletedEmailAddress} is deleted!`
+    );
 }
 
 module.exports.getAllAccounts = async () => {
