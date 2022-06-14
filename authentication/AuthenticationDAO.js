@@ -9,7 +9,7 @@ module.exports = class AuthenticationDAO {
         `;
         const values = [credentials.email];
 
-        return PostgreSQLAdapter.executeQueryWithValues({SELECT_ACCOUNT_BY_EMAIL, values});
+        return PostgreSQLAdapter.executeQueryWithValues(SELECT_ACCOUNT_BY_EMAIL, values);
     }
 }
 
