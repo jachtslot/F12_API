@@ -13,7 +13,6 @@ module.exports.addPermission = async event => {
         body.begin_time,
         body.end_time
     )
-    console.log(permission)
 
     return await permissionController.addPermission(permission).then(() => {
         return {
