@@ -1,5 +1,6 @@
 const Permission = require('./Permission');
 const PermissionController = require('./PermissionController');
+const permissionController = new PermissionController();
 
 module.exports.addPermission = async event => {
 
@@ -13,7 +14,7 @@ module.exports.addPermission = async event => {
         body.end_time
     )
 
-    return await PermissionController.addPermission(permission).then(() => {
+    return await permissionController.addPermission(permission).then(() => {
         return {
             statusCode: 201,
             headers: {
