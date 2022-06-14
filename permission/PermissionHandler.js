@@ -4,7 +4,7 @@ const permissionController = new PermissionController();
 
 module.exports.addPermission = async event => {
 
-    const body = event.body;
+    const body = JSON.parse(event.body);
 
     const permission = new Permission(
         body.role_id,
