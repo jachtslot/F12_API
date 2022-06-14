@@ -1,6 +1,7 @@
 const AccountController = require('../../account/AccountController');
 const accountController = new AccountController();
-const AuthenticationController = require('../../authentication/AuthenticationController')
+const AuthenticationController = require('../../authentication/AuthenticationController');
+const authenticationController = new AuthenticationController();
 const Account = require('../../account/Account');
 const BeforeEach = require('../support/BeforeEach');
 
@@ -22,7 +23,7 @@ describe('testing the login() method of the AuthenticationController', () => {
 
     it('should return an object with user and access_token on successful login', async () => {
         await beforeEach()
-        const result = await AuthenticationController.login(
+        const result = await authenticationController.login(
             {
                 email: getTestAccount().emailAddress,
                 password: getTestAccount().hashedPassword
@@ -34,7 +35,7 @@ describe('testing the login() method of the AuthenticationController', () => {
 
     it('should throw error when given incorrect password', async () => {
         await beforeEach();
-        await expectAsync(AuthenticationController.login(
+        await expectAsync(authenticationController.login(
             {
                 email: getTestAccount().emailAddress,
                 password: 'incorrectPassword'
@@ -44,7 +45,7 @@ describe('testing the login() method of the AuthenticationController', () => {
 
     it('should throw error when given non-existing emailaddress', async () => {
         await beforeEach();
-        await expectAsync(AuthenticationController.login(
+        await expectAsync(authenticationController.login(
             {
                 email: 'NonExistingEmail@hotmail.com',
                 password: getTestAccount().hashedPassword
