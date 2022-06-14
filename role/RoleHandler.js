@@ -94,3 +94,17 @@ module.exports.removeAccountFromRole = async event => {
         }
     });
 }
+
+module.exports.getAllRoles = async event => {
+    return await roleController.getAllRoles().then(roles => {
+       return {
+           statusCode: 200,
+           headers: {
+               "Access-Control-Allow-Headers": "Content-Type",
+               "Access-Control-Allow-Origin": "http://localhost:4200",
+               "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+           },
+           body: JSON.stringify(roles)
+       };
+    });
+}
