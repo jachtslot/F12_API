@@ -47,18 +47,22 @@ module.exports.getAllAccounts = async () => {
 
 module.exports.getAccount = async event => {
     let id = event.pathParameters.id;
+    let retrievedAccount = await accountController.getAccount(id);
+
     return await accountController.getAccount(id).then(account => {
 
         if (account.length <= 0) {
-            return {
-                statusCode: 404,
-                body: `The Account with id: '${id}' was not found.`
-            }
+            return ResponseFactory.build(
+                404,
+                Methods.GET,
+                `The Account with id: '${id}' was not found.`
+            );
         }
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify(account[0])
-        }
+        return ResponseFactory.build(
+            200,
+            Methods.GET,
+            JSON.stringify(retrievedAccount[0])
+        );
     });
 }
