@@ -3,7 +3,7 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 module.exports = class PermissionDAO {
 
     addPermission(permission) {
-        const query = `
+        const INSERT_NEW_PERMISSION = `
             INSERT INTO permission (
               id, role_id, privilege_id,
               p_day, start_time, end_time)
@@ -16,6 +16,6 @@ module.exports = class PermissionDAO {
             permission.begin_time,
             permission.end_time
         ];
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({INSERT_NEW_PERMISSION, values});
     }
 }

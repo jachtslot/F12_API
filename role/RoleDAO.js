@@ -3,7 +3,7 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 module.exports = class RoleDAO {
 
     createRole(role) {
-        const query = `
+        const INSERT_NEW_ROLE = `
             INSERT INTO role (id, name)
             VALUES ($1, $2);
         `;
@@ -12,11 +12,11 @@ module.exports = class RoleDAO {
             role.name
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({INSERT_NEW_ROLE, values});
     }
 
     getRoles() {
-        const query = `
+        const GET_ALL_ROLES_WITH_ACCOUNTS = `
             SELECT r.name AS role_name, r.id AS role_id, a.id AS account_id, a.username, a.email_address 
             FROM ROLE r
             LEFT JOIN account_role ar ON r.id = ar.role_id
@@ -24,11 +24,11 @@ module.exports = class RoleDAO {
             ORDER BY role_id;
         `;
 
-        return PostgreSQLAdapter.executeQuery(query);
+        return PostgreSQLAdapter.executeQuery(GET_ALL_ROLES_WITH_ACCOUNTS);
     }
 
     deleteRole(roleId) {
-        const query = `
+        const DELETE_ROLE_BY_ID = `
             DELETE 
             FROM role
             WHERE id = $1;
@@ -37,11 +37,11 @@ module.exports = class RoleDAO {
         const values = [
             roleId
         ];
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({DELETE_ROLE_BY_ID, values});
     }
 
     addAccount(roleId, accountId) {
-        const query = `
+        const ADD_ACCOUNT_TO_ROLE = `
             INSERT INTO account_role (account_id, role_id)
             VALUES ($1, $2);
         `;
@@ -51,11 +51,11 @@ module.exports = class RoleDAO {
             roleId
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({ADD_ACCOUNT_TO_ROLE, values});
     }
 
     removeAccount(roleId, accountId) {
-        const query = `
+        const REMOVE_ACCOUNT_FROM_ROLE = `
             DELETE FROM account_role
             WHERE $1 = role_id AND $2 = account_id;
         `;
@@ -64,6 +64,6 @@ module.exports = class RoleDAO {
             roleId, accountId
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+        return PostgreSQLAdapter.executeQueryWithValues({REMOVE_ACCOUNT_FROM_ROLE, values});
     }
 }
