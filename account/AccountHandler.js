@@ -12,7 +12,7 @@ module.exports.createAccount = async event => {
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
-    let account = accountController.createAccount(unhashedAccount);
+    let account = await accountController.createAccount(unhashedAccount);
     let body = JSON.stringify({
         'id': account.id,
         'username': account.username,
