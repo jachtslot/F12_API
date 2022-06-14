@@ -21,23 +21,12 @@ module.exports.createRole = async event => {
 
 module.exports.deleteRole = async event => {
     let id = event.pathParameters.id;
-
-    return await roleController.deleteRole(id).then(() => {
-        return {
-            statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,DELETE"
-            },
-            body: `The role is deleted!`
-        }
-    }).catch(error => {
-        return {
-            statusCode: 500,
-            body: error.message
-        }
-    });
+    await roleController.deleteRole(id);
+    return ResponseFactory.build(
+        200,
+        Methods.DELETE,
+        "The role is deleted"
+    );
 }
 
 module.exports.addAccountToRole = async event => {
