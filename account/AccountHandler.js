@@ -11,27 +11,17 @@ module.exports.createAccount = async event => {
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
-    return await accountController.createAccount(unhashedAccount).then((account) => {
-
-        return {
-            statusCode: 201,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-            },
-            body: JSON.stringify({
-                'id': account.id,
-                'username': account.username,
-                'email_address': account.emailAddress
-            })
-        }
-    }).catch(error => {
-        return {
-            statusCode: 500,
-            body: error.message
-        }
+    let account = accountController.createAccount(unhashedAccount);
+    let body = JSON.stringify({
+        'id': account.id,
+        'username': account.username,
+        'email_address': account.emailAddress
     });
+    return ResponseFactory.build(
+        201,
+        Methods.POST,
+        body
+    );
 }
 
 module.exports.deleteAccount = async event => {
