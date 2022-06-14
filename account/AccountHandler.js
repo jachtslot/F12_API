@@ -1,6 +1,7 @@
 const AccountController = require('./AccountController');
 const accountController = new AccountController();
 const Account = require('./Account');
+
 const ResponseFactory = require('../response/ResponseFactory');
 const Methods = require('../response/methods').Methods;
 
