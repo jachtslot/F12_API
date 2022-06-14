@@ -1,6 +1,8 @@
 const Account = require('../../account/Account');
 const AccountController = require('../../account/AccountController');
+const accountController = new AccountController();
 const RoleController = require('../../role/RoleController');
+const roleController = new RoleController();
 const BeforeEach = require('../support/BeforeEach');
 const Role = require('../../role/Role');
 const { v4: uuidv4 } = require('uuid');
@@ -13,9 +15,9 @@ const genRandomNumber = () => {
     return Math.floor(Math.random().toPrecision(9) * 1_000_000_000);
 }
 
-const insertRole = async (roleName) => {
-    await RoleController.createRole(new Role(null, roleName));
-    let role = await RoleController.getRole(roleName);
+const insertRole = async roleName => {
+    await roleController.createRole(new Role(null, roleName));
+    let role = await roleController.getRole(roleName);
     return role.id;
 }
 
@@ -27,7 +29,7 @@ const insertAccount = async () => {
         'example_hashed_password'
     );
 
-    let createdAccount = await AccountController.createAccount(newAccount);
+    let createdAccount = await accountController.createAccount(newAccount);
     return createdAccount.id;
 }
 
@@ -35,17 +37,17 @@ describe('testing the createRole method of the RoleController()', () => {
 
     it('Inserts a record in the Role table', async () => {
         await BeforeEach.run();
-        await RoleController.createRole(testRole());
-        let roleRecords = await RoleController.getAllRoles();
+        await roleController.createRole(testRole());
+        let roleRecords = await roleController.getAllRoles();
         expect(roleRecords.length).toBe(1);
     });
 
     it('Denies insert if name already exists', async () => {
         await BeforeEach.run();
-        await RoleController.createRole(testRole());
+        await roleController.createRole(testRole());
 
         await expectAsync(
-            RoleController.createRole(testRole())
+            roleController.createRole(testRole())
         ).toBeRejected();
     });
 
@@ -53,7 +55,7 @@ describe('testing the createRole method of the RoleController()', () => {
         await BeforeEach.run();
 
         await expectAsync(
-            RoleController.createRole(testRole().name = '')
+            roleController.createRole(testRole().name = '')
         ).toBeRejected();
     });
 
@@ -61,7 +63,7 @@ describe('testing the createRole method of the RoleController()', () => {
         await BeforeEach.run();
 
         await expectAsync(
-            RoleController.createRole(null)
+            roleController.createRole(null)
         ).toBeRejected();
     });
 });
@@ -71,17 +73,17 @@ describe('testing the deleteRole method of the RoleController()', () => {
     it('Deletes a record in the Role table', async () => {
         const role = testRole();
         await BeforeEach.run();
-        await RoleController.createRole(role);
-        await RoleController.deleteRole(role.id);
-        let roleRecords = await RoleController.getAllRoles();
+        await roleController.createRole(role);
+        await roleController.deleteRole(role.id);
+        let roleRecords = await roleController.getAllRoles();
 
         expect(roleRecords.length).toBe(0);
     });
 
     it('does not throw error when role not existing', async () => {
         await BeforeEach.run();
-        await RoleController.deleteRole("ccbaa2dc-2c5e-4033-a254-71b1aafb61f6");
-        let roleRecords = await RoleController.getAllRoles();
+        await roleController.deleteRole("ccbaa2dc-2c5e-4033-a254-71b1aafb61f6");
+        let roleRecords = await roleController.getAllRoles();
 
         expect(roleRecords.length).toBe(0);
     });
@@ -91,12 +93,12 @@ describe('testing the deleteRole method of the RoleController()', () => {
         const role2 = new Role(null, 'testRole2');
         const role3 = new Role(null, 'testRole3');
         await BeforeEach.run();
-        await RoleController.createRole(role1);
-        await RoleController.createRole(role2);
-        await RoleController.createRole(role3);
+        await roleController.createRole(role1);
+        await roleController.createRole(role2);
+        await roleController.createRole(role3);
 
-        await RoleController.deleteRole(role1.id);
-        let roleRecords = await RoleController.getAllRoles();
+        await roleController.deleteRole(role1.id);
+        let roleRecords = await roleController.getAllRoles();
 
         expect(roleRecords.length).toBe(2);
     });
@@ -110,8 +112,8 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
 
         let accountId1 = await insertAccount();
 
-        await RoleController.addAccountToRole(roleId, accountId1);
-        let roleWithAccount = await RoleController.getRole('tuinman');
+        await roleController.addAccountToRole(roleId, accountId1);
+        let roleWithAccount = await roleController.getRole('tuinman');
 
         expect(roleWithAccount.accounts.length).toBe(1);
     });
@@ -123,9 +125,9 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let accountId1 = await insertAccount();
         let accountId2 = await insertAccount();
 
-        await RoleController.addAccountToRole(roleId, accountId1);
-        await RoleController.addAccountToRole(roleId, accountId2);
-        let roleWithAccount = await RoleController.getRole('tuinman');
+        await roleController.addAccountToRole(roleId, accountId1);
+        await roleController.addAccountToRole(roleId, accountId2);
+        let roleWithAccount = await roleController.getRole('tuinman');
 
         expect(roleWithAccount.accounts.length).toBe(2);
     });
@@ -143,20 +145,20 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let accountId3 = await insertAccount();
         let accountId4 = await insertAccount();
 
-        await RoleController.addAccountToRole(roleId2, accountId4);
-        await RoleController.addAccountToRole(roleId2, accountId2);
-        await RoleController.addAccountToRole(roleId1, accountId2);
-        await RoleController.addAccountToRole(roleId1, accountId4);
-        await RoleController.addAccountToRole(roleId1, accountId1);
-        await RoleController.addAccountToRole(roleId3, accountId2);
-        await RoleController.addAccountToRole(roleId1, accountId3);
-        await RoleController.addAccountToRole(roleId3, accountId4);
+        await roleController.addAccountToRole(roleId2, accountId4);
+        await roleController.addAccountToRole(roleId2, accountId2);
+        await roleController.addAccountToRole(roleId1, accountId2);
+        await roleController.addAccountToRole(roleId1, accountId4);
+        await roleController.addAccountToRole(roleId1, accountId1);
+        await roleController.addAccountToRole(roleId3, accountId2);
+        await roleController.addAccountToRole(roleId1, accountId3);
+        await roleController.addAccountToRole(roleId3, accountId4);
 
-        let roleWithAccount1 = await RoleController.getRole('tuinman1');
-        let roleWithAccount2 = await RoleController.getRole('tuinman2');
-        let roleWithAccount3 = await RoleController.getRole('tuinman3');
-        let roleWithAccount4 = await RoleController.getRole('tuinman4');
-        let allRoles = await RoleController.getAllRoles();
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+        let roleWithAccount2 = await roleController.getRole('tuinman2');
+        let roleWithAccount3 = await roleController.getRole('tuinman3');
+        let roleWithAccount4 = await roleController.getRole('tuinman4');
+        let allRoles = await roleController.getAllRoles();
 
         expect(roleWithAccount1.accounts.length).toBe(4);
         expect(roleWithAccount2.accounts.length).toBe(2);
@@ -171,10 +173,10 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let roleId1 = await insertRole('tuinman1');
         let accountId1 = await insertAccount();
 
-        await RoleController.addAccountToRole(roleId1, accountId1);
-        await expectAsync(RoleController.addAccountToRole(roleId1, accountId1)).toBeRejected();
+        await roleController.addAccountToRole(roleId1, accountId1);
+        await expectAsync(roleController.addAccountToRole(roleId1, accountId1)).toBeRejected();
 
-        let roleWithAccount1 = await RoleController.getRole('tuinman1');
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
 
         expect(roleWithAccount1.accounts.length).toBe(1);
     })
@@ -185,7 +187,7 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let accountId1 = uuidv4();
 
         await expectAsync(
-            RoleController.addAccountToRole(roleId, accountId1)
+            roleController.addAccountToRole(roleId, accountId1)
         ).toBeRejected();
     });
 
@@ -196,7 +198,7 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let accountId1 = await insertAccount();
 
         await expectAsync(
-            RoleController.addAccountToRole(roleId, accountId1)
+            roleController.addAccountToRole(roleId, accountId1)
         ).toBeRejected();
     });
 
@@ -207,7 +209,80 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
         let accountId1 = uuidv4();
 
         await expectAsync(
-            RoleController.addAccountToRole(roleId, accountId1)
+            roleController.addAccountToRole(roleId, accountId1)
         ).toBeRejected();
     });
 });
+
+describe('testing the removeAccountFromRole method of the RoleController()', () => {
+
+    it('returns as normal when account and role not in account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId = uuidv4();
+        let accountId1 = uuidv4();
+
+        await expectAsync(
+            roleController.removeAccountFromRole(roleId, accountId1)
+        ).toBeResolved();
+    });
+
+    it('has still one row when account and role not in account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        await roleController.addAccountToRole(roleId1, accountId1);
+
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+
+        let roleIdRandom = uuidv4();
+        let accountIdRandom = uuidv4();
+
+        await roleController.removeAccountFromRole(roleIdRandom, accountIdRandom);
+
+        roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+    });
+
+    it('removes row from account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        await roleController.addAccountToRole(roleId1, accountId1);
+
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+
+        await roleController.removeAccountFromRole(roleId1, accountId1);
+
+        roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(0);
+    });
+
+    it('only removes 1 row from account_role table', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
+        await roleController.addAccountToRole(roleId1, accountId1);
+        await roleController.addAccountToRole(roleId1, accountId2);
+
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(2);
+
+        await roleController.removeAccountFromRole(roleId1, accountId1);
+
+        roleWithAccount1 = await roleController.getRole('tuinman1');
+
+        expect(roleWithAccount1.accounts.length).toBe(1);
+    });
+})

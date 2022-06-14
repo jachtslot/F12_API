@@ -1,9 +1,10 @@
 const PermissionDAO = require('./PermissionDAO');
+const permissionDAO = new PermissionDAO();
 
 module.exports = class PermissionController {
 
-    static async addPermission(permission) {
+    async addPermission(permission) {
 
-        return PermissionDAO.addPermission(permission);
+        return permissionDAO.addPermission(permission);
     }
 }

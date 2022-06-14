@@ -1,4 +1,5 @@
 const AccountController = require('./AccountController');
+const accountController = new AccountController();
 const Account = require('./Account');
 
 module.exports.createAccount = async event => {
@@ -8,7 +9,7 @@ module.exports.createAccount = async event => {
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
-    return await AccountController.createAccount(unhashedAccount).then((account) => {
+    return await accountController.createAccount(unhashedAccount).then((account) => {
 
         return {
             statusCode: 201,
@@ -35,7 +36,7 @@ module.exports.deleteAccount = async event => {
     let responseBody = JSON.parse(event.body);
     let emailAddress = responseBody.email_address;
 
-    return await AccountController.deleteAccount(emailAddress).then(() => {
+    return await accountController.deleteAccount(emailAddress).then(() => {
         return {
             statusCode: 200,
             body: `Account with email address ${emailAddress} is deleted!`
@@ -49,7 +50,7 @@ module.exports.deleteAccount = async event => {
 }
 
 module.exports.getAllAccounts = async () => {
-    return await AccountController.getAllAccounts().then(account => {
+    return await accountController.getAllAccounts().then(account => {
         return {
             statusCode: 200,
             headers: {
@@ -64,7 +65,7 @@ module.exports.getAllAccounts = async () => {
 
 module.exports.getAccount = async event => {
     let id = event.pathParameters.id;
-    return await AccountController.getAccount(id).then(account => {
+    return await accountController.getAccount(id).then(account => {
 
         if (account.length <= 0) {
             return {
