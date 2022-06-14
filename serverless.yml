@@ -42,7 +42,7 @@ functions:
     handler: authentication/AuthenticationHandler.login
     events:
       - http:
-          path: /auth
+          path: /auth/login
           method: post
 
   deleteAccount:
