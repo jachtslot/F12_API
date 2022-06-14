@@ -55,17 +55,12 @@ module.exports.removeAccountFromRole = async event => {
     let roleId = responseBody.role_id;
     let accountId = responseBody.account_id;
 
-    return await roleController.removeAccountFromRole(roleId, accountId).then(() => {
-        return {
-            statusCode: 201,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,DELETE"
-            },
-            body: `Removed account ${accountId} from role ${roleId}`
-        }
-    });
+    await roleController.removeAccountFromRole(roleId, accountId);
+    return ResponseFactory.build(
+        201,
+        Methods.DELETE,
+        `Removed account ${accountId} from role ${roleId}`
+    );
 }
 
 module.exports.getAllRoles = async event => {
