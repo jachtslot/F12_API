@@ -14,7 +14,7 @@ module.exports = class AuthenticationHelper {
 
     static createUserFromData(data) {
         if (!data.length > 0) {
-            throw new Error("No account connected to that emailaddress", 401)
+            throw new Error("No account connected to that emailaddress");
         } else {
             data = data[0];
             return new Account(
@@ -27,31 +27,32 @@ module.exports = class AuthenticationHelper {
     }
 
     static async getUserRole(account) {
-        return await authenticationDAO.getAccountRole(account)
-    }
-
-    static async generateToken(account) {
-
-        return await this.getUserRole(account).then(res => {
-            let role;
+        let role;
+        await authenticationDAO.getAccountRole(account).then(res => {
             if (res[0]) {
                 role = 'admin';
             } else {
                 role = 'user';
             }
-            console.log(role);
-            return jwt.sign(
-                {
-                    id: account.id,
-                    email: account.emailAddress,
-                    role: role
-                },
-                process.env.JWT_SECRET, {
-                    expiresIn: '1h'
-                }
-            )
-
+        }).catch(error => {
+            throw error;
         })
+
+        return role;
+    }
+
+    static generateToken(account, role) {
+
+        return jwt.sign(
+            {
+                id: account.id,
+                email: account.emailAddress,
+                role: role
+            },
+            process.env.JWT_SECRET, {
+                expiresIn: '1h'
+            }
+        )
     }
 
     static verifyToken(event) {
@@ -63,7 +64,7 @@ module.exports = class AuthenticationHelper {
         }
         let decodedToken;
         try {
-            decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+            decodedToken = jwt.verify(token, process.env.JWT_SECRET );
         } catch (err) {
             err.statusCode = 500;
             throw err;
