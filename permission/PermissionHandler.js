@@ -3,7 +3,7 @@ const PermissionController = require('./PermissionController');
 
 module.exports.addPermission = async event => {
 
-    const body = event.body;
+    const body = JSON.parse(event.body);
 
     const permission = new Permission(
         body.role_id,
@@ -12,6 +12,7 @@ module.exports.addPermission = async event => {
         body.begin_time,
         body.end_time
     )
+    console.log(permission)
 
     return await PermissionController.addPermission(permission).then(() => {
         return {
