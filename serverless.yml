@@ -1,4 +1,4 @@
-org: ramonk01
+org: thimovanvelzen
 app: f12-api-service
 service: f12-api-service
 
@@ -79,6 +79,13 @@ functions:
       - http:
           path: /role/addAccount
           method: post
+
+  removeAccountFromRole:
+    handler: role/RoleHandler.removeAccountFromRole
+    events:
+      - http:
+          path: /role/removeAccount
+          method: delete
 
   addPermission:
     handler: permission/PermissionHandler.addPermission

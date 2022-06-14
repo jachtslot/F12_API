@@ -1,5 +1,6 @@
 const databaseCredentials = require('../../util/DatabaseCredentials').CREDENTIALS;
 const AccountController = require('../../account/AccountController');
+const accountController = new AccountController();
 const Account = require('../../account/Account');
 const BeforeEach = require('../support/BeforeEach');
 
@@ -23,7 +24,7 @@ describe('testing the createAccount() method of the AccountController', () => {
         await BeforeEach.run();
         const account = getTestAccount();
 
-        let accountRecords = await AccountController.createAccount(account);
+        let accountRecords = await accountController.createAccount(account);
         expect(accountRecords.id.length > 0).toBeTrue();
 
     })
@@ -31,7 +32,7 @@ describe('testing the createAccount() method of the AccountController', () => {
     it('should throw an error when email already exists', async () => {
         await BeforeEach.run();
         let testAccount = getTestAccount();
-        await AccountController.createAccount(testAccount);
-        await expectAsync(AccountController.createAccount(testAccount)).toBeRejected();
+        await accountController.createAccount(testAccount);
+        await expectAsync(accountController.createAccount(testAccount)).toBeRejected();
     })
 })
