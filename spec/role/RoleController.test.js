@@ -15,7 +15,7 @@ const genRandomNumber = () => {
     return Math.floor(Math.random().toPrecision(9) * 1_000_000_000);
 }
 
-const insertRole = async (roleName) => {
+const insertRole = async roleName => {
     await roleController.createRole(new Role(null, roleName));
     let role = await roleController.getRole(roleName);
     return role.id;

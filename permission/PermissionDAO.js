@@ -2,7 +2,7 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 
 module.exports = class PermissionDAO {
 
-    static addPermission(permission) {
+    addPermission(permission) {
         const query = `
             INSERT INTO permission (
               id, role_id, privilege_id,
