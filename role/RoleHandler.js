@@ -1,12 +1,14 @@
 const RoleController = require('./RoleController');
+const roleController = new RoleController();
 const AccountController = require('../account/AccountController');
+const accountController = new AccountController();
 const Role = require('./Role');
 
 module.exports.createRole = async event => {
     const responseBody = JSON.parse(event.body);
     const role = new Role(null, responseBody.name);
 
-    return await RoleController.createRole(role).then(() => {
+    return await roleController.createRole(role).then(() => {
        return {
            statusCode: 201,
            headers: {
@@ -27,7 +29,7 @@ module.exports.createRole = async event => {
 module.exports.deleteRole = async event => {
     let id = event.pathParameters.id;
 
-    return await RoleController.deleteRole(id).then(() => {
+    return await roleController.deleteRole(id).then(() => {
         return {
             statusCode: 200,
             headers: {
@@ -50,7 +52,7 @@ module.exports.addAccountToRole = async event => {
     let roleId = responseBody.role_id;
     let accountId = responseBody.account_id;
 
-    let account = await AccountController.getAccount(accountId).catch(() => {
+    let account = await accountController.getAccount(accountId).catch(() => {
         return {
             statusCode: 404,
             headers: {
@@ -62,7 +64,7 @@ module.exports.addAccountToRole = async event => {
         }
     });
 
-    return await RoleController.addAccountToRole(roleId, accountId).then(() => {
+    return await roleController.addAccountToRole(roleId, accountId).then(() => {
         return {
             statusCode: 200,
             headers: {
@@ -80,7 +82,7 @@ module.exports.removeAccountFromRole = async event => {
     let roleId = responseBody.role_id;
     let accountId = responseBody.account_id;
 
-    return await RoleController.removeAccountFromRole(roleId, accountId).then(() => {
+    return await roleController.removeAccountFromRole(roleId, accountId).then(() => {
         return {
             statusCode: 201,
             headers: {
