@@ -16,7 +16,6 @@ module.exports = class PermissionDAO {
             permission.begin_time,
             permission.end_time
         ];
-
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 }
