@@ -59,6 +59,20 @@ functions:
           path: /gates/2
           method: get
 
+  getAllRoles:
+    handler: role/RoleHandler.getAllRoles
+    events:
+      - http:
+          path: /role
+          method: get
+
+  getRole:
+    handler: role/RoleHandler.getRole
+    events:
+      - http:
+          path: /role/{id}
+          method: get
+
   createRole:
     handler: role/RoleHandler.createRole
     events:
