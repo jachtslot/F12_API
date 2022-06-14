@@ -1,8 +1,13 @@
 const AccountController = require('./AccountController');
 const accountController = new AccountController();
 const Account = require('./Account');
+const AuthenticationHelper = require('../util/AuthenticationHelper');
 
 module.exports.createAccount = async event => {
+    const decodedToken = AuthenticationHelper.verifyToken(event);
+    if (decodedToken.role !== 'admin') {
+        throw new Error('User unauthorized for this function.');
+    }
     const responseBody = JSON.parse(event.body);
     const username = responseBody.username;
     const email = responseBody.email_address;
@@ -10,7 +15,6 @@ module.exports.createAccount = async event => {
     const unhashedAccount = new Account(null, username, email, password);
 
     return await accountController.createAccount(unhashedAccount).then((account) => {
-
         return {
             statusCode: 201,
             headers: {
