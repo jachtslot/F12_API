@@ -1,6 +1,8 @@
 const AccountController = require('./AccountController');
 const accountController = new AccountController();
 const Account = require('./Account');
+const ResponseFactory = require('../response/ResponseFactory');
+const Methods = require('../response/methods').Methods;
 
 module.exports.createAccount = async event => {
     const responseBody = JSON.parse(event.body);
@@ -50,17 +52,12 @@ module.exports.deleteAccount = async event => {
 }
 
 module.exports.getAllAccounts = async () => {
-    return await accountController.getAllAccounts().then(account => {
-        return {
-            statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-            },
-            body: JSON.stringify(account)
-        };
-    });
+    const accounts = await accountController.getAllAccounts();
+    return ResponseFactory.build(
+        200,
+        Methods.GET,
+        JSON.stringify(accounts)
+    );
 }
 
 module.exports.getAccount = async event => {
