@@ -7,14 +7,11 @@ const {v4: uuidv4} = require('uuid');
 
 describe('Testing the functionality of the PermissionController',() => {
 
-
-
     const testPermission = async () => {
         const role = new Role(null, 'testRole');
         await RoleController.createRole(role);
         return new Permission(role.id, 2, 0, 1330, 1700);
     }
-
 
     it('should return 201 when adding permission', async () => {
         let permission;

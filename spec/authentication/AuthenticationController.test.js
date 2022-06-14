@@ -1,11 +1,12 @@
 const AccountController = require('../../account/AccountController');
+const accountController = new AccountController();
 const AuthenticationController = require('../../authentication/AuthenticationController')
 const Account = require('../../account/Account');
 const BeforeEach = require('../support/BeforeEach');
 
 const beforeEach = async () => {
     await BeforeEach.run();
-    await AccountController.createAccount(getTestAccount());
+    await accountController.createAccount(getTestAccount());
 }
 
 const getTestAccount = () => {
