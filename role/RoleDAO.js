@@ -12,7 +12,7 @@ module.exports = class RoleDAO {
             role.name
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({INSERT_NEW_ROLE, values});
+        return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_ROLE, values);
     }
 
     getRoles() {
@@ -37,7 +37,7 @@ module.exports = class RoleDAO {
         const values = [
             roleId
         ];
-        return PostgreSQLAdapter.executeQueryWithValues({DELETE_ROLE_BY_ID, values});
+        return PostgreSQLAdapter.executeQueryWithValues(DELETE_ROLE_BY_ID, values);
     }
 
     addAccount(roleId, accountId) {
@@ -51,7 +51,7 @@ module.exports = class RoleDAO {
             roleId
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({ADD_ACCOUNT_TO_ROLE, values});
+        return PostgreSQLAdapter.executeQueryWithValues(ADD_ACCOUNT_TO_ROLE, values);
     }
 
     removeAccount(roleId, accountId) {
@@ -64,6 +64,6 @@ module.exports = class RoleDAO {
             roleId, accountId
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({REMOVE_ACCOUNT_FROM_ROLE, values});
+        return PostgreSQLAdapter.executeQueryWithValues(REMOVE_ACCOUNT_FROM_ROLE, values);
     }
 }

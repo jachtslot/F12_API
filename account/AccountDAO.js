@@ -13,7 +13,7 @@ module.exports = class AccountDAO {
             account.emailAddress,
             account.hashedPassword
         ];
-        return PostgreSQLAdapter.executeQueryWithValues({INSERT_NEW_ACCOUNT, values});
+        return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_ACCOUNT, values);
     }
 
     deleteAccount(emailAddress) {
@@ -25,7 +25,7 @@ module.exports = class AccountDAO {
             emailAddress
         ];
 
-        return PostgreSQLAdapter.executeQueryWithValues({DELETE_ACCOUNT_BY_EMAIL, values});
+        return PostgreSQLAdapter.executeQueryWithValues(DELETE_ACCOUNT_BY_EMAIL, values);
     }
 
     async getAllAccounts() {
