@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const AuthenticationDAO = require('./AuthenticationDAO');
 const authenticationDAO = new AuthenticationDAO();
 const AuthenticationHelper = require('../util/AuthenticationHelper');
-
 module.exports = class AuthenticationController {
 
     async login(credentials) {
@@ -15,11 +14,12 @@ module.exports = class AuthenticationController {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
                 return bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
             })
-            .then(correctPassword => {
+            .then(async correctPassword => {
                 if (!correctPassword) {
                     throw new Error("Wrong password");
                 }
-                const token = AuthenticationHelper.generateToken(loadedAccount);
+                const role = await AuthenticationHelper.getUserRole(loadedAccount);
+                const token = await AuthenticationHelper.generateToken(loadedAccount, role);
                 return {loadedAccount, token};
             });
     }
