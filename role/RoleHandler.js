@@ -35,28 +35,19 @@ module.exports.addAccountToRole = async event => {
     let accountId = responseBody.account_id;
 
     let account = await accountController.getAccount(accountId).catch(() => {
-        return {
-            statusCode: 404,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-            },
-            body: `Account with id '${accountId} could not be found!`
-        }
+        return ResponseFactory.build(
+            404,
+            Methods.POST,
+            `Account with id '${accountId} could not be found!`
+        )
     });
 
-    return await roleController.addAccountToRole(roleId, accountId).then(() => {
-        return {
-            statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "http://localhost:4200",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-            },
-            body: `The account ${account[0].username} is added to the role ${roleId}`
-        }
-    });
+    await roleController.addAccountToRole(roleId, accountId);
+    return ResponseFactory.build(
+        202,
+        Methods.POST,
+        `The account ${account[0].username} is added to the role ${roleId}`
+    );
 }
 
 module.exports.removeAccountFromRole = async event => {
