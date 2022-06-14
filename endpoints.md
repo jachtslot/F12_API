@@ -200,7 +200,7 @@ Succesfull call
 Email already in use
 ```json   
 {  
-   "duplicate key value violates unique constraint "unique_email" "  
+   "duplicate key value violates unique constraint \"unique_email\" "  
 }  
 ```  
 ___  
