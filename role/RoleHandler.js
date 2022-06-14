@@ -4,26 +4,19 @@ const AccountController = require('../account/AccountController');
 const accountController = new AccountController();
 const Role = require('./Role');
 
+const ResponseFactory = require('../response/ResponseFactory');
+const Methods = require('../response/methods').Methods;
+
 module.exports.createRole = async event => {
     const responseBody = JSON.parse(event.body);
     const role = new Role(null, responseBody.name);
 
-    return await roleController.createRole(role).then(() => {
-       return {
-           statusCode: 201,
-           headers: {
-               "Access-Control-Allow-Headers": "Content-Type",
-               "Access-Control-Allow-Origin": "http://localhost:4200",
-               "Access-Control-Allow-Methods": "OPTIONS,POST"
-           },
-           body: JSON.stringify(role)
-       }
-    }).catch(error => {
-        return {
-            statusCode: 500,
-            body: error.message
-        }
-    });
+    await roleController.createRole(role);
+    return ResponseFactory.build(
+        201,
+        Methods.POST,
+        JSON.stringify(role)
+    );
 }
 
 module.exports.deleteRole = async event => {
