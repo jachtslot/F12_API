@@ -1,6 +1,6 @@
 const {v4: uuidv4} = require('uuid');
 
-module.exports = class Account {
+module.exports = class Permission {
 
     constructor(role_id, privilege_id, day, begin_time, end_time) {
         this.id = uuidv4();
