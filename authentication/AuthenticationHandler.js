@@ -1,10 +1,11 @@
 const AuthenticationController = require('./AuthenticationController');
+const authenticationController = new AuthenticationController();
 const AuthenticationHelper = require('../util/AuthenticationHelper');
 
 
 module.exports.login = async event => {
     const credentials = AuthenticationHelper.parseBody(event);
-    return await AuthenticationController.login(credentials).then(data => {
+    return await authenticationController.login(credentials).then(data => {
         const loadedAccount = data.loadedAccount;
         const token = data.token;
 
