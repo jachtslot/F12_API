@@ -63,6 +63,11 @@ module.exports = class RoleController {
         return roles.filter(role => role.name === roleName)[0];
     }
 
+    async getRoleById(roleId) {
+        let roles = await this.getAllRoles();
+        return roles.filter(role => role.id === roleId)[0];
+    }
+
     addAccountToRole(roleId, accountId) {
         return roleDAO.addAccount(roleId, accountId);
     }
