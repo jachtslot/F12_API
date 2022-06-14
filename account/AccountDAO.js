@@ -2,7 +2,7 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 
 module.exports = class AccountDAO {
 
-    static createAccount(account) {
+    createAccount(account) {
         const query = `
             INSERT INTO account (id, username, email_address, hashed_password)
             VALUES ($1, $2, $3, $4);
@@ -16,7 +16,7 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static deleteAccount(emailAddress) {
+    deleteAccount(emailAddress) {
         const query = `
             DELETE FROM account
             WHERE email_address = ($1);
@@ -28,7 +28,7 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static async getAllAccounts() {
+    async getAllAccounts() {
         const query = `
             SELECT *
             FROM account;
