@@ -2,13 +2,14 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 
 const AuthenticationDAO = require('./AuthenticationDAO');
+const authenticationDAO = new AuthenticationDAO();
 const AuthenticationHelper = require('../util/AuthenticationHelper');
 
 module.exports = class AuthenticationController {
 
-    static async login(credentials) {
+    async login(credentials) {
         let loadedAccount;
-        return await AuthenticationDAO.loginAccount(credentials)
+        return await authenticationDAO.loginAccount(credentials)
             .then(data => {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
                 return bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
