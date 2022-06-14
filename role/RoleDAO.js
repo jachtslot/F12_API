@@ -2,7 +2,7 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 
 module.exports = class RoleDAO {
 
-    static createRole(role) {
+    createRole(role) {
         const query = `
             INSERT INTO role (id, name)
             VALUES ($1, $2);
@@ -15,7 +15,7 @@ module.exports = class RoleDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static getRoles() {
+    getRoles() {
         const query = `
             SELECT r.name AS role_name, r.id AS role_id, a.id AS account_id, a.username, a.email_address 
             FROM ROLE r
@@ -27,7 +27,7 @@ module.exports = class RoleDAO {
         return PostgreSQLAdapter.executeQuery(query);
     }
 
-    static deleteRole(roleId) {
+    deleteRole(roleId) {
         const query = `
             DELETE 
             FROM role
@@ -40,7 +40,7 @@ module.exports = class RoleDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static addAccount(roleId, accountId) {
+    addAccount(roleId, accountId) {
         const query = `
             INSERT INTO account_role (account_id, role_id)
             VALUES ($1, $2);
@@ -54,7 +54,7 @@ module.exports = class RoleDAO {
         return PostgreSQLAdapter.executeQueryWithValues({query, values});
     }
 
-    static removeAccount(roleId, accountId) {
+    removeAccount(roleId, accountId) {
         const query = `
             DELETE FROM account_role
             WHERE $1 = role_id AND $2 = account_id;
