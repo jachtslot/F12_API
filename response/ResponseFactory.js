@@ -1,4 +1,5 @@
 require('dotenv').config();
+const Methods = require('./methods').Methods;
 
 module.exports = class ResponseFactory {
 
@@ -10,7 +11,7 @@ module.exports = class ResponseFactory {
             headers: {
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Origin": this.WHITELISTED_ORIGIN,
-                "Access-Control-Allow-Methods": `OPTIONS, ${method.toUpperCase()}`
+                "Access-Control-Allow-Methods": `${Methods.OPTION}, ${method}`
             },
             body: body
         };
