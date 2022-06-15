@@ -3,7 +3,7 @@ const axios = require('axios');
 const logger = require('../util/Logger');
 const TwilioHelper = require('../util/TwilioHelper');
 const twilioHelper = new TwilioHelper();
-const innerGateURL = process.env.INNER_GATE_URL_SANDBOX; //Sandbox env
+const innerGateURL = process.env.INNER_GATE_URL_SANDBOX;
 
 'use strict';
 
