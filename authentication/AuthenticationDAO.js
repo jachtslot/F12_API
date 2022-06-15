@@ -2,9 +2,14 @@ const PostgreSQLAdapter = require('../util/PostgreSQLAdapter');
 module.exports = class AuthenticationDAO {
 
     loginAccount(credentials) {
-        const query = `SELECT * FROM account WHERE email_address = $1`;
+        const SELECT_ACCOUNT_BY_EMAIL = `
+            SELECT * 
+            FROM account 
+            WHERE email_address = $1;
+        `;
         const values = [credentials.email];
-        return PostgreSQLAdapter.executeQueryWithValues({query, values});
+
+        return PostgreSQLAdapter.executeQueryWithValues(SELECT_ACCOUNT_BY_EMAIL, values);
     }
 
     async getAccountRole(account) {
