@@ -3,6 +3,10 @@ const AccountController = require('../../account/AccountController');
 const accountController = new AccountController();
 const RoleController = require('../../role/RoleController');
 const roleController = new RoleController();
+const PermissionController = require('../../permission/PermissionController');
+const permissionController = new PermissionController();
+const Permission = require('../../permission/Permission');
+
 const BeforeEach = require('../support/BeforeEach');
 const Role = require('../../role/Role');
 const { v4: uuidv4 } = require('uuid');
@@ -31,6 +35,40 @@ const insertAccount = async () => {
 
     let createdAccount = await accountController.createAccount(newAccount);
     return createdAccount.id;
+}
+
+const addDemoRolesWithAccounts = async () => {
+    let roleId1 = await insertRole('tuinman1');
+    let roleId2 = await insertRole('tuinman2');
+    let roleId3 = await insertRole('tuinman3');
+    await insertRole('tuinman4');
+
+    let accountId1 = await insertAccount();
+    let accountId2 = await insertAccount();
+    let accountId3 = await insertAccount();
+    let accountId4 = await insertAccount();
+
+    await roleController.addAccountToRole(roleId2, accountId4);
+    await roleController.addAccountToRole(roleId2, accountId2);
+    await roleController.addAccountToRole(roleId1, accountId2);
+    await roleController.addAccountToRole(roleId1, accountId4);
+    await roleController.addAccountToRole(roleId1, accountId1);
+    await roleController.addAccountToRole(roleId3, accountId2);
+    await roleController.addAccountToRole(roleId1, accountId3);
+    await roleController.addAccountToRole(roleId3, accountId4);
+
+
+    let permission1 = new Permission(roleId1, 3, 1, 1430, 1800);
+    let permission2 = new Permission(roleId2, 3, 1, 1430, 1800);
+    let permission3 = new Permission(roleId2, 2, 1, 1430, 1800);
+    let permission4 = new Permission(roleId2, 2, 1, 1430, 1800);
+    let permission5 = new Permission(roleId3, 1, 1, 1430, 1800);
+
+    await permissionController.addPermission(permission1);
+    await permissionController.addPermission(permission2);
+    await permissionController.addPermission(permission3);
+    await permissionController.addPermission(permission4);
+    await permissionController.addPermission(permission5);
 }
 
 describe('testing the createRole method of the RoleController()', () => {
@@ -135,24 +173,7 @@ describe('testing the addAccountToRole method of the RoleController()', () => {
     it('handles complex situation successfully', async () => {
         await BeforeEach.run();
 
-        let roleId1 = await insertRole('tuinman1');
-        let roleId2 = await insertRole('tuinman2');
-        let roleId3 = await insertRole('tuinman3');
-        await insertRole('tuinman4');
-
-        let accountId1 = await insertAccount();
-        let accountId2 = await insertAccount();
-        let accountId3 = await insertAccount();
-        let accountId4 = await insertAccount();
-
-        await roleController.addAccountToRole(roleId2, accountId4);
-        await roleController.addAccountToRole(roleId2, accountId2);
-        await roleController.addAccountToRole(roleId1, accountId2);
-        await roleController.addAccountToRole(roleId1, accountId4);
-        await roleController.addAccountToRole(roleId1, accountId1);
-        await roleController.addAccountToRole(roleId3, accountId2);
-        await roleController.addAccountToRole(roleId1, accountId3);
-        await roleController.addAccountToRole(roleId3, accountId4);
+        await addDemoRolesWithAccounts();
 
         let roleWithAccount1 = await roleController.getRole('tuinman1');
         let roleWithAccount2 = await roleController.getRole('tuinman2');
@@ -284,5 +305,36 @@ describe('testing the removeAccountFromRole method of the RoleController()', () 
         roleWithAccount1 = await roleController.getRole('tuinman1');
 
         expect(roleWithAccount1.accounts.length).toBe(1);
+    });
+
+    it('should have no permissions when initializing', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let roleId2 = await insertRole('tuinman2');
+        let roleId3 = await insertRole('tuinman3');
+
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+        let roleWithAccount2 = await roleController.getRole('tuinman2');
+        let roleWithAccount3 = await roleController.getRole('tuinman3');
+
+        expect(roleWithAccount1.permissions.length).toBe(0);
+        expect(roleWithAccount2.permissions.length).toBe(0);
+        expect(roleWithAccount3.permissions.length).toBe(0);
+
+    });
+
+    it('should have specific amounts of permissions when adding', async () => {
+        await BeforeEach.run();
+
+        await addDemoRolesWithAccounts();
+
+        let roleWithAccount1 = await roleController.getRole('tuinman1');
+        let roleWithAccount2 = await roleController.getRole('tuinman2');
+        let roleWithAccount3 = await roleController.getRole('tuinman3');
+
+        expect(roleWithAccount1.permissions.length).toBe(1);
+        expect(roleWithAccount2.permissions.length).toBe(3);
+        expect(roleWithAccount3.permissions.length).toBe(1);
     });
 })
