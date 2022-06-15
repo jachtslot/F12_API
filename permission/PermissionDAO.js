@@ -18,4 +18,15 @@ module.exports = class PermissionDAO {
         ];
         return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_PERMISSION, values);
     }
+
+    getPermissionByRoleId(roleId) {
+        const GET_PERMISSION_BY_ROLE = `
+            SELECT *
+            FROM permission
+            WHERE $1 = role_id
+        `;
+        const values = [roleId];
+
+        return PostgreSQLAdapter.executeQueryWithValues(GET_PERMISSION_BY_ROLE, values);
+    }
 }
