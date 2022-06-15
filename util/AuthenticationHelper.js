@@ -8,7 +8,8 @@ module.exports = class AuthenticationHelper {
         let body = JSON.parse(event.body);
         const email = body.email_address;
         const password = body.hashed_password;
-        return {email, password};
+        const origin = body.origin;
+        return {email, password, origin};
     }
 
 
