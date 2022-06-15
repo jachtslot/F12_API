@@ -28,7 +28,7 @@ module.exports.login = async event => {
     }).catch(error => {
         return {
             statusCode: 500,
-            body: error.message
+            body: JSON.stringify(error.message)
         }
     });
 }
