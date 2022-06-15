@@ -10,23 +10,20 @@ module.exports = class AuthenticationController {
         let loadedAccount;
 
 
-        return await authenticationDAO.loginAccount(credentials)
-            .then(data => {
-                loadedAccount = AuthenticationHelper.createUserFromData(data);
-                return bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
-            })
-            .then(async correctPassword => {
-                if (!correctPassword) {
-                    throw new Error("Wrong password");
-                }
-                const role = await AuthenticationHelper.getUserRole(loadedAccount);
-                const token = await AuthenticationHelper.generateToken(loadedAccount, role);
-                if (credentials.origin === process.env.PORTAL_ORIGIN) {
-                    if (role !== 'admin') {
-                        throw new Error('User is not authorized for this site.')
-                    }
-                }
-                return {loadedAccount, token};
-            });
+        const accountFromDatabase =  await authenticationDAO.loginAccount(credentials)
+        loadedAccount = AuthenticationHelper.createUserFromData(accountFromDatabase);
+        const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
+
+        if(!correctCredentials) {
+            throw new Error("Invalid credentials")
+        }
+        const role = await AuthenticationHelper.getUserRole(loadedAccount);
+        const token = await AuthenticationHelper.generateToken(loadedAccount, role);
+        if (credentials.origin === process.env.PORTAL_ORIGIN) {
+            if (role !== 'admin') {
+                throw new Error('User is not authorized for this site.')
+            }
+        }
+        return {loadedAccount, token};
     }
 }
