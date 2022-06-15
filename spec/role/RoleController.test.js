@@ -306,7 +306,9 @@ describe('testing the removeAccountFromRole method of the RoleController()', () 
 
         expect(roleWithAccount1.accounts.length).toBe(1);
     });
+});
 
+describe('testing the removeAccountFromRole method of the RoleController()', () => {
     it('should have no permissions when initializing', async () => {
         await BeforeEach.run();
 
@@ -337,4 +339,4 @@ describe('testing the removeAccountFromRole method of the RoleController()', () 
         expect(roleWithAccount2.permissions.length).toBe(3);
         expect(roleWithAccount3.permissions.length).toBe(1);
     });
-})
+});
