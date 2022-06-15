@@ -9,6 +9,7 @@ module.exports = class AuthenticationController {
     async login(credentials) {
         let loadedAccount;
 
+
         return await authenticationDAO.loginAccount(credentials)
             .then(data => {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
@@ -20,8 +21,10 @@ module.exports = class AuthenticationController {
                 }
                 const role = await AuthenticationHelper.getUserRole(loadedAccount);
                 const token = await AuthenticationHelper.generateToken(loadedAccount, role);
-                if (!(credentials.origin === process.env.PORTAL_ORIGIN && role === 'admin')) {
-                    throw new Error('User is not authorized for this site.')
+                if (credentials.origin === process.env.PORTAL_ORIGIN) {
+                    if (role !== 'admin') {
+                        throw new Error('User is not authorized for this site.')
+                    }
                 }
                 return {loadedAccount, token};
             });
