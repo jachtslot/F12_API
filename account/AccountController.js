@@ -7,20 +7,15 @@ const bcrypt = require('bcryptjs');
 module.exports = class AccountController {
 
     async createAccount(account) {
-        account = await bcrypt.hash(account.hashedPassword, 12).then(hashedPw => {
-            account.hashedPassword = hashedPw;
+        account.hashedPassword = await bcrypt.hash(account.hashedPassword, 12);
+        const loadedAccount = await accountDAO.createAccount(account);
+        if (process.env.EMAIL_SENDER === '') {
             return account;
-        });
-        return await accountDAO.createAccount(account)
-            .then(() => {
-                if (process.env.EMAIL_SENDER === '') {
-                    return account;
-                }
-                sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
-                    throw new Error(error.message);
-                })
-                return account;
-            })
+        }
+        await sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
+            throw new Error(error.message);
+        })
+        return loadedAccount;
     }
 
     async deleteAccount(emailAddress) {
