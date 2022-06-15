@@ -3,8 +3,11 @@ const permissionDAO = new PermissionDAO();
 
 module.exports = class PermissionController {
 
-    async addPermission(permission) {
-
+    addPermission(permission) {
         return permissionDAO.addPermission(permission);
+    }
+
+    getPermissionOfRole(roleId) {
+        return permissionDAO.getPermissionByRoleId(roleId);
     }
 }
