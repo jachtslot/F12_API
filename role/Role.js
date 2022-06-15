@@ -6,9 +6,14 @@ module.exports = class Role {
         this.id = id ? id : uuidv4();
         this.name = name;
         this.accounts = [];
+        this.permissions = [];
     }
 
     addAccount(account) {
         this.accounts.push(account);
+    }
+
+    addPermission(permission) {
+        this.permissions.push(permission);
     }
 }
