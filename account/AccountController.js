@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 module.exports = class AccountController {
 
     async createAccount(account) {
-        await bcrypt.hash(account.hashedPassword, 12).then(hashedPw => {
+        account = await bcrypt.hash(account.hashedPassword, 12).then(hashedPw => {
             account.hashedPassword = hashedPw;
             return account;
         });
