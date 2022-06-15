@@ -23,7 +23,7 @@ module.exports = class PermissionDAO {
         const GET_PERMISSION_BY_ROLE = `
             SELECT *
             FROM permission
-            WHERE $1 = role_id
+            WHERE $1 = role_id;
         `;
         const values = [roleId];
 

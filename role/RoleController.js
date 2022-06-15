@@ -27,12 +27,12 @@ module.exports = class RoleController {
             }
         }
 
-        return this.addPermissionsToRoles(createdRoles);
+        return await this.addPermissionsToRoles(createdRoles);
     }
 
-    addPermissionsToRoles(roles) {
+    async addPermissionsToRoles(roles) {
         for (const role of roles) {
-            const permissions = permissionDAO.getPermissionByRoleId(role.id);
+            const permissions = await permissionDAO.getPermissionByRoleId(role.id);
 
             for (const permission of permissions) {
                 role.addPermission(permission);
