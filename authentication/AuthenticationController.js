@@ -20,6 +20,9 @@ module.exports = class AuthenticationController {
                 }
                 const role = await AuthenticationHelper.getUserRole(loadedAccount);
                 const token = await AuthenticationHelper.generateToken(loadedAccount, role);
+                if (!(credentials.origin === process.env.PORTAL_ORIGIN && role === 'admin')) {
+                    throw new Error('User is not authorized for this site.')
+                }
                 return {loadedAccount, token};
             });
     }
