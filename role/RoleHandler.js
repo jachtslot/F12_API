@@ -44,7 +44,7 @@ module.exports.addAccountToRole = async event => {
 
     await roleController.addAccountToRole(roleId, accountId);
     return ResponseFactory.build(
-        202,
+        200,
         Methods.POST,
         `The account ${account[0].username} is added to the role ${roleId}`
     );
