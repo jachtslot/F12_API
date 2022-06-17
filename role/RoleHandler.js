@@ -81,3 +81,13 @@ module.exports.getRole = async event => {
         JSON.stringify(role)
     );
 }
+
+module.exports.getAllRolesOfAccount = async event => {
+    let id = event.pathParameters.id;
+    let roles = await roleController.getRolesOfAccount(id);
+    return ResponseFactory.build(
+        200,
+        Methods.GET,
+        JSON.stringify(roles)
+    );
+}
