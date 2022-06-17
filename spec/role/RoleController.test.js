@@ -340,3 +340,54 @@ describe('testing the removeAccountFromRole method of the RoleController()', () 
         expect(roleWithAccount3.permissions.length).toBe(1);
     });
 });
+
+describe('testing the getRolesOfAccount method of the RoleController()', () => {
+    it('should return only one account specified when role has multiple accounts', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
+        let accountId3 = await insertAccount();
+
+        await roleController.addAccountToRole(roleId1, accountId1);
+        await roleController.addAccountToRole(roleId1, accountId2);
+        await roleController.addAccountToRole(roleId1, accountId3);
+
+        let roles = await roleController.getRolesOfAccount(accountId1);
+
+        expect(roles[0].accounts.length).toBe(1);
+        expect(roles[0].accounts[0].id).toBe(accountId1);
+
+    });
+
+    it('should return only the roles that belong to the account specified', async () => {
+        await BeforeEach.run();
+
+        let roleId1 = await insertRole('tuinman1');
+        let roleId2 = await insertRole('tuinman2');
+        let roleId3 = await insertRole('tuinman3');
+        let roleId4 = await insertRole('tuinman4');
+
+        let accountId1 = await insertAccount();
+        let accountId2 = await insertAccount();
+        let accountId3 = await insertAccount();
+        let accountId4 = await insertAccount();
+
+        await roleController.addAccountToRole(roleId1, accountId1);
+        await roleController.addAccountToRole(roleId1, accountId2);
+        await roleController.addAccountToRole(roleId1, accountId3);
+        await roleController.addAccountToRole(roleId2, accountId1);
+        await roleController.addAccountToRole(roleId2, accountId2);
+        await roleController.addAccountToRole(roleId3, accountId3);
+        await roleController.addAccountToRole(roleId4, accountId4);
+
+        let roles = await roleController.getRolesOfAccount(accountId1);
+
+        expect(roles[0].accounts.length).toBe(1);
+        expect(roles[0].accounts[0].id).toBe(accountId1);
+        expect(roles.length).toBe(2);
+        expect(roles[1].accounts[0].id).toBe(accountId1);
+    });
+});
