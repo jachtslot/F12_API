@@ -13,13 +13,12 @@ module.exports = class RoleController {
     }
 
     async getRolesOfAccount(accountId) {
-        const allRoles = this.getAllRoles();
+        const allRoles = await this.getAllRoles();
         for (const role of allRoles) {
             role.accounts = role.accounts.filter(account => account.id === accountId);
         }
         return allRoles.filter(role => role.accounts.length === 1);
     }
-
 
     async getAllRoles() {
         let createdRoles = [];
