@@ -12,6 +12,15 @@ module.exports = class RoleController {
         return roleDAO.createRole(role);
     }
 
+    async getRolesOfAccount(accountId) {
+        const allRoles = this.getAllRoles();
+        for (const role of allRoles) {
+            role.accounts = role.accounts.filter(account => account.id === accountId);
+        }
+        return allRoles.filter(role => role.accounts.length === 1);
+    }
+
+
     async getAllRoles() {
         let createdRoles = [];
         let allRoles = await roleDAO.getRoles();
