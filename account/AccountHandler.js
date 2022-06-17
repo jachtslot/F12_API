@@ -17,17 +17,25 @@ module.exports.createAccount = async event => {
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
-    const account = await accountController.createAccount(unhashedAccount);
-    const body = JSON.stringify({
-        'id': account.id,
-        'username': account.username,
-        'email_address': account.emailAddress
+    return await accountController.createAccount(unhashedAccount).then(account => {
+        const body = JSON.stringify({
+            'id': account.id,
+            'username': account.username,
+            'email_address': account.emailAddress
+        });
+        return ResponseFactory.build(
+            201,
+            Methods.POST,
+            body
+        );
+    }).catch(error => {
+        return ResponseFactory.build(
+            500,
+            Methods.POST,
+            JSON.stringify(error.message)
+        );
     });
-    return ResponseFactory.build(
-        201,
-        Methods.POST,
-        body
-    );
+
 }
 
 module.exports.deleteAccount = async event => {
