@@ -15,11 +15,6 @@ const getTestAccount = () => {
 
 describe('testing the createAccount() method of the AccountController', () => {
 
-    it('overwrites the databaseCredentials host', async () => {
-        await BeforeEach.run();
-        expect(databaseCredentials.host).toBe(process.env.POSTGRES_HOST_TEST_ADDRESS);
-    });
-
     it('should create an account successfully', async () => {
         await BeforeEach.run();
         const account = getTestAccount();

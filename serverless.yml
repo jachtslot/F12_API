@@ -80,6 +80,13 @@ functions:
           path: /role/{id}
           method: get
 
+  getAllRolesOfAccount:
+    handler: role/RoleHandler.getAllRolesOfAccount
+    events:
+      - http:
+          path: /role/account/{id}
+          method: get
+
   createRole:
     handler: role/RoleHandler.createRole
     events:
