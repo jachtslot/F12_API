@@ -56,6 +56,12 @@ module.exports = class AuthenticationHelper {
         )
     }
 
+    static hasAdminRole(event) {
+        const role = this.verifyToken(event).role;
+        return role === 'admin';
+    }
+
+
     static verifyToken(event) {
         let token = event.headers['Authorization'].split(' ')[1];
         if (!token) {

@@ -7,8 +7,7 @@ const ResponseFactory = require('../response/ResponseFactory');
 const Methods = require('../response/methods').Methods;
 
 module.exports.createAccount = async event => {
-    const decodedToken = AuthenticationHelper.verifyToken(event);
-    if (decodedToken.role !== 'admin') {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
         throw new Error('User unauthorized for this function.');
     }
     const responseBody = JSON.parse(event.body);
