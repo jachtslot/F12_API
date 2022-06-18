@@ -50,4 +50,12 @@ describe('Testing the functionality of the PermissionController',() => {
         await expectAsync(permissionController.addPermission(permission1)).toBeResolved();
         await expectAsync(permissionController.addPermission(permission2)).toBeResolved();
     });
+
+    it('should delete the specified permission from id', async () => {
+        await BeforeEach.run();
+        const permission = await testPermission();
+        await permissionController.addPermission(permission);
+        await expectAsync(permissionController.deletePermission(permission.id)).toBeResolved();
+    });
+
 })

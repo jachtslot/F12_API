@@ -7,7 +7,6 @@ const Methods = require('../response/methods').Methods;
 
 module.exports.addPermission = async event => {
     const body = JSON.parse(event.body);
-
     const permission = new Permission(
         body.role_id,
         body.privilege_id,
@@ -22,4 +21,15 @@ module.exports.addPermission = async event => {
         Methods.POST,
         JSON.stringify(permission)
     );
+}
+
+module.exports.deletePermission = async event => {
+    const id = event.pathParameters.id;
+    return await permissionController.deletePermission(id).then(() => {
+        return ResponseFactory.build(200, Methods.DELETE, JSON.stringify(`Deleted permission with ID : ${id}`));
+    }).catch(error => {
+        return ResponseFactory.build(500, Methods.DELETE, JSON.stringify(error));
+    });
+
+
 }

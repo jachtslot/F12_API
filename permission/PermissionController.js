@@ -10,4 +10,8 @@ module.exports = class PermissionController {
     getPermissionOfRole(roleId) {
         return permissionDAO.getPermissionByRoleId(roleId);
     }
+
+    deletePermission(permissionId) {
+        return permissionDAO.deletePermission(permissionId);
+    }
 }

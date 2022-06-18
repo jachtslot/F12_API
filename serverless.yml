@@ -1,4 +1,4 @@
-org: thimovanvelzen
+org: ramonk01
 app: f12-api-service
 service: f12-api-service
 
@@ -114,3 +114,10 @@ functions:
       - http:
           path: /permission
           method: post
+
+  deletePermission:
+    handler: permission/PermissionHandler.deletePermission
+    events:
+    - http:
+        path: /permission/{id}
+        method: delete
