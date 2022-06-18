@@ -18,8 +18,8 @@ ___
 ##### Role
 
 - [Get All Roles](#get-all-roles)
+- [Get All Roles of Account](#get-roles-of-account)
 - [Create Role](#create-role)
-
 
 ##### Permission
 
@@ -86,6 +86,7 @@ The Account with id: {id} was not found.
 - **id** string    
   The `id` specified by the client.    
   Example value: "60ef2e74-1edc-42f4-9a96-83a72d9aa225"
+
 ___  
 
 #### Example request
@@ -182,27 +183,33 @@ ___
   - displayed in web portal
 ___  
 
-___  
+___
+
 #### Responses
-___  
+
+___
+
 #### 201 Created
-Succesfull call
+
+Successful call
 ```json   
 {  
    "id": "e1cd5aa8-1427-4514-94f3-1daeac640163",  
-  
    "username": "test123",  
-  
    "email_address": "s112783887y933"  
 }  
 ```  
+
 #### 500 Internal Server Error
+
 Email already in use
+
 ```json   
 {  
    "duplicate key value violates unique constraint \"unique_email\" "  
 }  
-```  
+```
+
 ___  
 
 ## Role
@@ -351,7 +358,139 @@ curl --request GET \
   --header 'Authorization: ' \  
   --header 'Content-Type: application/json'  
 ```  
+___ 
+
+### Get Roles of Account
+
+___
+
+Get all the `Role`s a specified `Account` participates in.
+
+___
+
+#### Request
+
+___
+
+```text
+GET /role/account/{id}
+```
+
+- **id** The id of a mobile user (`Account`) that wants all the roles where the account belongs to.
+
+___
+
+#### Responses
+
+___
+
+##### 200 OK
+
+```json  
+[  
+  {  
+    "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+    "name": "Tuinman",  
+    "accounts": [  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "username": "tomas",  
+        "email_address": "email"  
+      } 
+    ],  
+    "permissions": [  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "gates": [  
+          0,  
+          1  
+        ],  
+        "day": 3,  
+        "begin_time": "14:30",  
+        "end_time": "16:30"  
+      },  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "gates": [  
+          0  
+        ],  
+        "day": 3,  
+        "begin_time": "18:30",  
+        "end_time": "23:30"  
+      }  
+    ]  
+  },  
+  {  
+    "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+    "name": "Schoonmaker",  
+    "accounts": [  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "username": "tomas",  
+        "email_address": "email"  
+      },    
+    ],  
+    "permissions": [  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "gates": [  
+          0,  
+          1  
+        ],  
+        "day": 3,  
+        "begin_time": "14:30",  
+        "end_time": "16:30"  
+      },  
+      {  
+        "id": "4a35c99a-25a7-43d1-bdfe-72918d9be1ad",  
+        "gates": [  
+          0  
+        ],  
+        "day": 3,  
+        "begin_time": "18:30",  
+        "end_time": "23:30"  
+      }  
+    ]  
+  }  
+]  
+``` 
+
+- **id** uuid    
+  The id of a specific `Role`
+- **name** string    
+  The name of the `Role` - **accounts** list    
+  The list with all the `Account`s that belong to that specific `Role`
+  - **id** uuid    
+    The id of the `Account`
+  - **username** string    
+    The username of the `Account`
+- **email_address** string    
+  The e-mail address used to send first-time information to.
+- **permissions** list    
+  All the `Permission`s that a `Role` has
+  - **id** uuid    
+    The unique id of the permission
+  - **gates** list  
+    A list of gates that can be opened with this specific `Permission`
+  - **day** number    
+    Index of the current day (0=monday, 1=tuesday ... 5=saturday, 6=sunday)
+  - **begin_time** string    
+    The time on the `day` defining how late the permission *starts* in format 'HH:MM' (H=hours, M=minutes)
+  - **end_time** string    
+    The time on the `day` defining how late the permission *ends* in format 'HH:MM' (H=hours, M=minutes)
+
+___
+
+#### Example Request
+
 ___  
+
+```bash  
+curl --request GET \  
+  --url https://api/role/account/4a35c99a-25a7-43d1-bdfe-72918d9be1ad \  
+  --header 'Authorization: ' \  
+  --header 'Content-Type: application/json'
+```
 
 ### Create Role
 
@@ -399,18 +538,24 @@ curl --request POST \
   '  
 ```
 
-
 ## Permission
+
 ___
 
 ### Add Permission
+
 Adds a new `permission` to a role, that allows that role entry on specified timeslots.
+
 ___
+
 #### Request
+
 ```text 
 POST /privilege
 ```
+
 #### body
+
 ``` json
 {
 	"role_id" : "909b9fb6-2604-42f6-814a-eecb96beeb65",
@@ -420,6 +565,7 @@ POST /privilege
 	"end_time" : 1600
 }
 ```
+
 - **role_id** string,
   - references the role_id. Must exist in database before adding permission.
 - **privilege_id** numeric,
@@ -445,6 +591,7 @@ ___
 #### Responses
 
 ##### 200 OK
+
 ```json 
 {
 	"id": "21ef93f4-e253-402c-b535-7b86196a2611",
@@ -455,4 +602,3 @@ ___
 	"end_time": 1600
 }
 ```
-
