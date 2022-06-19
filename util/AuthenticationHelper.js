@@ -5,16 +5,19 @@ const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
     static parseBody(event) {
+        console.log(event);
         let body = JSON.parse(event.body);
         const email = body.email_address;
         const password = body.hashed_password;
         const origin = body.origin;
+        console.log(email, password, origin)
         return {email, password, origin};
     }
 
 
     static createUserFromData(data) {
-        if (!data.length > 0) {
+        if (!data.
+            length > 0) {
             throw new Error("No account connected to that emailaddress");
         } else {
             data = data[0];
