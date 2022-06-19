@@ -31,19 +31,15 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.account (
-                                id uuid NOT NULL,
-                                username character varying NOT NULL,
-                                email_address character varying NOT NULL,
-                                hashed_password character varying NOT NULL
+    id uuid NOT NULL,
+    username character varying NOT NULL,
+    email_address character varying NOT NULL,
+    hashed_password character varying NOT NULL
 );
 
+SELECT * FROM public.account;
 
 ALTER TABLE public.account OWNER TO postgres;
-
---
--- TOC entry 217 (class 1259 OID 24587)
--- Name: account_role; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.account_role (
                                      account_id uuid,
