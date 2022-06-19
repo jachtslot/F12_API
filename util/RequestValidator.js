@@ -10,9 +10,8 @@ module.exports = class RequestValidator {
         this.currentTime = currentTime;
     }
 
-    async hasAccess(currentTime) {
+    async hasAccess() {
         await this.getPermissionsOfAccount(this.accountId);
-        console.log(this.permissions);
     }
 
     async getPermissionsOfAccount(accountId) {
