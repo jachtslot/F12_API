@@ -4,7 +4,7 @@ module.exports = class AccountDAO {
 
     createAccount(account) {
         const INSERT_NEW_ACCOUNT = `
-            INSERT INTO account (id, username, email_address, hashed_password)
+            INSERT INTO public.account (id, username, email_address, hashed_password)
             VALUES ($1, $2, $3, $4);
         `;
         const values = [
@@ -18,7 +18,7 @@ module.exports = class AccountDAO {
 
     deleteAccount(emailAddress) {
         const DELETE_ACCOUNT_BY_EMAIL = `
-            DELETE FROM account
+            DELETE FROM public.account
             WHERE email_address = ($1);
         `;
         const values = [
@@ -31,7 +31,7 @@ module.exports = class AccountDAO {
     async getAllAccounts() {
         const GET_ALL_ACCOUNTS = `
             SELECT *
-            FROM account;
+            FROM public.account;
         `
 
         return PostgreSQLAdapter.executeQuery(GET_ALL_ACCOUNTS);
