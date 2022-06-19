@@ -10,7 +10,9 @@ module.exports.createAccount = async event => {
     if (!AuthenticationHelper.hasAdminRole(event)) {
         throw new Error('User unauthorized for this function.');
     }
-    const responseBody = JSON.parse(event.body);
+
+    event = JSON.parse(event);
+    const responseBody = event.body;
     const username = responseBody.username;
     const email = responseBody.email_address;
     const password = responseBody.hashed_password;

@@ -5,7 +5,6 @@ const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
     static parseBody(event) {
-        console.log(event);
         let body = JSON.parse(event.body);
         const email = body.email_address;
         const password = body.hashed_password;
@@ -16,8 +15,7 @@ module.exports = class AuthenticationHelper {
 
 
     static createUserFromData(data) {
-        if (!data.
-            length > 0) {
+        if (!data.length > 0) {
             throw new Error("No account connected to that emailaddress");
         } else {
             data = data[0];
@@ -66,15 +64,20 @@ module.exports = class AuthenticationHelper {
 
 
     static verifyToken(event) {
+        console.log(event)
+        event = JSON.parse(event)
+        let parsed = event.headers['Authorization'].split(' ')[1];
+
         let token = event.headers['Authorization'].split(' ')[1];
         if (!token) {
+            console.log('error')
             const error = new Error('Not authenticated');
             error.statusCode = 401;
             throw error;
         }
         let decodedToken;
         try {
-            decodedToken = jwt.verify(token, process.env.JWT_SECRET );
+            decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         } catch (err) {
             err.statusCode = 500;
             throw err;

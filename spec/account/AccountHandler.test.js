@@ -12,30 +12,37 @@ describe('testing the createAccount should check users role', () => {
 
     it('should create an account as an admin and create successfully', async () => {
             await BeforeEach.run();
-            const account = new Account(null, 'testUser', 'testUser@hotmail.com', 'Wachtwoord')
+            const account = new Account(null, 'testUser', 'testUser@hotmail.com', 'Wachtwoord');
             await accountController.createAccount(account).then(data => {
-                console.log(data)
             });
 
             const query = `INSERT INTO admin (account_id) VALUES ($1)`
             const values = [account.id];
             await PostgreSqlAdapter.executeQueryWithValues(query, values);
-            // const event = JSON.stringify(
-            //     {
-            //         body: {
-            //             email_address: account.emailAddress,
-            //             hashed_password: account.hashedPassword,
-            //             origin: process.env.PORTAL_ORIGIN
-            //         }
-            //     }
-            // )
-            const event = {
+
+            console.log(account)
+            const loginEvent = {
                 email: account.emailAddress,
-                password: account.hashedPassword,
+                password: 'Wachtwoord',
                 origin: process.env.PORTAL_ORIGIN
             }
-            console.log(event.password)
-            const credentials = await authenticationController.login(event);
+            const credentials = await authenticationController.login(loginEvent);
+
+            const createAccountEvent = JSON.stringify({
+
+                headers: {
+                    Authorization: `Bearer ${credentials.token}`
+                },
+                body: {
+                    username: 'testUserNew',
+                    email_address: 'testUserEmail@hotmail.com',
+                    hashed_password: 'Test_User_Password'
+                }
+
+            });
+
+            const result = await AccountHandler.createAccount(createAccountEvent);
+
         }
     );
 })
