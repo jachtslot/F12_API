@@ -46,12 +46,8 @@ const addDemoRolesWithAccounts = async () => {
     let accountId3 = await insertAccount();
     let accountId4 = await insertAccount();
 
-    await roleController.addAccountToRole(roleId2, accountId4);
-    await roleController.addAccountToRole(roleId2, accountId2);
     await roleController.addAccountToRole(roleId1, accountId2);
-    await roleController.addAccountToRole(roleId1, accountId4);
-    await roleController.addAccountToRole(roleId1, accountId1);
-    await roleController.addAccountToRole(roleId3, accountId2);
+    await roleController.addAccountToRole(roleId2, accountId1);
     await roleController.addAccountToRole(roleId1, accountId3);
     await roleController.addAccountToRole(roleId3, accountId4);
 
@@ -75,7 +71,7 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
         await BeforeEach.run();
         await addDemoRolesWithAccounts();
 
-        const role1 = await roleController.getRole('tuinman1')
+        const role1 = await roleController.getRole('tuinman1');
         const account = role1.accounts[0];
 
         const requestValidator = new RequestValidator(account.id, undefined, 2);
@@ -90,10 +86,36 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
 
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
+
         const requestValidator = new RequestValidator(account.id, undefined, 2);
         await requestValidator.getPermissionsOfAccount();
 
-        expect(requestValidator.permissions.length).toBe(5);
+        expect(requestValidator.permissions.length).toBe(3);
+    });
+
+    it('Gets the right amount of permissions for role3', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role1 = await roleController.getRole('tuinman3')
+        const account = role1.accounts[0];
+
+        const requestValidator = new RequestValidator(account.id, undefined, 2);
+        await requestValidator.getPermissionsOfAccount();
+
+        expect(requestValidator.permissions.length).toBe(1);
+    });
+
+    it('Gets the right amount of permissions for role4', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role1 = await roleController.getRole('tuinman4')
+
+        const requestValidator = new RequestValidator(uuidv4(), undefined, 2);
+        await requestValidator.getPermissionsOfAccount();
+
+        expect(requestValidator.permissions.length).toBe(0);
     });
 
     it('ShouldDenyRequestIfNotCorrectDay', async () => {
@@ -101,6 +123,7 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
         await addDemoRolesWithAccounts();
 
         const role2 = await roleController.getRole('tuinman2')
+
         const account = role2.accounts[0];
         const currentTime = new Time(2, 1100);
         const requestValidator = new RequestValidator(account.id, currentTime, 2);
