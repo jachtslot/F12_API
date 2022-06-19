@@ -12,8 +12,8 @@ module.exports = class PermissionDAO {
             permission.id,
             permission.role_id,
             permission.privilege_id,
-            permission.day,
-            permission.begin_time,
+            permission.p_day,
+            permission.start_time,
             permission.end_time
         ];
         return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_PERMISSION, values);
