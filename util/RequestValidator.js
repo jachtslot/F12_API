@@ -1,9 +1,29 @@
+const RoleController = require('../role/RoleController');
+const roleController = new RoleController();
+
 module.exports = class RequestValidator {
 
     permissions = [];
 
-    hasAccess(accountId, currentTime) {
-        // get all permissions of account
+    constructor(accountId, currentTime) {
+        this.accountId = accountId;
+        this.currentTime = currentTime;
+    }
+
+    async hasAccess(currentTime) {
+        await this.getPermissionsOfAccount(this.accountId);
+        console.log(this.permissions);
+    }
+
+    async getPermissionsOfAccount(accountId) {
+        const rolesOfAccount = await roleController.getRolesOfAccount(accountId);
+        for (const permissions of this.getPermissionLists(rolesOfAccount)) {
+            this.permissions.push(...permissions);
+        }
+    }
+
+    getPermissionLists(rolesOfAccount) {
+        return rolesOfAccount.map(role => role.permissions);
     }
 
     hasPermissionOnThisDay(permissions) {
