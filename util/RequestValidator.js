@@ -5,13 +5,19 @@ module.exports = class RequestValidator {
 
     permissions = [];
 
-    constructor(accountId, currentTime) {
+    constructor(accountId, currentTime, privilege) {
         this.accountId = accountId;
         this.currentTime = currentTime;
+        this.requestPrivilege = privilege
     }
 
     async hasAccess() {
         await this.getPermissionsOfAccount(this.accountId);
+        this.filterPermissionsOnThisDay();
+        this.filterPermissionsOnThisTimeStamp();
+        this.filterPermissionsWithAccessToThisGate();
+
+        return this.permissions.length > 0;
     }
 
     async getPermissionsOfAccount(accountId) {
@@ -25,15 +31,31 @@ module.exports = class RequestValidator {
         return rolesOfAccount.map(role => role.permissions);
     }
 
-    hasPermissionOnThisDay(permissions) {
-        // filter all the permissions that are on this day
+    filterPermissionsOnThisDay() {
+        this.permissions = this.permissions.filter(
+            permission => permission.day === this.currentTime.day
+        );
     }
 
-    hasPermissionOnThisTimeStamp(permissions) {
-        // filter all the permissions that are on this timestamp
+    filterPermissionsOnThisTimeStamp() {
+        this.permissions = this.permissions.filter(
+            permission => this.timeStampIsInRange(permission)
+        );
     }
 
-    hasAccessToThisGate(permissions) {
-        // filter all the permissions that are on the given gate
+    timeStampIsInRange(permission) {
+        return permission.begin_time <= this.currentTime.beginTime &&
+            permission.end_time >= this.currentTime.endTime
+    }
+
+    filterPermissionsWithAccessToThisGate() {
+        this.permissions = this.permissions.filter(
+            permission => this.hasPermissionToRightGate(permission)
+        );
+    }
+
+    hasPermissionToRightGate(permission) {
+        return permission.privilege === 3 ||
+            permission.privilege === this.requestPrivilege;
     }
 }
