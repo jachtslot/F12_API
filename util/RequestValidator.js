@@ -32,9 +32,8 @@ module.exports = class RequestValidator {
     }
 
     filterPermissionsOnThisDay() {
-        console.log(this.permissions);
         this.permissions = this.permissions.filter(
-            permission => permission.day === this.currentTime.day
+            permission => permission.p_day === this.currentTime.day
         );
     }
 
@@ -45,7 +44,7 @@ module.exports = class RequestValidator {
     }
 
     timeStampIsInRange(permission) {
-        return permission.begin_time <= this.currentTime.currentTimeStamp &&
+        return permission.start_time <= this.currentTime.currentTimeStamp &&
             permission.end_time >= this.currentTime.currentTimeStamp
     }
 
