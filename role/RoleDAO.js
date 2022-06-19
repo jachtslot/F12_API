@@ -4,7 +4,7 @@ module.exports = class RoleDAO {
 
     createRole(role) {
         const INSERT_NEW_ROLE = `
-            INSERT INTO role (id, name)
+            INSERT INTO public.role (id, name)
             VALUES ($1, $2);
         `;
         const values = [
@@ -18,9 +18,9 @@ module.exports = class RoleDAO {
     getRoles() {
         const GET_ALL_ROLES_WITH_ACCOUNTS = `
             SELECT r.name AS role_name, r.id AS role_id, a.id AS account_id, a.username, a.email_address 
-            FROM ROLE r
-            LEFT JOIN account_role ar ON r.id = ar.role_id
-            LEFT JOIN account a on ar.account_id = a.id
+            FROM public.role r
+            LEFT JOIN public.account_role ar ON r.id = ar.role_id
+            LEFT JOIN public.account a on ar.account_id = a.id
             ORDER BY role_id;
         `;
 
@@ -30,7 +30,7 @@ module.exports = class RoleDAO {
     deleteRole(roleId) {
         const DELETE_ROLE_BY_ID = `
             DELETE 
-            FROM role
+            FROM public.role
             WHERE id = $1;
         `;
 
@@ -42,7 +42,7 @@ module.exports = class RoleDAO {
 
     addAccount(roleId, accountId) {
         const ADD_ACCOUNT_TO_ROLE = `
-            INSERT INTO account_role (account_id, role_id)
+            INSERT INTO public.account_role (account_id, role_id)
             VALUES ($1, $2);
         `;
 
@@ -56,7 +56,7 @@ module.exports = class RoleDAO {
 
     removeAccount(roleId, accountId) {
         const REMOVE_ACCOUNT_FROM_ROLE = `
-            DELETE FROM account_role
+            DELETE FROM public.account_role
             WHERE $1 = role_id AND $2 = account_id;
         `;
 
