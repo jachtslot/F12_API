@@ -7,6 +7,7 @@ const PermissionController = require('../../permission/PermissionController');
 const permissionController = new PermissionController();
 const Permission = require('../../permission/Permission');
 const RequestValidator = require('../../util/RequestValidator');
+const Time = require('../../util/Time');
 
 const BeforeEach = require('../support/BeforeEach');
 const Role = require('../../role/Role');
@@ -56,7 +57,7 @@ const addDemoRolesWithAccounts = async () => {
 
 
     let permission1 = new Permission(roleId1, 3, 1, 1430, 1800);
-    let permission2 = new Permission(roleId2, 3, 1, 1430, 1800);
+    let permission2 = new Permission(roleId2, 3, 1, 2200, 2300);
     let permission3 = new Permission(roleId2, 2, 1, 1430, 1800);
     let permission4 = new Permission(roleId2, 2, 1, 1430, 1800);
     let permission5 = new Permission(roleId3, 1, 1, 1430, 1800);
@@ -70,18 +71,6 @@ const addDemoRolesWithAccounts = async () => {
 
 describe('testing the getPermissionsOfAccount method of the RequestValidator()', () => {
 
-    it('Gets the right amount of permissions for role2', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
-        const role2 = await roleController.getRole('tuinman2')
-        const account = role2.accounts[0];
-        const requestValidator = new RequestValidator(account.id, undefined);
-        await requestValidator.hasAccess();
-
-        expect(requestValidator.permissions.length).toBe(5);
-    });
-
     it('Gets the right amount of permissions for role1', async () => {
         await BeforeEach.run();
         await addDemoRolesWithAccounts();
@@ -89,9 +78,93 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
         const role1 = await roleController.getRole('tuinman1')
         const account = role1.accounts[0];
 
-        const requestValidator = new RequestValidator(account.id, undefined);
-        await requestValidator.hasAccess();
+        const requestValidator = new RequestValidator(account.id, undefined, 2);
+        await requestValidator.getPermissionsOfAccount();
 
         expect(requestValidator.permissions.length).toBe(1);
+    });
+
+    it('Gets the right amount of permissions for role2', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const requestValidator = new RequestValidator(account.id, undefined, 2);
+        await requestValidator.getPermissionsOfAccount();
+
+        expect(requestValidator.permissions.length).toBe(5);
+    });
+
+    it('ShouldDenyRequestIfNotCorrectDay', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(2, 1500);
+        const requestValidator = new RequestValidator(account.id, currentTime, 2);
+
+        expect(await requestValidator.hasAccess()).toBeFalse();
+    });
+
+    it('ShouldDenyRequestIfTimeStampTooEarly', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(1, 1400);
+        const requestValidator = new RequestValidator(account.id, currentTime, 2);
+
+        expect(await requestValidator.hasAccess()).toBeFalse();
+    });
+
+    it('ShouldDenyRequestIfTimeStampTooLate', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(1, 1900);
+        const requestValidator = new RequestValidator(account.id, currentTime, 2);
+
+        expect(await requestValidator.hasAccess()).toBeFalse();
+    });
+
+    it('ShouldDenyRequestIfPrivilegeNotGranted', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(1, 1600);
+        const requestValidator = new RequestValidator(account.id, currentTime, 1);
+
+        expect(await requestValidator.hasAccess()).toBeFalse();
+    });
+
+    it('ShouldAcceptRequestIfMeetsRequirements', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(1, 1600);
+        const requestValidator = new RequestValidator(account.id, currentTime, 2);
+
+        expect(await requestValidator.hasAccess()).toBeTrue();
+    });
+
+    it('ShouldAcceptRequestIfMeetsRequirementsWhenPrivilegeIsBoth', async () => {
+        await BeforeEach.run();
+        await addDemoRolesWithAccounts();
+
+        const role2 = await roleController.getRole('tuinman2')
+        const account = role2.accounts[0];
+        const currentTime = new Time(1, 2230);
+        const requestValidator = new RequestValidator(account.id, currentTime, 2);
+
+        expect(await requestValidator.hasAccess()).toBeTrue();
     });
 });
