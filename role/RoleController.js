@@ -3,8 +3,8 @@ const roleDAO = new RoleDAO();
 const Role = require('./Role');
 const Account = require('./../account/Account');
 
-const PermissionDAO = require('./../permission/PermissionDAO');
-const permissionDAO = new PermissionDAO();
+const PermissionController = require('./../permission/PermissionController');
+const permissionController = new PermissionController();
 
 module.exports = class RoleController {
 
@@ -40,7 +40,7 @@ module.exports = class RoleController {
 
     async addPermissionsToRoles(roles) {
         for (const role of roles) {
-            const permissions = await permissionDAO.getPermissionByRoleId(role.id);
+            const permissions = await permissionController.getPermissionOfRole(role.id);
 
             for (const permission of permissions) {
                 role.addPermission(permission);
