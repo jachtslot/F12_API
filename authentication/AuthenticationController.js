@@ -10,10 +10,7 @@ module.exports = class AuthenticationController {
         let loadedAccount;
         const accountFromDatabase =  await authenticationDAO.loginAccount(credentials);
         loadedAccount = AuthenticationHelper.createUserFromData(accountFromDatabase);
-        console.log('ad')
-        console.log(loadedAccount);
-        console.log('cred')
-        console.log(credentials)
+
 
         const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
 
