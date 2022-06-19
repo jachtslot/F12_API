@@ -1,4 +1,3 @@
-const {CREDENTIALS: databaseCredentials} = require("../../util/DatabaseCredentials");
 const ONE_MINUTE_IN_MS = 60_000;
 
 beforeAll(async () => {
