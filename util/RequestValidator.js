@@ -5,14 +5,14 @@ module.exports = class RequestValidator {
 
     permissions = [];
 
-    constructor(accountId, currentTime, privilege) {
+    constructor(accountId, currentTime, requestedPrivilege) {
         this.accountId = accountId;
         this.currentTime = currentTime;
-        this.requestPrivilege = privilege
+        this.requestedPrivilege = requestedPrivilege
     }
 
     async hasAccess() {
-        await this.getPermissionsOfAccount(this.accountId);
+        await this.getPermissionsOfAccount();
         this.filterPermissionsOnThisDay();
         this.filterPermissionsOnThisTimeStamp();
         this.filterPermissionsWithAccessToThisGate();
@@ -20,8 +20,8 @@ module.exports = class RequestValidator {
         return this.permissions.length > 0;
     }
 
-    async getPermissionsOfAccount(accountId) {
-        const rolesOfAccount = await roleController.getRolesOfAccount(accountId);
+    async getPermissionsOfAccount() {
+        const rolesOfAccount = await roleController.getRolesOfAccount(this.accountId);
         for (const permissions of this.getPermissionLists(rolesOfAccount)) {
             this.permissions.push(...permissions);
         }
@@ -32,6 +32,7 @@ module.exports = class RequestValidator {
     }
 
     filterPermissionsOnThisDay() {
+        console.log(this.permissions);
         this.permissions = this.permissions.filter(
             permission => permission.day === this.currentTime.day
         );
@@ -44,8 +45,8 @@ module.exports = class RequestValidator {
     }
 
     timeStampIsInRange(permission) {
-        return permission.begin_time <= this.currentTime.beginTime &&
-            permission.end_time >= this.currentTime.endTime
+        return permission.begin_time <= this.currentTime.currentTimeStamp &&
+            permission.end_time >= this.currentTime.currentTimeStamp
     }
 
     filterPermissionsWithAccessToThisGate() {
@@ -55,7 +56,7 @@ module.exports = class RequestValidator {
     }
 
     hasPermissionToRightGate(permission) {
-        return permission.privilege === 3 ||
-            permission.privilege === this.requestPrivilege;
+        return permission.privilege_id === 3 ||
+            permission.privilege_id === this.requestedPrivilege;
     }
 }

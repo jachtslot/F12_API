@@ -1,8 +1,7 @@
 module.exports = class Time {
 
-    constructor(day, beginTime, endTime) {
+    constructor(day, currentTimeStamp) {
         this.day = day
-        this.beginTime = beginTime;
-        this.endTime = endTime;
+        this.currentTimeStamp = currentTimeStamp
     }
 }
