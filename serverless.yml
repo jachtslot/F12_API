@@ -129,3 +129,12 @@ functions:
       - http:
           path: /role/removeAccount
           method: delete
+
+
+
+  deletePermission:
+    handler: permission/PermissionHandler.deletePermission
+    events:
+    - http:
+        path: /permission/{id}
+        method: delete
