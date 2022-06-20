@@ -31,6 +31,20 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQueryWithValues(UPDATE_PASSWORD, values);
     }
 
+    changeAccountName(id, newName) {
+        const UPDATE_ACCOUNT_NAME = `
+            UPDATE public.account
+            SET username = $1
+            WHERE id = $2;
+        `;
+
+        const values = [
+            newName, id
+        ];
+
+        return PostgreSQLAdapter.executeQueryWithValues(UPDATE_ACCOUNT_NAME, values);
+    }
+
     deleteAccount(emailAddress) {
         const DELETE_ACCOUNT_BY_EMAIL = `
             DELETE FROM public.account
