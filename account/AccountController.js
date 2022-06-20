@@ -4,6 +4,7 @@ const sendRegistrationMail = require('../util/EmailHelper');
 const bcrypt = require('bcryptjs');
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
+const InvalidAccountNameError = require("./InvalidAccountNameError");
 const SimpleEmailServiceError = require('./SimpleEmailServiceError');
 
 module.exports = class AccountController {
@@ -45,6 +46,20 @@ module.exports = class AccountController {
 
     emailServiceEnabled() {
         return process.env.EMAIL_SENDER !== '';
+    }
+
+    async changeAccountName(id, newName) {
+        const existingAccount = await this.getAccount(id);
+
+        if (existingAccount === undefined) {
+            throw new AccountNotFoundError('account not found in database');
+        }
+
+        if (newName === undefined || newName === null || newName.length === 0) {
+            throw new InvalidAccountNameError('new name cannot be empty');
+        }
+
+        await accountDAO.changeAccountName(id, newName);
     }
 
     async deleteAccount(emailAddress) {
