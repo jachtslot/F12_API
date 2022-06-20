@@ -4,6 +4,7 @@ const AuthenticationController = require('../../authentication/AuthenticationCon
 const authenticationController = new AuthenticationController();
 const Account = require('../../account/Account');
 const BeforeEach = require('../support/BeforeEach');
+const PostgresqlAdapter = require('../../util/PostgreSQLAdapter');
 
 const beforeEach = async () => {
     await BeforeEach.run();
@@ -39,7 +40,7 @@ describe('testing the login() method of the AuthenticationController', () => {
             const result = await authenticationController.login(
                 {
                     email: getTestAdmin().emailAddress,
-                    password: getTestAdmin().hashedPassword,
+                    password: getTestAdmin().hashed_password,
                     origin: process.env.PORTAL_ORIGIN
                 }
             )
@@ -64,7 +65,7 @@ describe('testing the login() method of the AuthenticationController', () => {
         await expectAsync(authenticationController.login(
             {
                 email: 'NonExistingEmail@hotmail.com',
-                password: getTestAdmin().hashedPassword,
+                password: getTestAdmin().hashed_password,
                 origin: process.env.PORTAL_ORIGIN
             }
         )).toBeRejected();
@@ -74,7 +75,7 @@ describe('testing the login() method of the AuthenticationController', () => {
         await beforeEach();
         await expectAsync(authenticationController.login({
                 email: getTestUser().emailAddress,
-                password: getTestUser().hashedPassword,
+                password: getTestUser().hashed_password,
                 origin: process.env.PORTAL_ORIGIN
             }
         )).toBeRejected();
@@ -83,7 +84,7 @@ describe('testing the login() method of the AuthenticationController', () => {
         await beforeEach();
         await expectAsync(authenticationController.login({
             email: getTestAdmin().emailAddress,
-            password: getTestAdmin().hashedPassword,
+            password: getTestAdmin().hashed_password,
             origin: process.env.APP_ORIGIN
         })).toBeResolved();
 
