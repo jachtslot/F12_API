@@ -33,7 +33,7 @@ describe('testing the createAccount() method of the AccountController', () => {
     });
 });
 
-describe('testing the changeAccount() method of the AccountController', () => {
+describe('testing the changePassword() method of the AccountController', () => {
 
     it('should update password when correct password given', async () => {
         await BeforeEach.run();
@@ -82,5 +82,32 @@ describe('testing the changeAccount() method of the AccountController', () => {
         await expectAsync(
             accountController.changePassword(createdAccount, 'Password', 'newpassword')
         ).toBeRejectedWith(new AccountNotFoundError('account not found in database'));
+    });
+});
+
+describe('testing the changeAccountName() method of the AccountController', () => {
+
+    it('should update account name when correct id found in JWT', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, 'newname')
+        ).toBeResolved();
+    });
+
+    it('should throw an error when id not found in database', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(uuidv4(), 'newname')
+        ).toBeResolved();
+    });
+
+    it('should throw an error when new id name is empty', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, '')
+        ).toBeResolved();
     });
 });
