@@ -1,7 +1,7 @@
 const Account = require('../account/Account');
 const jwt = require('jsonwebtoken');
 const AuthenticationDAO = require('../authentication/AuthenticationDAO');
-const AccountNotPresentError = require('../account/AccountNotPresentError');
+const AccountNotFoundError = require('../account/AccountNotFoundError');
 const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
@@ -18,7 +18,7 @@ module.exports = class AuthenticationHelper {
     static createAccountFromData(accountData) {
         const account = accountData[0];
         if (!account) {
-            throw new AccountNotPresentError('No account connected to specified email address')
+            throw new AccountNotFoundError('No account connected to specified email address')
         }
         return new Account(
             account.id,
@@ -29,7 +29,7 @@ module.exports = class AuthenticationHelper {
     }
 
     static async getUserRole(account) {
-        const adminRoles = await authenticationDAO.getAccountRole(account);
+        const adminRoles = await authenticationDAO.getAccountAdminRole(account);
         if (!adminRoles[0]) return 'user';
         return 'admin';
     }
