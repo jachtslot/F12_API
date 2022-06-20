@@ -1,3 +1,4 @@
+const {v4: uuidv4} = require('uuid');
 const AccountController = require('../../account/AccountController');
 const accountController = new AccountController();
 const Account = require('../../account/Account');
@@ -42,11 +43,44 @@ describe('testing the changeAccount() method of the AccountController', () => {
         ).toBeResolved();
     });
 
+    it('should have different password when updated', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changePassword(createdAccount, 'Password', 'newpassword')
+        ).toBeResolved();
+        let updatedAccount = await accountController.getAccountWithPassword(createdAccount.id);
+        await expectAsync(
+            accountController.changePassword(updatedAccount, 'Password', 'newpassword')
+        ).toBeRejectedWith(new ValidationError('old password is not correct'));
+        let notUpdatedAccount = await accountController.getAccountWithPassword(updatedAccount.id);
+        await expectAsync(
+            accountController.changePassword(notUpdatedAccount, 'newpassword', 'yetanother')
+        ).toBeResolved();
+    });
+
     it('should throw an error when password has lowercase difference', async () => {
         await BeforeEach.run();
         let createdAccount = await accountController.createAccount(createTestAccount());
         await expectAsync(
-            accountController.changePassword(createdAccount, 'wrongpassword', 'newpassword')
-        ).toBeRejected();
+            accountController.changePassword(createdAccount, 'password', 'newpassword')
+        ).toBeRejectedWith(new ValidationError('old password is not correct'));
+    });
+
+    it('should throw an error when password does not match at all', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changePassword(createdAccount, 'completelywrong', 'newpassword')
+        ).toBeRejectedWith(new ValidationError('old password is not correct'));
+    });
+
+    it('should throw an error when account not found', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        createdAccount.id = uuidv4();
+        await expectAsync(
+            accountController.changePassword(createdAccount, 'Password', 'newpassword')
+        ).toBeRejectedWith(new AccountNotFoundError('account not found in database'));
     });
 });

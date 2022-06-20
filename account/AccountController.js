@@ -22,7 +22,6 @@ module.exports = class AccountController {
     }
 
     async changePassword(account, oldPassword, newPassword) {
-        account.hashed_password = await this.createHashedPassword(account);
         const existingAccount = await this.getAccountWithPassword(account.id);
 
         if (existingAccount === undefined) {
@@ -35,6 +34,7 @@ module.exports = class AccountController {
         }
 
         account.hashed_password = newPassword;
+        account.hashed_password = await this.createHashedPassword(account);
         await accountDAO.changePassword(account);
     }
 
