@@ -46,6 +46,16 @@ module.exports = class AccountController {
         return process.env.EMAIL_SENDER !== '';
     }
 
+    async changeAccountName(id, newName) {
+        const existingAccount = await this.getAccount(id);
+
+        if (existingAccount === undefined) {
+            throw new AccountNotFoundError('account not found in database');
+        }
+
+        await accountDAO.changeAccountName(id, newName);
+    }
+
     async deleteAccount(emailAddress) {
         return accountDAO.deleteAccount(emailAddress);
     }
