@@ -32,6 +32,14 @@ functions:
           path: /account
           method: post
 
+  changePassword:
+    handler: account/AccountHandler.changePassword
+    events:
+      - http:
+          path: /account/{id}
+          method: put
+
+
   addPermission:
     handler: permission/PermissionHandler.addPermission
     events:

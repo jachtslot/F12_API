@@ -3,17 +3,15 @@ const databaseCredentials = require('./DatabaseCredentials').CREDENTIALS
 
 module.exports = class PostgreSQLAdapter {
 
+    static pool = new Pool(databaseCredentials);
+
     static async executeQueryWithValues(query, values) {
-        const pool = new Pool(databaseCredentials);
-        return await pool.query(query, values).then(data => {
-            return data.rows;
-        });
+        const response = await this.pool.query(query, values);
+        return response.rows;
     }
 
     static async executeQuery(query) {
-        const pool = new Pool(databaseCredentials);
-        return await pool.query(query).then(data => {
-            return data.rows;
-        });
+        const response = await this.pool.query(query);
+        return response.rows;
     }
 }

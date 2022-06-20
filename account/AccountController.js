@@ -2,22 +2,49 @@ const AccountDAO = require('./AccountDAO');
 const accountDAO = new AccountDAO();
 const sendRegistrationMail = require('../util/EmailHelper');
 const bcrypt = require('bcryptjs');
-const {integer} = require('twilio/lib/base/deserialize');
+const ValidationError = require('./ValidationError');
+const AccountNotFoundError = require('./AccountNotFoundError');
 
 
 module.exports = class AccountController {
 
     async createAccount(account) {
-        const hashRounds = integer(process.env.HASH_ROUNDS);
-        account.hashedPassword = await bcrypt.hash(account.hashedPassword, hashRounds);
-        const loadedAccount = await accountDAO.createAccount(account);
-        if (process.env.EMAIL_SENDER === '') {
-            return account;
+        account.hashed_password = await this.createHashedPassword(account);
+        await accountDAO.createAccount(account);
+
+        if (this.emailServiceEnabled()) {
+            sendRegistrationMail(account.emailAddress, account.hashed_password).catch(error => {
+                throw new Error(error.message);
+            });
         }
-        await sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
-            throw new Error(error.message);
-        });
-        return loadedAccount;
+
+        return account;
+    }
+
+    async changePassword(account, oldPassword, newPassword) {
+        const existingAccount = await this.getAccountWithPassword(account.id);
+
+        if (existingAccount === undefined) {
+            throw new AccountNotFoundError('account not found in database');
+        }
+
+        const correctPassword = await bcrypt.compare(oldPassword, existingAccount.hashed_password);
+        if (!correctPassword) {
+            throw new ValidationError('old password is not correct');
+        }
+
+        account.hashed_password = newPassword;
+        account.hashed_password = await this.createHashedPassword(account);
+        await accountDAO.changePassword(account);
+    }
+
+    async createHashedPassword(account) {
+        const hashRounds = parseInt(process.env.HASH_ROUNDS);
+        return await bcrypt.hash(account.hashed_password, hashRounds);
+    }
+
+    emailServiceEnabled() {
+        return process.env.EMAIL_SENDER !== '';
     }
 
     async deleteAccount(emailAddress) {
@@ -35,7 +62,13 @@ module.exports = class AccountController {
 
     async getAccount(id) {
         return this.getAllAccounts().then(accounts => {
-            return accounts.filter(account => account.id === id);
-        })
+            return accounts.filter(account => account.id === id)[0];
+        });
+    }
+
+    async getAccountWithPassword(id) {
+        return accountDAO.getAllAccounts().then(accounts => {
+            return accounts.filter(account => account.id === id)[0];
+        });
     }
 }

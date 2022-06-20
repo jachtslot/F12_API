@@ -6,6 +6,9 @@ const AuthenticationHelper = require('../util/AuthenticationHelper');
 const ResponseFactory = require('../response/ResponseFactory');
 const Methods = require('../response/methods').Methods;
 
+const ValidationError = require('./ValidationError');
+const AccountNotFoundError = require('./AccountNotFoundError');
+
 module.exports.createAccount = async event => {
     if (!AuthenticationHelper.hasAdminRole(event)) {
         throw new Error('User unauthorized for this function.');
@@ -37,6 +40,40 @@ module.exports.createAccount = async event => {
         );
     });
 
+}
+
+module.exports.changePassword = async event => {
+    let responseBody = JSON.parse(event.body);
+    let id = event.pathParameters.id;
+    let old_password = responseBody.old_password;
+    let new_password = responseBody.new_password;
+
+    try {
+        await accountController.changePassword(
+            await accountController.getAccountWithPassword(id),
+            old_password, new_password
+        );
+        return ResponseFactory.build(
+            200,
+            Methods.PUT,
+            `password has been updated`
+        );
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            return ResponseFactory.build(
+                403,
+                Methods.PUT,
+                `invalid password for account with id: ${id}`
+            );
+        }
+        if (error instanceof AccountNotFoundError) {
+            return ResponseFactory.build(
+                404,
+                Methods.PUT,
+                `account with id ${id} is not found`
+            );
+        }
+    }
 }
 
 module.exports.deleteAccount = async event => {

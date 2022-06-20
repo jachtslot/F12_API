@@ -9,6 +9,7 @@ module.exports.addPermission = async event => {
     const body = JSON.parse(event.body);
 
     const permission = new Permission(
+        null,
         body.role_id,
         body.privilege_id,
         body.day,
