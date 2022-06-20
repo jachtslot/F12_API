@@ -87,10 +87,10 @@ module.exports.changePassword = async event => {
 }
 
 module.exports.changeAccountName = async event => {
-    let decodedToken = AuthenticationHelper.verifyToken(event);
-    let accountId = decodedToken.id;
-    let responseBody = JSON.parse(event.body);
-    let newName = responseBody.new_name;
+    const decodedToken = AuthenticationHelper.verifyToken(event);
+    const accountId = decodedToken.id;
+    const responseBody = JSON.parse(event.body);
+    const newName = responseBody.new_name;
 
     try {
         await accountController.changeAccountName(accountId, newName);
