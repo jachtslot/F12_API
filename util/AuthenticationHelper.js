@@ -1,6 +1,7 @@
 const Account = require('../account/Account');
 const jwt = require('jsonwebtoken');
 const AuthenticationDAO = require('../authentication/AuthenticationDAO');
+const ValidationError = require('../authentication/ValidationError');
 const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
@@ -14,33 +15,23 @@ module.exports = class AuthenticationHelper {
     }
 
 
-    static createUserFromData(data) {
-        if (!data.length > 0) {
-            throw new Error("No account connected to that emailaddress");
-        } else {
-            data = data[0];
-            return new Account(
-                data.id,
-                data.username,
-                data.email_address,
-                data.hashed_password
-            );
+    static createAccountFromData(accountData) {
+        const account = accountData[0];
+        if (!account) {
+            throw new ValidationError('No account connected to that emailaddress');
         }
+        return new Account(
+            account.id,
+            account.username,
+            account.email_address,
+            account.hashed_password
+        );
     }
 
     static async getUserRole(account) {
-        let role;
-        await authenticationDAO.getAccountRole(account).then(res => {
-            if (res[0]) {
-                role = 'admin';
-            } else {
-                role = 'user';
-            }
-        }).catch(error => {
-            throw error;
-        })
-
-        return role;
+        const adminRoles = await authenticationDAO.getAccountRole(account);
+        if (!adminRoles[0]) return 'user';
+        return 'admin';
     }
 
     static generateToken(account, role) {
@@ -64,16 +55,10 @@ module.exports = class AuthenticationHelper {
 
 
     static verifyToken(event) {
-        console.log(event)
         event = JSON.parse(event)
-        let parsed = event.headers['Authorization'].split(' ')[1];
-
         let token = event.headers['Authorization'].split(' ')[1];
         if (!token) {
-            console.log('error')
-            const error = new Error('Not authenticated');
-            error.statusCode = 401;
-            throw error;
+            throw new ValidationError('No authorization token present');
         }
         let decodedToken;
         try {
@@ -83,9 +68,7 @@ module.exports = class AuthenticationHelper {
             throw err;
         }
         if (!decodedToken) {
-            const error = new Error('Not authenticated')
-            error.statusCode = 401;
-            throw error;
+            throw new ValidationError('Invalid authorization token');
         }
         return decodedToken;
 
