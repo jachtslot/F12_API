@@ -29,10 +29,8 @@ describe('testing the createAccount should check users role', () => {
         await BeforeEach.run();
         const isAdmin = false;
         const account = await AuthenticationHelper.createTestAccount(isAdmin);
-        const credentials = await AuthenticationHelper.getJwtToken(account, process.env.PORTAL_ORIGIN);
+        const credentials = await AuthenticationHelper.getJwtToken(account, process.env.APP_ORIGIN);
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, createAccountBody())
         await expectAsync(AccountHandler.createAccount(mockEvent)).toBeRejected();
-
-
     });
 })
