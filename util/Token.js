@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 
-module.exports = class Account {
+module.exports = class Token {
 
     constructor(id, username, emailAddress, hashedPassword, role) {
         this.id = id ? id : uuidv4()
