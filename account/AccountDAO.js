@@ -66,3 +66,4 @@ module.exports = class AccountDAO {
         return PostgreSQLAdapter.executeQuery(GET_ALL_ACCOUNTS);
     }
 }
+
