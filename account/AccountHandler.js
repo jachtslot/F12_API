@@ -69,13 +69,6 @@ module.exports.changePassword = async event => {
             `password has been updated`
         );
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return ResponseFactory.build(
-                403,
-                Methods.PUT,
-                `invalid password for account with id: ${id}`
-            );
-        }
         if (error instanceof AccountNotFoundError) {
             return ResponseFactory.build(
                 404,

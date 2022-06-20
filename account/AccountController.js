@@ -29,11 +29,6 @@ module.exports = class AccountController {
             throw new AccountNotFoundError('account not found in database');
         }
 
-        const correctPassword = await bcrypt.compare(oldPassword, existingAccount.hashed_password);
-        if (!correctPassword) {
-            throw new ValidationError('old password is not correct');
-        }
-
         account.hashed_password = newPassword;
         account.hashed_password = await this.createHashedPassword(account);
         await accountDAO.changePassword(account);
