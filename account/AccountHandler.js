@@ -8,10 +8,11 @@ const Methods = require('../response/methods').Methods;
 
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
+const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
 
 module.exports.createAccount = async event => {
     if (!AuthenticationHelper.hasAdminRole(event)) {
-        throw new Error('User unauthorized for this function.');
+        throw new UnauthorizedUserError('User is not authenticated for this action');
     }
 
     event = JSON.parse(event);
