@@ -17,11 +17,26 @@ describe('testing the createAccount() method of the AccountController', () => {
         let accountRecords = await accountController.createAccount(testAccount);
         expect(accountRecords.id.length > 0).toBeTrue();
 
-    })
+    });
 
     it('should throw an error when email already exists', async () => {
         await BeforeEach.run();
         await accountController.createAccount(testAccount);
         await expectAsync(accountController.createAccount(testAccount)).toBeRejected();
-    })
-})
+    });
+});
+
+describe('testing the changeAccount() method of the AccountController', () => {
+
+    it('should create an account successfully', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(testAccount);
+        await expectAsync(
+            accountController.changePassword(createdAccount, 'Password', 'newpassword')
+        ).toBeResolved();
+    });
+
+    it('should throw an error when email already exists', async () => {
+
+    });
+});
