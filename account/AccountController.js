@@ -9,11 +9,11 @@ const AccountNotFoundError = require('./AccountNotFoundError');
 module.exports = class AccountController {
 
     async createAccount(account) {
-        account.hashedPassword = await this.createHashedPassword(account);
+        account.hashed_password = await this.createHashedPassword(account);
         await accountDAO.createAccount(account);
 
         if (this.emailServiceEnabled()) {
-            sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
+            sendRegistrationMail(account.emailAddress, account.hashed_password).catch(error => {
                 throw new Error(error.message);
             });
         }
@@ -22,14 +22,15 @@ module.exports = class AccountController {
     }
 
     async changePassword(account, oldPassword, newPassword) {
-        account.hashedPassword = await this.createHashedPassword(account);
+        account.hashed_password = await this.createHashedPassword(account);
         const existingAccount = await this.getAccountWithPassword(account.id);
 
         if (existingAccount === undefined) {
             throw new AccountNotFoundError('account not found in database');
         }
 
-        if (await bcrypt.compare(oldPassword, existingAccount.hashed_password)) {
+        const correctPassword = await bcrypt.compare(oldPassword, existingAccount.hashed_password);
+        if (!correctPassword) {
             throw new ValidationError('old password is not correct');
         }
 
@@ -37,8 +38,8 @@ module.exports = class AccountController {
         await accountDAO.changePassword(account);
     }
 
-    createHashedPassword(account) {
-        return bcrypt.hash(account.hashedPassword, 12);
+    async createHashedPassword(account) {
+        return await bcrypt.hash(account.hashed_password, 12);
     }
 
     emailServiceEnabled() {

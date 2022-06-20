@@ -12,7 +12,7 @@ module.exports = class AuthenticationController {
         return await authenticationDAO.loginAccount(credentials)
             .then(data => {
                 loadedAccount = AuthenticationHelper.createUserFromData(data);
-                return bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
+                return bcrypt.compare(credentials.password, loadedAccount.hashed_password);
             })
             .then(correctPassword => {
                 if (!correctPassword) {
