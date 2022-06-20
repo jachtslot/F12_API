@@ -2,12 +2,14 @@ const AccountDAO = require('./AccountDAO');
 const accountDAO = new AccountDAO();
 const sendRegistrationMail = require('../util/EmailHelper');
 const bcrypt = require('bcryptjs');
+const {integer} = require('twilio/lib/base/deserialize');
 
 
 module.exports = class AccountController {
 
     async createAccount(account) {
-        account.hashedPassword = await bcrypt.hash(account.hashedPassword, process.env.HASH_ROUNDS);
+        const hashRounds = integer(process.env.HASH_ROUNDS);
+        account.hashedPassword = await bcrypt.hash(account.hashedPassword, hashRounds);
         const loadedAccount = await accountDAO.createAccount(account);
         if (process.env.EMAIL_SENDER === '') {
             return account;
