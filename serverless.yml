@@ -31,6 +31,21 @@ functions:
       - http:
           path: /account
           method: post
+
+  changePassword:
+    handler: account/AccountHandler.changePassword
+    events:
+      - http:
+          path: /account/{id}
+          method: put
+
+
+  addPermission:
+    handler: permission/PermissionHandler.addPermission
+    events:
+      - http:
+          path: /permission
+          method: post
   login:
     handler: authentication/AuthenticationHandler.login
     events:
@@ -108,12 +123,7 @@ functions:
           path: /role/removeAccount
           method: delete
 
-  addPermission:
-    handler: permission/PermissionHandler.addPermission
-    events:
-      - http:
-          path: /permission
-          method: post
+
 
   deletePermission:
     handler: permission/PermissionHandler.deletePermission
