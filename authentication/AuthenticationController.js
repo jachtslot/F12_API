@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const AuthenticationDAO = require('./AuthenticationDAO');
 const authenticationDAO = new AuthenticationDAO();
 const AuthenticationHelper = require('../util/AuthenticationHelper');
+const InvalidCredentialsError = require('./InvalidCredentialsError');
+const InvalidRoleError = require('./InvalidRoleError');
 
 module.exports = class AuthenticationController {
 
@@ -15,13 +17,13 @@ module.exports = class AuthenticationController {
         const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashed_password);
 
         if(!correctCredentials) {
-            throw new Error("Invalid credentials")
+            throw new InvalidCredentialsError("Invalid credentials")
         }
         const role = await AuthenticationHelper.getUserRole(loadedAccount);
         const token = await AuthenticationHelper.generateToken(loadedAccount, role);
         if (credentials.origin === process.env.PORTAL_ORIGIN) {
             if (role !== 'admin') {
-                throw new Error('User is not authorized for this site.')
+                throw new InvalidRoleError('User is not authorized for this site.')
             }
         }
         return {loadedAccount, token};
