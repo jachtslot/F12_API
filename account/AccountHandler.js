@@ -9,6 +9,7 @@ const Methods = require('../response/methods').Methods;
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
 const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
+const SimpleEmailServiceError = require('./SimpleEmailServiceError');
 
 module.exports.createAccount = async event => {
     if (!AuthenticationHelper.hasAdminRole(event)) {
@@ -22,7 +23,8 @@ module.exports.createAccount = async event => {
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
-    return await accountController.createAccount(unhashedAccount).then(account => {
+    try {
+        const account = await accountController.createAccount(unhashedAccount)
         const body = JSON.stringify({
             'id': account.id,
             'username': account.username,
@@ -33,14 +35,20 @@ module.exports.createAccount = async event => {
             Methods.POST,
             body
         );
-    }).catch(error => {
+    } catch (error) {
+        if (error instanceof SimpleEmailServiceError) {
+            return ResponseFactory.build(
+                500,
+                Methods.POST,
+                `Something went wrong sending the registration mail to ${email}`
+            );
+        }
         return ResponseFactory.build(
             500,
             Methods.POST,
             JSON.stringify(error.message)
         );
-    });
-
+    }
 }
 
 module.exports.changePassword = async event => {
