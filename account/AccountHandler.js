@@ -7,6 +7,7 @@ const Methods = require('../response/methods').Methods;
 
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
+const InvalidAccountNameError = require('./InvalidAccountNameError');
 
 module.exports.createAccount = async event => {
     const responseBody = JSON.parse(event.body);
@@ -81,6 +82,14 @@ module.exports.changeAccountName = async event => {
                 Methods.PUT,
                 `account with id ${id} is not found`
             )
+        }
+
+        if (error instanceof InvalidAccountNameError) {
+            return ResponseFactory.build(
+                403,
+                Methods.PUT
+                `new accountName cannot be undefined, null or be of length 0`
+            );
         }
     }
 }
