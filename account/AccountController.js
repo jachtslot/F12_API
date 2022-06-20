@@ -14,7 +14,7 @@ module.exports = class AccountController {
         }
         await sendRegistrationMail(account.emailAddress, account.hashedPassword).catch(error => {
             throw new Error(error.message);
-        })
+        });
         return loadedAccount;
     }
 
