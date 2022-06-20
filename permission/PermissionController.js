@@ -21,4 +21,8 @@ module.exports = class PermissionController {
             )
         );
     }
+
+    deletePermission(permissionId) {
+        return permissionDAO.deletePermission(permissionId);
+    }
 }
