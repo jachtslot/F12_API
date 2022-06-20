@@ -8,6 +8,7 @@ const Methods = require('../response/methods').Methods;
 
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
+const InvalidAccountNameError = require('./InvalidAccountNameError');
 const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
 const SimpleEmailServiceError = require('./SimpleEmailServiceError');
 
@@ -80,6 +81,39 @@ module.exports.changePassword = async event => {
                 404,
                 Methods.PUT,
                 `account with id ${id} is not found`
+            );
+        }
+    }
+}
+
+module.exports.changeAccountName = async event => {
+    const decodedToken = AuthenticationHelper.verifyToken(event);
+    const accountId = decodedToken.id;
+    const responseBody = JSON.parse(event.body);
+    const newName = responseBody.new_name;
+
+    try {
+        await accountController.changeAccountName(accountId, newName);
+
+        return ResponseFactory.build(
+            200,
+            Methods.PUT,
+            `accountName has been updated to ${newName}`
+        )
+    } catch (error) {
+        if (error instanceof AccountNotFoundError) {
+            return ResponseFactory.build(
+                404,
+                Methods.PUT,
+                `account with id ${accountId} is not found`
+            )
+        }
+
+        if (error instanceof InvalidAccountNameError) {
+            return ResponseFactory.build(
+                403,
+                Methods.PUT
+                `new accountName cannot be undefined, null or be of length 0`
             );
         }
     }
