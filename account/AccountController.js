@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 module.exports = class AccountController {
 
     async createAccount(account) {
-        account.hashedPassword = await bcrypt.hash(account.hashedPassword, 12);
+        account.hashedPassword = await bcrypt.hash(account.hashedPassword, process.env.HASH_ROUNDS);
         const loadedAccount = await accountDAO.createAccount(account);
         if (process.env.EMAIL_SENDER === '') {
             return account;
