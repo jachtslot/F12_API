@@ -2,6 +2,7 @@ const Account = require('../account/Account');
 const jwt = require('jsonwebtoken');
 const AuthenticationDAO = require('../authentication/AuthenticationDAO');
 const AccountNotFoundError = require('../account/AccountNotFoundError');
+const ValidationError = require('../account/ValidationError');
 const authenticationDAO = new AuthenticationDAO();
 module.exports = class AuthenticationHelper {
 
