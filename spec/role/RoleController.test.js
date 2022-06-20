@@ -58,11 +58,11 @@ const addDemoRolesWithAccounts = async () => {
     await roleController.addAccountToRole(roleId3, accountId4);
 
 
-    let permission1 = new Permission(roleId1, 3, 1, 1430, 1800);
-    let permission2 = new Permission(roleId2, 3, 1, 1430, 1800);
-    let permission3 = new Permission(roleId2, 2, 1, 1430, 1800);
-    let permission4 = new Permission(roleId2, 2, 1, 1430, 1800);
-    let permission5 = new Permission(roleId3, 1, 1, 1430, 1800);
+    let permission1 = new Permission(null, roleId1, 3, 1, 1430, 1800);
+    let permission2 = new Permission(null, roleId2, 3, 1, 1430, 1800);
+    let permission3 = new Permission(null, roleId2, 2, 1, 1430, 1800);
+    let permission4 = new Permission(null, roleId2, 2, 1, 1430, 1800);
+    let permission5 = new Permission(null, roleId3, 1, 1, 1430, 1800);
 
     await permissionController.addPermission(permission1);
     await permissionController.addPermission(permission2);
