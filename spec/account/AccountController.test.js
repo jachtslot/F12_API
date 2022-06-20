@@ -6,6 +6,7 @@ const BeforeEach = require('../support/BeforeEach');
 
 const ValidationError = require('../../account/ValidationError');
 const AccountNotFoundError = require('../../account/AccountNotFoundError');
+const InvalidAccountNameError = require('../../account/InvalidAccountNameError');
 
 const createTestAccount = () => {
     return new Account(
@@ -97,10 +98,10 @@ describe('testing the changeAccountName() method of the AccountController', () =
 
     it('should throw an error when id not found in database', async () => {
         await BeforeEach.run();
-        let createdAccount = await accountController.createAccount(createTestAccount());
+        await accountController.createAccount(createTestAccount());
         await expectAsync(
             accountController.changeAccountName(uuidv4(), 'newname')
-        ).toBeResolved();
+        ).toBeRejectedWith(new AccountNotFoundError('account not found in database'));
     });
 
     it('should throw an error when new id name is empty', async () => {
@@ -108,6 +109,6 @@ describe('testing the changeAccountName() method of the AccountController', () =
         let createdAccount = await accountController.createAccount(createTestAccount());
         await expectAsync(
             accountController.changeAccountName(createdAccount.id, '')
-        ).toBeResolved();
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
     });
 });
