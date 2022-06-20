@@ -24,7 +24,7 @@ module.exports = class AccountDAO {
         `;
 
         const values = [
-            account.hashedPassword,
+            account.hashed_password,
             account.id
         ];
 
