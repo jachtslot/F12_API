@@ -1,4 +1,4 @@
-org: thimovanvelzen
+org: ramonk01
 app: f12-api-service
 service: f12-api-service
 
@@ -39,6 +39,13 @@ functions:
           path: /account/{id}
           method: put
 
+
+  addPermission:
+    handler: permission/PermissionHandler.addPermission
+    events:
+      - http:
+          path: /permission
+          method: post
   login:
     handler: authentication/AuthenticationHandler.login
     events:
@@ -115,10 +122,3 @@ functions:
       - http:
           path: /role/removeAccount
           method: delete
-
-  addPermission:
-    handler: permission/PermissionHandler.addPermission
-    events:
-      - http:
-          path: /permission
-          method: post
