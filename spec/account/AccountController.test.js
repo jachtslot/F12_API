@@ -111,4 +111,20 @@ describe('testing the changeAccountName() method of the AccountController', () =
             accountController.changeAccountName(createdAccount.id, '')
         ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
     });
+
+    it('should throw an error when new id name is undefined', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, undefined)
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
+    });
+
+    it('should throw an error when new id name is null', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, null)
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
+    });
 });
