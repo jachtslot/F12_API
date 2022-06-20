@@ -29,4 +29,11 @@ module.exports = class PermissionDAO {
 
         return PostgreSQLAdapter.executeQueryWithValues(GET_PERMISSION_BY_ROLE, values);
     }
+
+    deletePermission(permissionId) {
+        const DELETE_PERMISSION_BY_ID = `
+        DELETE FROM public.permission WHERE id = $1`
+        const values = [permissionId];
+        return PostgreSQLAdapter.executeQueryWithValues(DELETE_PERMISSION_BY_ID, values);
+    }
 }
