@@ -4,7 +4,7 @@ module.exports = class AuthenticationDAO {
     loginAccount(credentials) {
         const SELECT_ACCOUNT_BY_EMAIL = `
             SELECT * 
-            FROM account 
+            FROM public.account 
             WHERE email_address = $1;
         `;
         const values = [credentials.email];
