@@ -9,7 +9,7 @@ module.exports = class AuthenticationController {
     async login(credentials) {
         let loadedAccount;
         const accountFromDatabase =  await authenticationDAO.loginAccount(credentials);
-        loadedAccount = AuthenticationHelper.createUserFromData(accountFromDatabase);
+        loadedAccount = AuthenticationHelper.createAccountFromData(accountFromDatabase);
 
 
         const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
