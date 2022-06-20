@@ -87,11 +87,13 @@ module.exports.changePassword = async event => {
 }
 
 module.exports.changeAccountName = async event => {
+    let decodedToken = AuthenticationHelper.verifyToken(event);
+    let accountId = decodedToken.id;
     let responseBody = JSON.parse(event.body);
     let newName = responseBody.new_name;
 
     try {
-        await accountController.changeAccountName(id, newName);
+        await accountController.changeAccountName(accountId, newName);
 
         return ResponseFactory.build(
             200,
@@ -103,7 +105,7 @@ module.exports.changeAccountName = async event => {
             return ResponseFactory.build(
                 404,
                 Methods.PUT,
-                `account with id ${id} is not found`
+                `account with id ${accountId} is not found`
             )
         }
 
