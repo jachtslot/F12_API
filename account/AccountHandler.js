@@ -62,6 +62,29 @@ module.exports.changePassword = async event => {
     }
 }
 
+module.exports.changeAccountName = async event => {
+    let responseBody = JSON.parse(event.body);
+    let newName = responseBody.new_name;
+
+    try {
+        await accountController.changeAccountName(id, newName);
+
+        return ResponseFactory.build(
+            200,
+            Methods.PUT,
+            `accountName has been updated to ${newName}`
+        )
+    } catch (error) {
+        if (error instanceof AccountNotFoundError) {
+            return ResponseFactory.build(
+                404,
+                Methods.PUT,
+                `account with id ${id} is not found`
+            )
+        }
+    }
+}
+
 module.exports.deleteAccount = async event => {
     let responseBody = JSON.parse(event.body);
     let emailAddress = responseBody.email_address;
