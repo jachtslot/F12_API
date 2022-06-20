@@ -8,22 +8,27 @@ const Methods = require('../response/methods').Methods;
 module.exports.login = async event => {
     const credentials = AuthenticationHelper.parseBody(event);
 
-    let data = await authenticationController.login(credentials);
+    return await authenticationController.login(credentials).then(data => {
+        const loadedAccount = data.loadedAccount;
+        const token = data.token;
+        const body = JSON.stringify(
+            {
+                token: token,
+                id: loadedAccount.id,
+                email_address: loadedAccount.emailAddress,
+                username: loadedAccount.username
+            }
+        );
+        return ResponseFactory.build(
+            200,
+            Methods.POST,
+            body
+        );
+    }).catch(error => {
+        return ResponseFactory.build(500, Methods.POST, JSON.stringify(error.message));
+    });
 
-    const loadedAccount = data.loadedAccount;
-    const token = data.token;
-    const body = JSON.stringify(
-        {
-            token: token,
-            id: loadedAccount.id,
-            email_address: loadedAccount.emailAddress,
-            username: loadedAccount.username
-        }
-    );
 
-    return ResponseFactory.build(
-        200,
-        Methods.POST,
-        body
-    );
+
+
 }
