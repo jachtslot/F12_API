@@ -1,4 +1,4 @@
-const PostgreSQLAdapter = require("../../util/PostgreSQLAdapter");
+const PostgreSQLAdapter = require('../../util/PostgreSQLAdapter');
 
 module.exports = class BeforeEach {
 

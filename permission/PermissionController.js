@@ -1,5 +1,5 @@
 const PermissionDAO = require('./PermissionDAO');
-const Permission = require("./Permission");
+const Permission = require('./Permission');
 const permissionDAO = new PermissionDAO();
 
 module.exports = class PermissionController {
