@@ -1,8 +1,9 @@
 const Permission = require('./Permission');
 const PermissionController = require('./PermissionController');
 const permissionController = new PermissionController();
-
+const AuthenticationHelper = require('../util/AuthenticationHelper');
 const ResponseFactory = require('../response/ResponseFactory');
+const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
 const Methods = require('../response/methods').Methods;
 
 module.exports.addPermission = async event => {
@@ -25,6 +26,10 @@ module.exports.addPermission = async event => {
 }
 
 module.exports.deletePermission = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User not authorized for this action.');
+    }
+    event = JSON.parse(event);
     const id = event.pathParameters.id;
     return await permissionController.deletePermission(id).then(() => {
         return ResponseFactory.build(200, Methods.DELETE, JSON.stringify(`Deleted permission with ID : ${id}`));
