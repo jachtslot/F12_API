@@ -26,7 +26,7 @@ describe('testing the login() method of the AuthenticationController', () => {
         const result = await authenticationController.login(
             {
                 email: getTestAccount().emailAddress,
-                password: getTestAccount().hashedPassword
+                password: getTestAccount().hashed_password
             }
         )
         expect(result.loadedAccount.username).toBe(getTestAccount().username);
@@ -48,7 +48,7 @@ describe('testing the login() method of the AuthenticationController', () => {
         await expectAsync(authenticationController.login(
             {
                 email: 'NonExistingEmail@hotmail.com',
-                password: getTestAccount().hashedPassword
+                password: getTestAccount().hashed_password
             }
         )).toBeRejected();
     });

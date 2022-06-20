@@ -11,9 +11,24 @@ module.exports = class AccountDAO {
             account.id,
             account.username,
             account.emailAddress,
-            account.hashedPassword
+            account.hashed_password
         ];
         return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_ACCOUNT, values);
+    }
+
+    changePassword(account) {
+        const UPDATE_PASSWORD = `
+            UPDATE public.account
+            SET hashed_password = $1
+            WHERE id = $2;
+        `;
+
+        const values = [
+            account.hashed_password,
+            account.id
+        ];
+
+        return PostgreSQLAdapter.executeQueryWithValues(UPDATE_PASSWORD, values);
     }
 
     deleteAccount(emailAddress) {

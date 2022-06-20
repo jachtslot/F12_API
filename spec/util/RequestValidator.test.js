@@ -67,10 +67,12 @@ const addDemoRolesWithAccounts = async () => {
 
 describe('testing the getPermissionsOfAccount method of the RequestValidator()', () => {
 
-    it('Gets the right amount of permissions for role1', async () => {
+    beforeAll(async () => {
         await BeforeEach.run();
         await addDemoRolesWithAccounts();
+    });
 
+    it('Gets the right amount of permissions for role1', async () => {
         const role1 = await roleController.getRole('tuinman1');
         const account = role1.accounts[0];
 
@@ -81,9 +83,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('Gets the right amount of permissions for role2', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
 
@@ -94,9 +93,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('Gets the right amount of permissions for role3', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role1 = await roleController.getRole('tuinman3')
         const account = role1.accounts[0];
 
@@ -107,10 +103,7 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('Gets the right amount of permissions for role4', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
-        const role1 = await roleController.getRole('tuinman4')
+        await roleController.getRole('tuinman4')
 
         const requestValidator = new RequestValidator(uuidv4(), undefined, 2);
         await requestValidator.getPermissionsOfAccount();
@@ -119,9 +112,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldDenyRequestIfNotCorrectDay', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
 
         const account = role2.accounts[0];
@@ -132,9 +122,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldDenyRequestIfTimeStampTooEarly', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
         const currentTime = new Time(1, 1400);
@@ -144,9 +131,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldDenyRequestIfTimeStampTooLate', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
         const currentTime = new Time(1, 1900);
@@ -156,9 +140,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldDenyRequestIfPrivilegeNotGranted', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
         const currentTime = new Time(1, 1600);
@@ -168,9 +149,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldAcceptRequestIfMeetsRequirements', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
         const currentTime = new Time(1, 1600);
@@ -180,9 +158,6 @@ describe('testing the getPermissionsOfAccount method of the RequestValidator()',
     });
 
     it('ShouldAcceptRequestIfMeetsRequirementsWhenPrivilegeIsBoth', async () => {
-        await BeforeEach.run();
-        await addDemoRolesWithAccounts();
-
         const role2 = await roleController.getRole('tuinman2')
         const account = role2.accounts[0];
         const currentTime = new Time(1, 2230);
