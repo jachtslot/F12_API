@@ -11,7 +11,7 @@ module.exports = class AccountDAO {
             account.id,
             account.username,
             account.emailAddress,
-            account.hashedPassword
+            account.hashed_password
         ];
         return PostgreSQLAdapter.executeQueryWithValues(INSERT_NEW_ACCOUNT, values);
     }
