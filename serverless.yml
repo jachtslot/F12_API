@@ -39,6 +39,13 @@ functions:
           path: /account/{id}
           method: put
 
+  changeAccountName:
+    handler: account/AccountHandler.changeAccountName
+    events:
+      - http:
+          path: /account
+          method: put
+
   login:
     handler: authentication/AuthenticationHandler.login
     events:
