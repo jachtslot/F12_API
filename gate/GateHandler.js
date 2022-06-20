@@ -1,15 +1,10 @@
 const GateController = require('./GateController');
+const gateController = new GateController();
 
-const openInnerGate = event => {
-    return GateController.openInnerGate(event);
+module.exports.openInnerGate = event => {
+    return gateController.openInnerGate(event);
 }
 
-const openOuterGate = event => {
-    return GateController.openOuterGate(event);
+module.exports.openOuterGate = event => {
+    return gateController.openOuterGate(event);
 }
-
-module.exports = {
-    openInnerGate,
-    openOuterGate
-};
-
