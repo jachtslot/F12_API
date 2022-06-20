@@ -19,6 +19,18 @@ module.exports = class AccountController {
         return account;
     }
 
+    async changePassword(account, oldPassword, newPassword) {
+        account.hashedPassword = await bcrypt.hash(account.hashedPassword, 12);
+        const existingAccount = await this.getAccountWithPassword(account.id);
+
+        if (existingAccount !== undefined) {
+            if (existingAccount.hashed_password === oldPassword) {
+                account.hashed_password = newPassword;
+                await accountDAO.changePassword(account);
+            }
+        }
+    }
+
     emailServiceEnabled() {
         return process.env.EMAIL_SENDER !== '';
     }
@@ -39,6 +51,12 @@ module.exports = class AccountController {
     async getAccount(id) {
         return this.getAllAccounts().then(accounts => {
             return accounts.filter(account => account.id === id);
-        })
+        });
+    }
+
+    async getAccountWithPassword(id) {
+        return accountDAO.getAllAccounts().then(accounts => {
+            return accounts.filter(account => account.id === id);
+        });
     }
 }
