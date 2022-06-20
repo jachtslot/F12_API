@@ -3,7 +3,6 @@ const accountController = new AccountController();
 const AuthenticationController = require('../../authentication/AuthenticationController');
 const authenticationController = new AuthenticationController();
 const Account = require('../../account/Account');
-const PostgresqlAdapter = require('../../util/PostgreSQLAdapter');
 const BeforeEach = require('../support/BeforeEach');
 
 const beforeEach = async () => {

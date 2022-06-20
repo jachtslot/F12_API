@@ -4,13 +4,13 @@ const bcrypt = require('bcryptjs');
 const AuthenticationDAO = require('./AuthenticationDAO');
 const authenticationDAO = new AuthenticationDAO();
 const AuthenticationHelper = require('../util/AuthenticationHelper');
+
 module.exports = class AuthenticationController {
 
     async login(credentials) {
         let loadedAccount;
         const accountFromDatabase =  await authenticationDAO.loginAccount(credentials);
         loadedAccount = AuthenticationHelper.createAccountFromData(accountFromDatabase);
-
 
         const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
 
