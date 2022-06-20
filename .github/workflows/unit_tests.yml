@@ -38,6 +38,9 @@ env:
   SES_SECRET: ${{secrets.SES_SECRET}}
   JWT_SECRET: ${{secrets.JWT_SECRET}}
 
+  PORTAL_ORIGIN: ${{secrets.PORTAL_ORIGIN}}
+  APP_ORIGIN: ${{secrets.APP_ORIGIN}}
+
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
