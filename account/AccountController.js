@@ -4,6 +4,7 @@ const sendRegistrationMail = require('../util/EmailHelper');
 const bcrypt = require('bcryptjs');
 const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
+const InvalidAccountNameError = require("./InvalidAccountNameError");
 
 
 module.exports = class AccountController {
@@ -51,6 +52,10 @@ module.exports = class AccountController {
 
         if (existingAccount === undefined) {
             throw new AccountNotFoundError('account not found in database');
+        }
+
+        if (newName === undefined || newName === null || newName.length === 0) {
+            throw new InvalidAccountNameError('new name cannot be empty');
         }
 
         await accountDAO.changeAccountName(id, newName);
