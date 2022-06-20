@@ -6,6 +6,7 @@ const BeforeEach = require('../support/BeforeEach');
 
 const ValidationError = require('../../account/ValidationError');
 const AccountNotFoundError = require('../../account/AccountNotFoundError');
+const InvalidAccountNameError = require('../../account/InvalidAccountNameError');
 
 const createTestAccount = () => {
     return new Account(
@@ -33,7 +34,7 @@ describe('testing the createAccount() method of the AccountController', () => {
     });
 });
 
-describe('testing the changeAccount() method of the AccountController', () => {
+describe('testing the changePassword() method of the AccountController', () => {
 
     it('should update password when correct password given', async () => {
         await BeforeEach.run();
@@ -82,5 +83,48 @@ describe('testing the changeAccount() method of the AccountController', () => {
         await expectAsync(
             accountController.changePassword(createdAccount, 'Password', 'newpassword')
         ).toBeRejectedWith(new AccountNotFoundError('account not found in database'));
+    });
+});
+
+describe('testing the changeAccountName() method of the AccountController', () => {
+
+    it('should update account name when correct id found in JWT', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, 'newname')
+        ).toBeResolved();
+    });
+
+    it('should throw an error when id not found in database', async () => {
+        await BeforeEach.run();
+        await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(uuidv4(), 'newname')
+        ).toBeRejectedWith(new AccountNotFoundError('account not found in database'));
+    });
+
+    it('should throw an error when new id name is empty', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, '')
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
+    });
+
+    it('should throw an error when new id name is undefined', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, undefined)
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
+    });
+
+    it('should throw an error when new id name is null', async () => {
+        await BeforeEach.run();
+        let createdAccount = await accountController.createAccount(createTestAccount());
+        await expectAsync(
+            accountController.changeAccountName(createdAccount.id, null)
+        ).toBeRejectedWith(new InvalidAccountNameError('new name cannot be empty'));
     });
 });
