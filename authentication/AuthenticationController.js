@@ -12,7 +12,7 @@ module.exports = class AuthenticationController {
         const accountFromDatabase =  await authenticationDAO.loginAccount(credentials);
         loadedAccount = AuthenticationHelper.createAccountFromData(accountFromDatabase);
 
-        const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashedPassword);
+        const correctCredentials = await bcrypt.compare(credentials.password, loadedAccount.hashed_password);
 
         if(!correctCredentials) {
             throw new Error("Invalid credentials")
