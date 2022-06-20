@@ -36,7 +36,7 @@ module.exports.changePassword = async event => {
 
     try {
         await accountController.changePassword(
-            accountController.getAccountWithPassword(id),
+            await accountController.getAccountWithPassword(id),
             old_password, new_password
         );
         return ResponseFactory.build(
