@@ -52,28 +52,8 @@ describe('testing the changePassword() method of the AccountController', () => {
         ).toBeResolved();
         let updatedAccount = await accountController.getAccountWithPassword(createdAccount.id);
         await expectAsync(
-            accountController.changePassword(updatedAccount, 'Password', 'newpassword')
-        ).toBeRejectedWith(new ValidationError('old password is not correct'));
-        let notUpdatedAccount = await accountController.getAccountWithPassword(updatedAccount.id);
-        await expectAsync(
-            accountController.changePassword(notUpdatedAccount, 'newpassword', 'yetanother')
+            accountController.changePassword(updatedAccount, 'newpassword', 'yetanother')
         ).toBeResolved();
-    });
-
-    it('should throw an error when password has lowercase difference', async () => {
-        await BeforeEach.run();
-        let createdAccount = await accountController.createAccount(createTestAccount());
-        await expectAsync(
-            accountController.changePassword(createdAccount, 'password', 'newpassword')
-        ).toBeRejectedWith(new ValidationError('old password is not correct'));
-    });
-
-    it('should throw an error when password does not match at all', async () => {
-        await BeforeEach.run();
-        let createdAccount = await accountController.createAccount(createTestAccount());
-        await expectAsync(
-            accountController.changePassword(createdAccount, 'completelywrong', 'newpassword')
-        ).toBeRejectedWith(new ValidationError('old password is not correct'));
     });
 
     it('should throw an error when account not found', async () => {
