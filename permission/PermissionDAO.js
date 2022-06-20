@@ -32,7 +32,7 @@ module.exports = class PermissionDAO {
 
     deletePermission(permissionId) {
         const DELETE_PERMISSION_BY_ID = `
-        DELETE FROM permission WHERE id = $1`
+        DELETE FROM public.permission WHERE id = $1`
         const values = [permissionId];
         return PostgreSQLAdapter.executeQueryWithValues(DELETE_PERMISSION_BY_ID, values);
     }
