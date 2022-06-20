@@ -12,7 +12,7 @@ module.exports = class AuthenticationHelper {
         const account = new Account(null, 'testUser', 'testUser@hotmail.com', 'Wachtwoord');
         await accountController.createAccount(account)
         if (isAdmin) {
-            const query = `INSERT INTO admin (account_id) VALUES ($1)`
+            const query = `INSERT INTO public.admin (account_id) VALUES ($1)`
             const values = [account.id];
             await PostgreSqlAdapter.executeQueryWithValues(query, values);
         }
