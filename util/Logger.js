@@ -12,7 +12,7 @@ const logger = winston.createLogger({
             createLogStream: true,
             submissionInterval: 2000,
             submissionRetryCount: 1,
-            batchSize: 20,
+            batchSize: 3,
             awsConfig: {
                 accessKeyId: process.env.CLOUDWATCH_ACCESS_KEY,
                 secretAccessKey: process.env.CLOUDWATCH_SECRET_ACCESS_KEY,
@@ -21,5 +21,10 @@ const logger = winston.createLogger({
         })
     ]
 })
+logger.stream = {
+    write: function(message) {
+        logger.info(message);
+    }
+};
 
 module.exports = logger;
