@@ -11,7 +11,6 @@ module.exports = class AuthenticationHelper {
         const email = body.email_address;
         const password = body.hashed_password;
         const origin = body.origin;
-        console.log(email, password, origin)
         return {email, password, origin};
     }
 
@@ -56,10 +55,9 @@ module.exports = class AuthenticationHelper {
 
 
     static verifyToken(event) {
-        event = JSON.parse(event)
         let token = event.headers['Authorization'].split(' ')[1];
         if (!token) {
-            throw new ValidationError('No authorization token present');
+            throw new ValidationError('No authorization token present', event);
         }
         let decodedToken;
         try {
