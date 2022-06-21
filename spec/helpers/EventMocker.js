@@ -10,7 +10,7 @@ module.exports = class EventMocker {
         const headers = {
             Authorization: `Bearer ${token}`
         }
-        return JSON.stringify({headers, body})
+        return {headers, body}
     }
 
     static buildWithAuthHeadersAndEmptyBody(token) {
@@ -18,7 +18,7 @@ module.exports = class EventMocker {
             Authorization: `Bearer ${token}`
         }
         const body = {};
-        return JSON.stringify({headers,body});
+        return {headers,body}
     }
     static buildWithAuthHeadersEmptyBodyPathParameters(token, pathParameter) {
         const headers = {
@@ -26,7 +26,7 @@ module.exports = class EventMocker {
         }
         const body = {};
         const pathParameters = {id: pathParameter};
-        return JSON.stringify({headers,body,pathParameters});
+        return {headers,body,pathParameters}
     }
 
 }
