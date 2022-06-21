@@ -6,7 +6,6 @@ const AuthenticationHelper = require('../util/AuthenticationHelper');
 const ResponseFactory = require('../response/ResponseFactory');
 const Methods = require('../response/methods').Methods;
 
-const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
 const InvalidAccountNameError = require('./InvalidAccountNameError');
 const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
@@ -17,20 +16,19 @@ module.exports.createAccount = async event => {
         throw new UnauthorizedUserError('User is not authenticated for this action');
     }
 
-    event = JSON.parse(event);
-    const responseBody = event.body;
+    const responseBody = JSON.parse(event.body);
     const username = responseBody.username;
     const email = responseBody.email_address;
     const password = responseBody.hashed_password;
     const unhashedAccount = new Account(null, username, email, password);
 
     try {
-        const account = await accountController.createAccount(unhashedAccount)
-        const body = JSON.stringify({
+        const account = await accountController.createAccount(unhashedAccount);
+        const body = {
             'id': account.id,
             'username': account.username,
             'email_address': account.emailAddress
-        });
+        };
         return ResponseFactory.build(
             201,
             Methods.POST,
@@ -47,7 +45,6 @@ module.exports.createAccount = async event => {
         return ResponseFactory.build(
             500,
             Methods.POST,
-            JSON.stringify(error.message)
         );
     }
 }
@@ -57,6 +54,10 @@ module.exports.changePassword = async event => {
     let id = event.pathParameters.id;
     let old_password = responseBody.old_password;
     let new_password = responseBody.new_password;
+
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
 
     try {
         await accountController.changePassword(
@@ -80,60 +81,73 @@ module.exports.changePassword = async event => {
 }
 
 module.exports.changeAccountName = async event => {
-    const decodedToken = AuthenticationHelper.verifyToken(event);
-    const accountId = decodedToken.id;
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
+
     const responseBody = JSON.parse(event.body);
     const newName = responseBody.new_name;
+    const accountId = responseBody.account_id
 
-    try {
-        await accountController.changeAccountName(accountId, newName);
 
-        return ResponseFactory.build(
-            200,
-            Methods.PUT,
-            `accountName has been updated to ${newName}`
-        )
-    } catch (error) {
-        if (error instanceof AccountNotFoundError) {
+        try {
+            await accountController.changeAccountName(accountId, newName);
+
             return ResponseFactory.build(
-                404,
+                200,
                 Methods.PUT,
-                `account with id ${accountId} is not found`
+                `accountName has been updated to ${newName}`
             )
-        }
+        } catch (error) {
+            if (error instanceof AccountNotFoundError) {
+                return ResponseFactory.build(
+                    404,
+                    Methods.PUT,
+                    `account with id ${accountId} is not found`
+                )
+            }
 
-        if (error instanceof InvalidAccountNameError) {
-            return ResponseFactory.build(
-                403,
-                Methods.PUT
-                `new accountName cannot be undefined, null or be of length 0`
-            );
+            if (error instanceof InvalidAccountNameError) {
+                return ResponseFactory.build(
+                    403,
+                    Methods.PUT
+                        `new accountName cannot be undefined, null or be of length 0`
+                );
+            }
         }
-    }
 }
 
 module.exports.deleteAccount = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let responseBody = JSON.parse(event.body);
     let emailAddress = responseBody.email_address;
 
-    let deletedEmailAddress = await accountController.deleteAccount(emailAddress);
+    await accountController.deleteAccount(emailAddress);
     return ResponseFactory.build(
         200,
         Methods.DELETE,
-        `Account with email address ${deletedEmailAddress} is deleted!`
+        `Account with email address ${emailAddress} is deleted!`
     );
 }
 
-module.exports.getAllAccounts = async () => {
+module.exports.getAllAccounts = async (event) => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     const accounts = await accountController.getAllAccounts();
     return ResponseFactory.build(
         200,
         Methods.GET,
-        JSON.stringify(accounts)
+        accounts
     );
 }
 
 module.exports.getAccount = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let id = event.pathParameters.id;
     let retrievedAccount = await accountController.getAccount(id);
 
@@ -150,7 +164,7 @@ module.exports.getAccount = async event => {
         return ResponseFactory.build(
             200,
             Methods.GET,
-            JSON.stringify(retrievedAccount[0])
+            retrievedAccount[0]
         );
     });
 }
