@@ -2,7 +2,6 @@ const AccountDAO = require('./AccountDAO');
 const accountDAO = new AccountDAO();
 const sendRegistrationMail = require('../util/EmailHelper');
 const bcrypt = require('bcryptjs');
-const ValidationError = require('./ValidationError');
 const AccountNotFoundError = require('./AccountNotFoundError');
 const InvalidAccountNameError = require("./InvalidAccountNameError");
 const SimpleEmailServiceError = require('./SimpleEmailServiceError');
@@ -14,7 +13,7 @@ module.exports = class AccountController {
         await accountDAO.createAccount(account);
 
         if (this.emailServiceEnabled()) {
-            sendRegistrationMail(account.emailAddress, account.hashed_password).catch( () => {
+            await sendRegistrationMail(account.emailAddress, account.hashed_password).catch( () => {
                 throw new SimpleEmailServiceError('Unable to send email through SES');
             });
         }
