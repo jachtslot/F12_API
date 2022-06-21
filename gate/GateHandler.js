@@ -13,7 +13,7 @@ const Methods = require('../response/methods').Methods;
 module.exports.openInnerGate = async event => {
     const decodedToken = AuthenticationHelper.verifyToken(event);
     const accountId = decodedToken.id;
-    const requestValidator = new RequestValidator(accountId, Time.now(), 2);
+    const requestValidator = new RequestValidator(accountId, Time.now(), 1);
     const access = await requestValidator.hasAccess();
     if (!access) {
         throw new UnauthorizedUserError('User not authorized at this moment.');
