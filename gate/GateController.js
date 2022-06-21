@@ -2,36 +2,16 @@ require('dotenv').config();
 const axios = require('axios');
 const logger = require('../util/Logger');
 const TwilioHelper = require('../util/TwilioHelper');
-const twilioHelper = new TwilioHelper();
+const twilioHelper = new TwilioHelper({debug:true});
 const innerGateURL = process.env.INNER_GATE_URL_SANDBOX;
-
-'use strict';
 
 module.exports = class GateController {
 
-    openInnerGate(event) {
-        return axios.get(innerGateURL).then(() => {
-            logger.info(`Open inner gate at: ${event.path} successful.`);
-
-            return {
-                statusCode: 200,
-                body: JSON.stringify(
-                    'The inner gate will now open, please wait.'
-                )
-            }
-        }).catch(error => {
-            logger.error(`Request failed with "(${error})" at ${event.path}`);
-
-            return {
-                statusCode: 500,
-                body: JSON.stringify(
-                    `Something went wrong. Please try again. `
-                )
-            }
-        });
+    async openInnerGate(event) {
+        return await axios.get(innerGateURL);
     }
 
-    openOuterGate(event) {
-        return twilioHelper.makeCall(event);
+    async openOuterGate(event) {
+        return await twilioHelper.makeCall(event);
     }
 }
