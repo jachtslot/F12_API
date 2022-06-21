@@ -10,7 +10,7 @@ const beforeEach = async () => {
     await BeforeEach.run();
     const testAdmin = getTestAdmin();
     await accountController.createAccount(testAdmin);
-    await PostgresqlAdapter.executeQueryWithValues('INSERT INTO admin (account_id) VALUES($1)', [testAdmin.id]);
+    await PostgresqlAdapter.executeQueryWithValues('INSERT INTO public.admin (account_id) VALUES($1)', [testAdmin.id]);
     await accountController.createAccount(getTestUser());
 
 }

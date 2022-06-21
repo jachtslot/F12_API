@@ -15,16 +15,6 @@ const createAccountBody = async () => {
 
 describe('testing the createAccount should check users role', () => {
 
-    it('should create an account as an admin and create successfully', async () => {
-            await BeforeEach.run();
-            const isAdmin = true;
-            const account = await AuthenticationHelper.createTestAccount(isAdmin);
-            const credentials = await AuthenticationHelper.getJwtToken(account, process.env.PORTAL_ORIGIN);
-            const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, createAccountBody())
-            await expectAsync(AccountHandler.createAccount(mockEvent)).toBeResolved();
-        }
-    );
-
     it('should fail creating an account as a normal user', async () => {
         await BeforeEach.run();
         const isAdmin = false;
