@@ -6,7 +6,7 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   stage: dev
   region: eu-west-1
 
@@ -31,6 +31,28 @@ functions:
       - http:
           path: /account
           method: post
+
+  changePassword:
+    handler: account/AccountHandler.changePassword
+    events:
+      - http:
+          path: /account/{id}
+          method: put
+
+  changeAccountName:
+    handler: account/AccountHandler.changeAccountName
+    events:
+      - http:
+          path: /account
+          method: put
+
+  addPermission:
+    handler: permission/PermissionHandler.addPermission
+    events:
+      - http:
+          path: /permission
+          method: post
+
   login:
     handler: authentication/AuthenticationHandler.login
     events:
@@ -59,6 +81,27 @@ functions:
           path: /gates/2
           method: get
 
+  getAllRoles:
+    handler: role/RoleHandler.getAllRoles
+    events:
+      - http:
+          path: /role
+          method: get
+
+  getRole:
+    handler: role/RoleHandler.getRole
+    events:
+      - http:
+          path: /role/{id}
+          method: get
+
+  getAllRolesOfAccount:
+    handler: role/RoleHandler.getAllRolesOfAccount
+    events:
+      - http:
+          path: /role/account/{id}
+          method: get
+
   createRole:
     handler: role/RoleHandler.createRole
     events:
@@ -79,3 +122,19 @@ functions:
       - http:
           path: /role/addAccount
           method: post
+
+  removeAccountFromRole:
+    handler: role/RoleHandler.removeAccountFromRole
+    events:
+      - http:
+          path: /role/removeAccount
+          method: delete
+
+
+
+  deletePermission:
+    handler: permission/PermissionHandler.deletePermission
+    events:
+    - http:
+        path: /permission/{id}
+        method: delete
