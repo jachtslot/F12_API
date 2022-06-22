@@ -7,9 +7,7 @@ const permissionController = new PermissionController();
 const Permission = require('../../permission/Permission');
 const RoleController = require('../../role/RoleController');
 const roleController = new RoleController();
-const {v4: uuidv4} = require('uuid');
 const Role = require('../../role/Role');
-
 
 
 const setUpAccount = async (isAdmin, origin) => {
@@ -35,9 +33,7 @@ describe('testing the openGates() methods of the GateHandler', () => {
             false, process.env.APP_ORIGIN
         );
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, {});
-
-        const response = await GateHandler.openInnerGate(mockEvent);
-        expect(response.statusCode).toBe(403);
+        await expectAsync(GateHandler.openInnerGate(mockEvent)).toBeRejected();
     });
 
     it('should not open the outer gate with the right credentials but without permissions', async () => {
@@ -47,8 +43,7 @@ describe('testing the openGates() methods of the GateHandler', () => {
         );
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, {});
 
-        const response = await GateHandler.openInnerGate(mockEvent);
-        expect(response.statusCode).toBe(403);
+        await expectAsync(GateHandler.openInnerGate(mockEvent)).toBeRejected();
     });
 
     it('should open the inner gate with the right credentials and with permissions', async () => {
@@ -59,8 +54,8 @@ describe('testing the openGates() methods of the GateHandler', () => {
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, {});
 
         await insertAllAccess(credentials.loadedAccount.id, 1);
-        const response = await GateHandler.openInnerGate(mockEvent);
-        expect(response.statusCode).toBe(200);
+        await expectAsync(GateHandler.openInnerGate(mockEvent)).toBeResolved();
+
     });
 
     it('should not open the inner gate with the right credentials and with permissions but wrong privilege', async () => {
@@ -71,8 +66,9 @@ describe('testing the openGates() methods of the GateHandler', () => {
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, {});
 
         await insertAllAccess(credentials.loadedAccount.id, 2);
-        const response = await GateHandler.openInnerGate(mockEvent);
-        expect(response.statusCode).toBe(403);
+        await expectAsync(GateHandler.openInnerGate(mockEvent)).toBeRejected();
+
+
     });
 
     it('should open the inner gate with the right credentials and with permissions and all privileges', async () => {
@@ -108,8 +104,7 @@ describe('testing the openGates() methods of the GateHandler', () => {
         const mockEvent = EventMocker.buildWithAuthHeadersAndBody(credentials.token, {});
 
         await insertAllAccess(credentials.loadedAccount.id, 1);
-        const response = await GateHandler.openOuterGate(mockEvent);
-        expect(response.statusCode).toBe(403);
+        await expectAsync(GateHandler.openOuterGate(mockEvent)).toBeRejected();
     });
 
     it('should open the outer gate with the right credentials and with permissions and all privileges', async () => {
