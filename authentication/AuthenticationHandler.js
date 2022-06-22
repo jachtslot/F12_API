@@ -27,13 +27,13 @@ module.exports.login = async event => {
         );
     }).catch(error => {
         if (error instanceof InvalidCredentialsError) {
-            return ResponseFactory.build(403, error.message)
+            return ResponseFactory.build(403, Methods.POST, error.message)
         }
         if (error instanceof InvalidRoleError) {
-            return ResponseFactory.build(403, 'User is not authorized for this page.')
+            return ResponseFactory.build(403, Methods.POST, 'User is not authorized for this page.')
         }
         if (error instanceof AccountNotFoundError) {
-            return ResponseFactory.build(403, error.message)
+            return ResponseFactory.build(403, Methods.POST, error.message)
         }
         return ResponseFactory.build(500, Methods.POST, error.message);
     });
