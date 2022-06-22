@@ -3,7 +3,7 @@ const Methods = require('./methods').Methods;
 
 module.exports = class ResponseFactory {
 
-    static WHITELISTED_ORIGIN = 'http://localhost:4200';
+    static WHITELISTED_ORIGIN = '*';
 
     static async build(statusCode, method, body) {
         return {
@@ -13,7 +13,7 @@ module.exports = class ResponseFactory {
                 'Access-Control-Allow-Origin': this.WHITELISTED_ORIGIN,
                 'Access-Control-Allow-Methods': `${Methods.OPTION}, ${method}`
             },
-            body: body
+            body: JSON.stringify(body)
         };
     };
 }

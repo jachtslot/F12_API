@@ -25,6 +25,7 @@
     "winston-cloudwatch": "^6.0.0"
   },
   "devDependencies": {
-    "jasmine": "^4.1.0"
+    "jasmine": "^4.1.0",
+    "jasmine-core": "^4.2.0"
   }
 }

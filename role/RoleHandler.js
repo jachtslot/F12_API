@@ -5,9 +5,14 @@ const accountController = new AccountController();
 const Role = require('./Role');
 
 const ResponseFactory = require('../response/ResponseFactory');
+const AuthenticationHelper = require('../util/AuthenticationHelper');
+const UnauthorizedUserError = require('../authentication/UnauthorizedUserError');
 const Methods = require('../response/methods').Methods;
 
 module.exports.createRole = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     const responseBody = JSON.parse(event.body);
     const role = new Role(null, responseBody.name);
 
@@ -20,6 +25,9 @@ module.exports.createRole = async event => {
 }
 
 module.exports.deleteRole = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let id = event.pathParameters.id;
     await roleController.deleteRole(id);
     return ResponseFactory.build(
@@ -30,27 +38,35 @@ module.exports.deleteRole = async event => {
 }
 
 module.exports.addAccountToRole = async event => {
-    let responseBody = JSON.parse(event.body);
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
+    const responseBody = JSON.parse(event.body);
     let roleId = responseBody.role_id;
     let accountId = responseBody.account_id;
 
-    let account = await accountController.getAccount(accountId).catch(() => {
+    await accountController.getAccount(accountId).catch(() => {
         return ResponseFactory.build(
             404,
             Methods.POST,
             `Account with id '${accountId} could not be found!`
-        )
+        );
     });
 
-    await roleController.addAccountToRole(roleId, accountId);
+    await roleController.addAccountToRole(roleId, accountId).catch(err => {
+        throw new Error(err.message);
+    });
     return ResponseFactory.build(
         200,
         Methods.POST,
-        `The account ${account[0].username} is added to the role ${roleId}`
+        'Account has been added to role'
     );
 }
 
 module.exports.removeAccountFromRole = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let responseBody = JSON.parse(event.body);
     let roleId = responseBody.role_id;
     let accountId = responseBody.account_id;
@@ -64,30 +80,40 @@ module.exports.removeAccountFromRole = async event => {
 }
 
 module.exports.getAllRoles = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let roles = await roleController.getAllRoles();
     return ResponseFactory.build(
         200,
         Methods.GET,
-        JSON.stringify(roles)
+        roles
     );
 }
 
 module.exports.getRole = async event => {
+    if (!AuthenticationHelper.hasAdminRole(event)) {
+        throw new UnauthorizedUserError('User is not authenticated for this action');
+    }
     let id = event.pathParameters.id;
     let role = await roleController.getRoleById(id);
     return ResponseFactory.build(
         200,
         Methods.GET,
-        JSON.stringify(role)
+        role
     );
 }
 
 module.exports.getAllRolesOfAccount = async event => {
+    const decodedToken = AuthenticationHelper.verifyToken(event);
     let id = event.pathParameters.id;
+    if (decodedToken.id !== id) {
+        throw new UnauthorizedUserError('This account is not authorized to request specified resource');
+    }
     let roles = await roleController.getRolesOfAccount(id);
     return ResponseFactory.build(
         200,
         Methods.GET,
-        JSON.stringify(roles)
+        roles
     );
 }
