@@ -50,11 +50,11 @@ module.exports.addAccountToRole = async event => {
             404,
             Methods.POST,
             `Account with id '${accountId} could not be found!`
-        )
+        );
     });
 
     await roleController.addAccountToRole(roleId, accountId).catch(err => {
-        throw new Error(err.message)
+        throw new Error(err.message);
     });
     return ResponseFactory.build(
         200,
@@ -108,7 +108,7 @@ module.exports.getAllRolesOfAccount = async event => {
     const decodedToken = AuthenticationHelper.verifyToken(event);
     let id = event.pathParameters.id;
     if (decodedToken.id !== id) {
-        throw new UnauthorizedUserError('This account is not authorized to request specified resource')
+        throw new UnauthorizedUserError('This account is not authorized to request specified resource');
     }
     let roles = await roleController.getRolesOfAccount(id);
     return ResponseFactory.build(

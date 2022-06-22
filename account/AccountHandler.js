@@ -110,7 +110,7 @@ module.exports.changeAccountName = async event => {
             if (error instanceof InvalidAccountNameError) {
                 return ResponseFactory.build(
                     403,
-                    Methods.PUT
+                    Methods.PUT,
                         `new accountName cannot be undefined, null or be of length 0`
                 );
             }
